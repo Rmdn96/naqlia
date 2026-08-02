@@ -34,6 +34,14 @@ npm run build
 
 ## Documentation
 
+- [Naqlia Constitution](.ai/constitution.md)
+- [Product Principles](.ai/product-principles.md)
+- [Engineering Principles](.ai/engineering-principles.md)
+- [Coding Principles](.ai/coding-principles.md)
+- [Database Principles](.ai/database-principles.md)
+- [Security Principles](.ai/security-principles.md)
+- [UI Principles](.ai/ui-principles.md)
+- [SEO Principles](.ai/seo-principles.md)
 - [Master Project Blueprint](docs/00-Project-Blueprint.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
 - [Conceptual ERD](docs/02-ERD.md)

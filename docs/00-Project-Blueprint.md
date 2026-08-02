@@ -15,9 +15,9 @@
 
 ## Document Authority
 
-This document is the single source of truth for Naqlia's product direction, delivery standards, and engineering guardrails. It defines the current baseline; it does not authorize implementation of a roadmap item by itself.
+This document is the single source of truth for Naqlia's product identity, direction, scope, and approved technical baseline. The [Naqlia Constitution](../.ai/constitution.md) is the higher authority for how product and engineering decisions, implementation, review, release, and operations are governed. This blueprint does not authorize implementation of a roadmap item by itself.
 
-The terms **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** indicate requirement strength. When another project document conflicts with this blueprint, this blueprint takes precedence until it is amended through review. Detailed guides may add implementation guidance but must remain consistent with this document. Material architectural decisions must be recorded as Architecture Decision Records (ADRs) and reflected here when they alter the baseline.
+The terms **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** indicate requirement strength. When another project document conflicts with this blueprint on product meaning or approved scope, this blueprint takes precedence unless the Constitution is the source of the governing rule. Detailed principles and guides may add implementation requirements but must remain consistent with both documents. Material architectural decisions must be recorded as Architecture Decision Records (ADRs) and reflected here when they alter the baseline.
 
 ## 1. Executive Summary
 
@@ -241,7 +241,7 @@ See the [Architecture Guide](architecture-guide.md) for the current detailed dep
 
 ```text
 naqlia/
-├── .ai/                    # Reviewed, non-secret AI context and reusable prompts
+├── .ai/                    # Constitution, governing principles, non-secret AI context, and reusable prompts
 ├── .github/                # Workflows and repository collaboration configuration
 ├── .husky/                 # Local Git hooks
 ├── docs/                   # Authoritative and supporting project documentation

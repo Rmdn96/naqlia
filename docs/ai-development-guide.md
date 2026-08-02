@@ -8,10 +8,13 @@ AI tools may accelerate implementation, tests, documentation, and review, but th
 
 Before changing code, an AI collaborator should read, in order:
 
-1. the current user or issue scope;
-2. this repository's README and applicable guides;
-3. the owning feature's public contract and nearby tests;
-4. configuration and environment examples relevant to the change.
+1. the [Naqlia Constitution](../.ai/constitution.md) and every applicable principle document in `.ai/`;
+2. the current authorized user, issue, or requirement scope and explicit non-goals;
+3. the Project Blueprint, README, applicable architecture decisions, and supporting guides;
+4. the owning feature's public contract and nearby tests; and
+5. configuration and environment examples relevant to the change.
+
+If a task conflicts with the Constitution or approved product scope, the AI collaborator must stop the affected work, identify the conflict, and request or document the required amendment rather than silently choosing an implementation.
 
 The `.ai/context` directory is reserved for stable, non-secret project context. `.ai/prompts` is reserved for reusable, reviewed task prompts. Never store customer data, credentials, production logs, or private operational details in either directory.
 
@@ -25,6 +28,8 @@ A useful implementation prompt states:
 - security, privacy, accessibility, SEO, and performance constraints;
 - required tests and validation commands;
 - files or systems that must not be changed.
+
+The prompt should also identify the applicable Definition of Ready and Definition of Done evidence. A prompt is not implementation authorization when a constitutional gate is unresolved.
 
 ## Change rules
 
