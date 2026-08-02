@@ -34,7 +34,7 @@ npm run build
 
 ## Documentation
 
-- [Project Blueprint](docs/project-blueprint.md)
+- [Master Project Blueprint](docs/00-Project-Blueprint.md)
 - [Architecture Guide](docs/architecture-guide.md)
 - [Coding Standards](docs/coding-standards.md)
 - [Git Workflow](docs/git-workflow.md)
