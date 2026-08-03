@@ -71,6 +71,7 @@ npm run build
   - [Supabase Foundation](docs/implementation/01-Supabase-Foundation.md)
   - [Identity Foundation](docs/implementation/02-Identity-Foundation.md)
   - [Core Business Database](docs/implementation/03-Core-Business-Database.md)
+  - [Public Request Flow](docs/implementation/04-Public-Request-Flow.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
 - [Conceptual ERD](docs/02-ERD.md)
 - [Database Naming Conventions](docs/03-Naming-Conventions.md)

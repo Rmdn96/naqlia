@@ -1,11 +1,21 @@
 import type { NextRequest } from "next/server";
+import createMiddleware from "next-intl/middleware";
 
+import { routing } from "@/i18n/routing";
 import { refreshSupabaseSession } from "@/lib/supabase/middleware";
 
+const handleInternationalization = createMiddleware(routing);
+
 export async function middleware(request: NextRequest) {
-  return refreshSupabaseSession(request);
+  const response = handleInternationalization(request);
+
+  if (response.status >= 300 && response.status < 400) {
+    return response;
+  }
+
+  return refreshSupabaseSession(request, response);
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: ["/", "/(ar|en)/:path*"],
 };

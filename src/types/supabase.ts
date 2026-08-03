@@ -5,6 +5,10 @@ export type SupabasePublicEnvironment = {
   url: string;
 };
 
+export type SupabaseSecretEnvironment = SupabasePublicEnvironment & {
+  secretKey: string;
+};
+
 export type StorageBucketAccess = "private" | "public";
 
 export type StorageBucketDefinition = {
