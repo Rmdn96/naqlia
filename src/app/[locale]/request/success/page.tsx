@@ -24,8 +24,7 @@ export default async function SuccessPage({ params, searchParams }: SuccessPageP
   const [{ locale }, { reference }] = await Promise.all([params, searchParams]);
   setRequestLocale(locale);
   const t = await getTranslations("Success");
-  const validReference =
-    reference && /^LD-[0-9]{8}-[A-F0-9]{10}$/.test(reference) ? reference : null;
+  const validReference = reference && /^NQ-[0-9]{6}-[0-9]{6}$/.test(reference) ? reference : null;
   const Arrow = locale === "ar" ? ArrowLeft : ArrowRight;
 
   return (

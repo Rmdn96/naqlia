@@ -18,6 +18,10 @@ const arabicCatalogRepair = readFileSync(
   ),
   "utf8",
 );
+const referenceMigration = readFileSync(
+  resolve(process.cwd(), "supabase/migrations/20260803171000_standardize_lead_references.sql"),
+  "utf8",
+);
 
 describe("Sprint 3 public request database contract", () => {
   it("adds cargo, idempotency, and immutable consent provenance", () => {
@@ -27,6 +31,20 @@ describe("Sprint 3 public request database contract", () => {
     expect(migration).toContain("uidx_leads__submission_key");
     expect(migration).toContain("privacy_consent_version");
     expect(migration).toContain("privacy_consented_at");
+  });
+
+  it("allocates unique sequential public references per Riyadh calendar month", () => {
+    expect(referenceMigration.trimStart()).toMatch(/^begin;/);
+    expect(referenceMigration.trimEnd()).toMatch(/commit;$/);
+    expect(referenceMigration).toContain("create table public.lead_reference_counters");
+    expect(referenceMigration).toContain("on conflict (reference_month) do update");
+    expect(referenceMigration).toContain("last_sequence = counters.last_sequence + 1");
+    expect(referenceMigration).toContain("timezone('Asia/Riyadh', clock_timestamp())");
+    expect(referenceMigration).toContain("'NQ-' || to_char(reference_month, 'YYYYMM')");
+    expect(referenceMigration).toContain("lpad(next_sequence::text, 6, '0')");
+    expect(referenceMigration).toContain("uq_leads__reference_number");
+    expect(referenceMigration).toContain("'^NQ-[0-9]{6}-[0-9]{6}$'");
+    expect(referenceMigration).toContain("trg_leads__before_insert__assign_public_reference");
   });
 
   it("uses one service-role-only transactional submission boundary", () => {

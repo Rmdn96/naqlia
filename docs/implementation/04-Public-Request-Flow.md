@@ -4,7 +4,7 @@
 | -------------- | ---------------------------------------------------------------------- |
 | Sprint         | 3 — Public Request Flow                                                |
 | Status         | Implemented                                                            |
-| Version        | 1.0.0                                                                  |
+| Version        | 1.0.1                                                                  |
 | Effective date | 2026-08-03                                                             |
 | Scope          | Guest-facing request vertical slice; no pricing, quotation, or payment |
 
@@ -85,11 +85,13 @@ Migration `20260803170000_public_request_flow.sql` adds cargo, idempotency, and 
 - one guest Lead; and
 - zero to four `lead_attachments` metadata records.
 
-All records are committed in one PostgreSQL transaction. The existing Lead trigger generates the public `LD-YYYYMMDD-XXXXXXXXXX` reference and validates active service/options and address ownership. The submission key returns the existing reference on a safe retry.
+All records are committed in one PostgreSQL transaction. Migration `20260803171000_standardize_lead_references.sql` makes every public Lead reference `NQ-YYYYMM-000001`, using an atomic, row-locked monthly counter keyed to the Asia/Riyadh calendar month. The retained `uq_leads__reference_number` unique constraint supplies the public-reference index; the internal UUID remains the primary key. Existing Leads are deterministically resequenced by submission time within their month during the forward-only migration. The submission key returns the existing reference on a safe retry.
 
 The rollback is `supabase/rollbacks/20260803170000_public_request_flow.rollback.sql`. It removes the trusted function, provenance guard, index, constraints, and new Lead columns, then restores the former anonymous insert policies and grants. Production rollback is destructive to Sprint 3 cargo/consent provenance and therefore requires a backup and approved change window.
 
 Migration `20260803170500_public_request_repair_arabic_catalog.sql` corrects mojibake discovered in the inherited Sprint 2A Arabic reference values during deployed browser verification. It updates only Arabic display fields through stable City, Service, and Service Option keys and fails atomically if any catalog name retains the known corruption markers. This data-quality correction is intentionally forward-only: reverting to corrupted customer-facing text is not an acceptable rollback state.
+
+Business contact values remain environment-backed during MVP. The approved future source of truth is documented in [Business Settings Management](../backlog/01-Business-Settings-Management.md); runtime code must prefer its published values when that capability is implemented and use environment variables only as fallback.
 
 ## 8. Security and privacy
 
