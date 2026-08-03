@@ -1,17 +1,19 @@
 # Naqlia Database Architecture
 
-| Document field    | Value                                                                                                                                                   |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Status            | Approved conceptual architecture; not implemented                                                                                                       |
-| Version           | 1.0                                                                                                                                                     |
-| Parent document   | [Naqlia Master Project Blueprint](00-Project-Blueprint.md)                                                                                              |
-| Related documents | [Conceptual ERD](02-ERD.md), [Naming Conventions](03-Naming-Conventions.md), [RLS Strategy](04-RLS-Strategy.md), [Audit Strategy](05-Audit-Strategy.md) |
-| Owners            | Data Architecture, Engineering, Security, and Product                                                                                                   |
-| Last updated      | 2026-08-02                                                                                                                                              |
+| Document field    | Value                                                                                                                                                                                                    |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Status            | Approved conceptual architecture; not implemented                                                                                                                                                        |
+| Version           | 1.0                                                                                                                                                                                                      |
+| Parent document   | [Naqlia Master Project Blueprint](00-Project-Blueprint.md)                                                                                                                                               |
+| Related documents | [Domain Model Suite](domain/01-Domain-Model.md), [Conceptual ERD](02-ERD.md), [Naming Conventions](03-Naming-Conventions.md), [RLS Strategy](04-RLS-Strategy.md), [Audit Strategy](05-Audit-Strategy.md) |
+| Owners            | Data Architecture, Engineering, Security, and Product                                                                                                                                                    |
+| Last updated      | 2026-08-03                                                                                                                                                                                               |
 
 ## 1. Purpose and Scope
 
 This document defines the complete conceptual database architecture for Naqlia. It establishes domain ownership, entity boundaries, relationship rules, tenancy, data lifecycle, consistency, and scalability decisions so a database engineer can later create an implementation plan without redefining the architecture.
+
+The approved [Domain Model Suite v1](domain/01-Domain-Model.md) is the definitive logical business model for PDS v1. It supplies the implementation entity inventory, fields, relationships, lifecycle, deletion policy, and events. The broader pre-PDS entities in this architecture and the Conceptual ERD remain future context only when the Domain Model Suite marks them `FUTURE` or omits them.
 
 This is documentation only. It contains no SQL, physical database objects, migrations, Supabase configuration, APIs, or product implementation. Entity names describe future relational structures; their presence here does not authorize implementation.
 
@@ -623,25 +625,26 @@ Recovery tests must verify:
 
 ## 14. Implementation Preconditions
 
-No schema implementation should begin until these decisions are approved:
+The Domain Model Suite resolves the logical vocabulary and business model for authorized `FOUNDATION` and `MVP` entities. Physical schema design MUST use it without reintroducing pre-PDS Shipment, Trip, Fleet, Payment, Workflow, or integration entities into MVP.
 
-1. MVP domain vocabulary for order, shipment, stop, leg, trip, task, and delivery.
-2. Organization, business-unit, and cross-tenant collaboration semantics.
-3. Role, permission, business-unit scope, and driver-assignment matrix.
-4. Data classification, privacy purposes, retention, deletion, and residency requirements.
-5. Required driver, vehicle, party, document, and shipment attributes.
-6. Tracking sources, frequency, consent, accuracy, and offline behavior.
-7. Financial scope, currency, tax, invoice, and reconciliation requirements.
-8. Audit retention classes, support access, legal hold, and evidence export.
-9. Environment, backup, PITR, object-storage recovery, RPO, and RTO decisions.
-10. Physical PostgreSQL/Supabase version and approved UUIDv7 generation mechanism.
+Before a physical slice begins, its Definition of Ready still requires:
+
+1. explicit authorization of the entity dispositions and vertical slice being implemented;
+2. approved physical representation, constraint, index, RLS, encryption/masking, retention-class, and migration design for every included field and relationship;
+3. mapping of PDS role/permission operations to the RLS and server-authorization matrix;
+4. runtime catalog, pricing, tax, currency, validity, approval, locale, reason, communication, retention, and service-level values represented as governed configuration rather than invented schema defaults;
+5. privacy purpose, residency, legal-hold, erasure, production support-access, and evidence-export approval before affected production data is accepted;
+6. environment, backup, PITR, object-storage recovery, RPO, and RTO decisions before production release; and
+7. the physical PostgreSQL/Supabase version and approved UUIDv7 generation mechanism.
+
+Items 4–6 may contain release-time values that do not change logical schema meaning. Their absence MUST disable affected production capability safely; a database engineer MUST NOT hardcode an assumed value.
 
 ## 15. Database Engineering Handoff
 
 The future database implementation plan must include:
 
 - one reviewed migration sequence per domain dependency order;
-- entity and attribute specifications derived from this architecture;
+- entity, field, relationship, lifecycle, event, and disposition specifications derived from the [Domain Model Suite](domain/01-Domain-Model.md);
 - tenant-safe keys and relationship constraints;
 - RLS policy matrix and negative cross-tenant tests;
 - audit capture and immutability controls;

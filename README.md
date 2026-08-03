@@ -57,6 +57,12 @@ npm run build
   - [Service Catalog](docs/product/11-Service-Catalog.md)
   - [MVP Scope](docs/product/12-MVP-Scope.md)
   - [Future Roadmap](docs/product/13-Future-Roadmap.md)
+- Domain Model Suite v1
+  - [Complete Business Domain Model](docs/domain/01-Domain-Model.md)
+  - [Entity Catalog](docs/domain/02-Entity-Catalog.md)
+  - [Relationship Matrix](docs/domain/03-Relationship-Matrix.md)
+  - [Field Catalog](docs/domain/04-Field-Catalog.md)
+  - [Domain Events](docs/domain/05-Domain-Events.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
 - [Conceptual ERD](docs/02-ERD.md)
 - [Database Naming Conventions](docs/03-Naming-Conventions.md)

@@ -1,18 +1,19 @@
 # Naqlia Conceptual Entity-Relationship Design
 
-| Document field | Value                                                |
-| -------------- | ---------------------------------------------------- |
-| Status         | Approved conceptual ERD; not implemented             |
-| Version        | 1.0                                                  |
-| Architecture   | [Database Architecture](01-Database-Architecture.md) |
-| Security       | [RLS Strategy](04-RLS-Strategy.md)                   |
-| Last updated   | 2026-08-02                                           |
+| Document field | Value                                                                                |
+| -------------- | ------------------------------------------------------------------------------------ |
+| Status         | Approved pre-PDS conceptual future reference; not an implementation entity inventory |
+| Version        | 1.1                                                                                  |
+| Current model  | [Domain Model Suite v1](domain/01-Domain-Model.md)                                   |
+| Architecture   | [Database Architecture](01-Database-Architecture.md)                                 |
+| Security       | [RLS Strategy](04-RLS-Strategy.md)                                                   |
+| Last updated   | 2026-08-03                                                                           |
 
 ## 1. Purpose
 
-This document represents Naqlia's major future entities and relationships. It is a logical design, not SQL, a physical schema, or a migration. Attributes shown are identity, tenancy, lifecycle, or relationship anchors; detailed business attributes require approved domain requirements before implementation.
+This document represents Naqlia's broad pre-PDS future entities and relationships. It is a logical reference, not SQL, a physical schema, a migration, or the current implementation inventory. The approved [Domain Model Suite v1](domain/01-Domain-Model.md) now defines the definitive PDS v1 entities, fields, relationships, lifecycle, events, and implementation dispositions. An entity shown here but omitted or marked `FUTURE` there MUST NOT be introduced into the MVP schema.
 
-The diagrams are split by bounded context so cardinality remains readable. The entity catalog in [Database Architecture](01-Database-Architecture.md#6-domain-catalog) defines ownership and semantics.
+The diagrams are split by bounded context so cardinality remains readable. The [Domain Model](domain/01-Domain-Model.md) defines current ownership and semantics; the [Relationship Matrix](domain/03-Relationship-Matrix.md) controls PDS v1 cardinality and deletion/reference behavior.
 
 ## 2. Notation
 
