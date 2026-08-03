@@ -11,6 +11,13 @@ const rollback = readFileSync(
   resolve(process.cwd(), "supabase/rollbacks/20260803170000_public_request_flow.rollback.sql"),
   "utf8",
 );
+const arabicCatalogRepair = readFileSync(
+  resolve(
+    process.cwd(),
+    "supabase/migrations/20260803170500_public_request_repair_arabic_catalog.sql",
+  ),
+  "utf8",
+);
 
 describe("Sprint 3 public request database contract", () => {
   it("adds cargo, idempotency, and immutable consent provenance", () => {
@@ -51,5 +58,17 @@ describe("Sprint 3 public request database contract", () => {
     expect(rollback).toContain("drop column cargo_description");
     expect(rollback).toContain("create policy rls_addresses__insert__guest_submission");
     expect(rollback).toContain("create policy rls_leads__insert__guest_submission");
+  });
+
+  it("repairs the inherited Arabic catalog encoding without changing stable keys", () => {
+    expect(arabicCatalogRepair.trimStart()).toMatch(/^begin;/);
+    expect(arabicCatalogRepair.trimEnd()).toMatch(/commit;$/);
+    expect(arabicCatalogRepair).toContain("'الرياض'");
+    expect(arabicCatalogRepair).toContain("'نقل الأثاث'");
+    expect(arabicCatalogRepair).toContain("'التحميل والتنزيل'");
+    expect(arabicCatalogRepair).toContain("where cities.city_code");
+    expect(arabicCatalogRepair).toContain("where services.service_key");
+    expect(arabicCatalogRepair).toContain("where service_options.option_key");
+    expect(arabicCatalogRepair).not.toContain("ط§");
   });
 });

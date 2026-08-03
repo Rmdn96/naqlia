@@ -89,6 +89,8 @@ All records are committed in one PostgreSQL transaction. The existing Lead trigg
 
 The rollback is `supabase/rollbacks/20260803170000_public_request_flow.rollback.sql`. It removes the trusted function, provenance guard, index, constraints, and new Lead columns, then restores the former anonymous insert policies and grants. Production rollback is destructive to Sprint 3 cargo/consent provenance and therefore requires a backup and approved change window.
 
+Migration `20260803170500_public_request_repair_arabic_catalog.sql` corrects mojibake discovered in the inherited Sprint 2A Arabic reference values during deployed browser verification. It updates only Arabic display fields through stable City, Service, and Service Option keys and fails atomically if any catalog name retains the known corruption markers. This data-quality correction is intentionally forward-only: reverting to corrupted customer-facing text is not an acceptable rollback state.
+
 ## 8. Security and privacy
 
 - `SUPABASE_SECRET_KEY` is required only in the server runtime.
