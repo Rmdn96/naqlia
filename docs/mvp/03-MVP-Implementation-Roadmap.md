@@ -50,7 +50,7 @@ The delivery clock begins only when the following are named, approved, and avail
 - Product owner and launch decision authority;
 - Engineering lead, frontend/backend ownership, QA ownership, and production on-call owner;
 - UI/UX flows and bilingual content for all launch states;
-- physical design derived from the 22-table scope, including migrations and rollback order;
+- physical design derived from the 22 domain-table scope plus the four approved Sprint 1B identity control tables, including migrations and rollback order;
 - Supabase environments, Auth provider credentials, redirect allowlists, email/SMS provider, and storage policy;
 - RLS/authorization matrix for guest, customer, five staff roles, and trusted server work;
 - field classification, privacy purpose, retention, anonymization, and incident contacts;

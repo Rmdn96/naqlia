@@ -1,12 +1,4 @@
-export type Database = {
-  public: {
-    Tables: Record<never, never>;
-    Views: Record<never, never>;
-    Functions: Record<never, never>;
-    Enums: Record<never, never>;
-    CompositeTypes: Record<never, never>;
-  };
-};
+export type { Database, Json } from "@/types/database.types";
 
 export type SupabasePublicEnvironment = {
   publishableKey: string;
@@ -17,5 +9,7 @@ export type StorageBucketAccess = "private" | "public";
 
 export type StorageBucketDefinition = {
   access: StorageBucketAccess;
+  allowedMimeTypes: readonly string[];
+  fileSizeLimit: number;
   name: "attachments" | "public-assets";
 };

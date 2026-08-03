@@ -1,42 +1,44 @@
 # Naqlia MVP Database Scope
 
-| Document field | Value                                                 |
-| -------------- | ----------------------------------------------------- |
-| Suite          | Production MVP Scope                                  |
-| Status         | Final logical table scope; no schema implementation   |
-| Version        | 1.0.0                                                 |
-| Effective date | 2026-08-03                                            |
-| Target         | 22 application tables, maximum 25                     |
-| Parent         | [MVP Entity Selection](./01-MVP-Entity-Selection.md)  |
-| Owners         | Engineering, Data Architecture, Security, and Product |
+| Document field | Value                                                   |
+| -------------- | ------------------------------------------------------- |
+| Suite          | Production MVP Scope                                    |
+| Status         | Domain scope; Sprint 1B identity foundation implemented |
+| Version        | 1.1.0 — Sprint 1B identity amendment                    |
+| Effective date | 2026-08-03                                              |
+| Target         | 22 domain tables plus 4 identity control tables         |
+| Parent         | [MVP Entity Selection](./01-MVP-Entity-Selection.md)    |
+| Owners         | Engineering, Data Architecture, Security, and Product   |
 
 ## 1. Purpose
 
 This document is the final database boundary for the four-week Naqlia MVP. It identifies the exact application tables the physical PostgreSQL design may implement and the business facts each table must preserve. It contains no SQL, migrations, Supabase resources, or implementation instructions.
 
-Only the 22 tables named here are authorized for MVP. Supabase Auth is an external managed dependency and is not counted as an application table. Storage buckets, database views, search indexes, scheduled jobs, and observability systems are also outside the table count and require their own later design approval.
+The original scope authorizes the 22 domain tables named here. Sprint 1B subsequently approved four compact identity control tables—`roles`, `permissions`, `role_permissions`, and `profile_roles`—to satisfy the explicit RBAC, role-assignment, and database-authoritative permission-checking requirement. `profiles` remains table 1 in the domain inventory. Supabase Auth is an external managed dependency and is not counted. Storage buckets, database views, search indexes, scheduled jobs, and observability systems are also outside the table count and require their own design approval.
 
 ## 2. Scope Decision
 
 | Measure                       | Decision                                                         |
 | ----------------------------- | ---------------------------------------------------------------- |
-| Application tables            | **22**                                                           |
+| Domain/application tables     | **22**, including `profiles`                                     |
+| Identity control tables       | **4** supplemental fixed-RBAC tables                             |
+| Total planned physical tables | **26** after full MVP implementation                             |
 | Managed authentication tables | Supabase-owned; not duplicated or modified by this plan          |
 | Tenant/company tables         | None in MVP; Naqlia is the sole operator                         |
-| Custom role/permission tables | None; five reviewed staff roles are fixed for MVP                |
+| Role/permission model         | Fixed database RBAC; no custom roles or Admin permission editor  |
 | Domain event/outbox tables    | None; persisted Notifications handle launch delivery work        |
 | Pricing-engine tables         | None; Quotations are human-authored                              |
 | Execution/fleet tables        | None; operational execution and resource snapshots live on Order |
 | CMS/SEO tables                | One Content Page table                                           |
 | Audit tables                  | One append-only Audit Log table                                  |
 
-The physical designer MUST NOT add generic metadata, translation, address polymorphism, tagging, workflow, event, job, role, permission, organization, or lookup tables unless this document is first changed and the 25-table cap is re-approved.
+The physical designer MUST NOT add generic metadata, translation, address polymorphism, tagging, workflow, event, job, organization, lookup, custom-role, or tenant-permission tables. The four approved identity control tables are the complete Sprint 1B exception; any further physical table requires a documented scope amendment and re-approval.
 
 ## 3. Table Registry
 
 |   # | Table                      | Owner               | Purpose                                                                                                                      | Primary launch capabilities                                  |
 | --: | -------------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-|   1 | `profiles`                 | Identity and Access | Application identity mapped to one Supabase Auth user; fixed customer/staff classification and staff role.                   | Authentication, Customer Account, Admin Management           |
+|   1 | `profiles`                 | Identity and Access | Application identity mapped to one Supabase Auth user; customer/staff classification, lifecycle, and locale.                 | Authentication, Customer Account, Admin Management           |
 |   2 | `customers`                | Customer            | One guest or registered customer with primary contact, locale, preference, consent, and lifecycle.                           | Guest Request, Customer Account, tracking ownership          |
 |   3 | `customer_addresses`       | Customer            | Reusable saved addresses for registered-customer convenience.                                                                | Customer Account                                             |
 |   4 | `app_settings`             | Configuration       | Approved single-company configuration values and bilingual descriptions.                                                     | Settings, Admin Management, tracking labels, policy values   |
@@ -376,10 +378,10 @@ Search is not authorization. Every query remains role-, record-, field-, and pur
 ## 10. Authentication and Authorization Boundary
 
 - Supabase Auth owns credentials, provider links, MFA/recent-auth signals, sessions, verification, and Auth user lifecycle.
-- `profiles` owns application status, locale, customer link, and exactly one staff role when applicable.
+- `profiles` owns application status, locale, and the future customer link; `profile_roles` owns the retained fixed-role assignment.
 - Customer account access is based on a verified Profile-to-Customer link.
 - Guest tracking is based only on exact Order Number + normalized Mobile Number and returns a minimized projection.
-- The five fixed staff roles are Super Admin, Sales, Operations, Finance, and Customer Service. Their permission matrix is reviewed code/RLS policy, not editable table data.
+- The five fixed staff roles are Super Admin, Sales, Operations, Finance, and Customer Service. Stable records hold the reviewed role/permission matrix, but no runtime custom role, tenant role, or Admin permission editor exists.
 - Service-role credentials are never represented as users, never sent to clients, and never grant a Super Admin UI bypass.
 
 ## 11. Internationalization, SEO, and Accessibility Data Rules
@@ -392,7 +394,7 @@ Search is not authorization. Every query remains role-, record-, field-, and pur
 
 ## 12. Future Compatibility Without Enterprise Tables
 
-The MVP keeps opaque identifiers, stable business keys, immutable snapshots, explicit owners, normalized contacts, UTC business time, idempotency, and closed subject kinds. These choices allow later migration to organizations, configurable RBAC, normalized execution/fleet, domain events, public APIs, workflow, payments, and analytics.
+The MVP keeps opaque identifiers, stable business keys, immutable snapshots, explicit owners, normalized contacts, UTC business time, idempotency, fixed RBAC, and closed subject kinds. These choices allow later migration to organizations, tenant-custom RBAC, normalized execution/fleet, domain events, public APIs, workflow, payments, and analytics.
 
 The MVP intentionally does **not** add `organization_id` columns or dormant enterprise parents. Phase 3 multi-company adoption requires an explicit backfill/migration that creates the Naqlia organization, assigns every owned record, adds referential tenant integrity and RLS, and proves zero cross-tenant leakage before onboarding a second company.
 
@@ -403,7 +405,7 @@ SQL design may begin only after owners approve:
 - this exact 22-table inventory and field ownership;
 - field classification, retention, anonymization, and legal basis;
 - lifecycle transition tables and allowed states;
-- the Profile role matrix and customer/guest authorization rules;
+- the fixed RBAC matrix, Profile assignment rules, and customer/guest authorization rules;
 - Auth linking and account-conflict resolution;
 - closed Attachment, Support Case, and Audit target allowlists;
 - configuration key allowlist and validation contracts;

@@ -4,7 +4,7 @@ Naqlia is the foundation of an enterprise logistics SaaS platform for logistics 
 
 ## Foundation status
 
-This repository intentionally contains infrastructure and architectural boundaries only. It has no homepage, business feature, authentication flow, API route, or database schema. Until a product route is approved and implemented, the deployed root URL is expected to return the framework's not-found response.
+This repository contains the platform and identity foundation only. Supabase Auth integration, authenticated-user Profiles, fixed staff RBAC, RLS, and the two storage buckets are established; no homepage, login UI, Customer, Lead, Quotation, Order, business API, or business feature exists. Until a product route is approved and implemented, the deployed root URL is expected to return the framework's not-found response.
 
 ## Stack
 
@@ -69,6 +69,7 @@ npm run build
   - [Four-Week Implementation Roadmap](docs/mvp/03-MVP-Implementation-Roadmap.md)
 - Implementation
   - [Supabase Foundation](docs/implementation/01-Supabase-Foundation.md)
+  - [Identity Foundation](docs/implementation/02-Identity-Foundation.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
 - [Conceptual ERD](docs/02-ERD.md)
 - [Database Naming Conventions](docs/03-Naming-Conventions.md)
@@ -83,4 +84,4 @@ npm run build
 
 ## Security
 
-Never commit credentials. Values prefixed with `NEXT_PUBLIC_` are exposed to the browser. The Supabase service-role key is server-only and must be stored in encrypted environment settings.
+Never commit credentials. Values prefixed with `NEXT_PUBLIC_` are exposed to the browser. A Supabase secret/service-role key is server-only, bypasses RLS, and must be limited to approved operator scripts and encrypted environment settings.
