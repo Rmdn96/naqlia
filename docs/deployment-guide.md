@@ -20,7 +20,7 @@ Do not reuse production credentials in local or preview environments.
 
 ## Environment contract
 
-Start from `.env.example`. Public variables may be embedded in browser bundles. `SUPABASE_SERVICE_ROLE_KEY` is privileged, server-only, and must be stored in Vercel's encrypted environment settings. Rotate any value that is accidentally exposed.
+Start from `.env.example`. Public variables may be embedded in browser bundles. `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` is the browser-safe project key and does not replace authorization. `SUPABASE_SECRET_KEY` is privileged, server-only, limited to approved operator tooling, and must be stored in Vercel's encrypted environment settings only when that tooling runs there. Rotate any value that is accidentally exposed.
 
 ## Release verification
 

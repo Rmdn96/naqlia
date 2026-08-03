@@ -15,6 +15,8 @@
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "security:audit": "npm audit --audit-level=high",
+    "supabase:storage:check": "node --env-file-if-exists=.env.local scripts/supabase/initialize-storage.mjs --check",
+    "supabase:storage:init": "node --env-file-if-exists=.env.local scripts/supabase/initialize-storage.mjs --apply",
     "validate": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run security:audit",
     "lint-staged": "lint-staged",
     "prepare": "husky"
@@ -29,7 +31,8 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.3.3",
-    "@supabase/supabase-js": "2.111.0",
+    "@supabase/ssr": "0.12.4",
+    "@supabase/supabase-js": "2.112.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "0.468.0",
