@@ -15,7 +15,7 @@
 
 ## Document Authority
 
-This document is the single source of truth for Naqlia's product identity, direction, scope, and approved technical baseline. The [Naqlia Constitution](../.ai/constitution.md) is the higher authority for how product and engineering decisions, implementation, review, release, and operations are governed. This blueprint does not authorize implementation of a roadmap item by itself.
+This document is the single source of truth for Naqlia's product identity, direction, scope, and approved technical baseline. The [Naqlia Constitution](../.ai/constitution.md) is the higher authority for how product and engineering decisions, implementation, review, release, and operations are governed. The approved [Product Documentation Suite v1](./product/01-Business-Requirements-Specification.md) is the detailed MVP product baseline beneath this blueprint. Neither this blueprint nor the PDS authorizes implementation of a roadmap item by itself.
 
 The terms **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** indicate requirement strength. When another project document conflicts with this blueprint on product meaning or approved scope, this blueprint takes precedence unless the Constitution is the source of the governing rule. Detailed principles and guides may add implementation requirements but must remain consistent with both documents. Material architectural decisions must be recorded as Architecture Decision Records (ADRs) and reflected here when they alter the baseline.
 
@@ -25,7 +25,7 @@ Naqlia is an Arabic-first, enterprise-grade logistics SaaS platform intended to 
 
 Naqlia will begin as a feature-based modular monolith built with Next.js, React, TypeScript, Supabase, PostgreSQL, and Vercel. This architecture minimizes operational complexity during product discovery while creating explicit boundaries that can evolve as usage and organizational scale justify change.
 
-The current repository contains the project foundation and documentation only. It intentionally contains no product page, authentication flow, API, business feature, or database schema. All functional scope in this blueprint is directional until a separately approved requirement authorizes implementation.
+The current repository contains the project foundation and documentation only. It intentionally contains no product page, authentication flow, API, business feature, or database schema. Functional scope is directional unless an approved requirements baseline defines it. PDS v1 now defines the first MVP product scope, but implementation still requires the Constitution's Definition of Ready and separate delivery authorization.
 
 The platform's defining commitments are:
 
@@ -61,13 +61,15 @@ The mission will be pursued through incremental, measurable releases rather than
 | Build a trusted Saudi product   | Deliver culturally appropriate Arabic UX and align with applicable Saudi legal and operational requirements. | Arabic adoption, customer trust indicators, and completed compliance reviews. |
 | Enable an integration ecosystem | Connect with customer systems and approved external providers through governed contracts.                    | Reliable integrations and reduced duplicate data entry.                       |
 
-Commercial targets, packaging, pricing, and forecast values remain product decisions and are listed in [Open Questions](#27-open-questions).
+The hybrid Quotation approach is approved in PDS v1. Exact commercial targets, price values and units, tax treatment, contracts, billing, and forecast values remain owned decisions listed in [Open Questions](#27-open-questions).
 
 ## 5. Target Market
 
 ### 5.1 Geographic focus
 
 The initial market is the Kingdom of Saudi Arabia. Product decisions should reflect Saudi operating conditions, Arabic terminology, local time and currency conventions, mobile usage patterns, and applicable regulatory obligations. Regional expansion is a future decision and must not dilute Arabic-first delivery.
+
+For PDS v1, the initial operating wedge is one Naqlia-managed service workspace serving customer requests within enabled Riyadh coverage and from Riyadh to enabled Saudi cities. It supports Furniture Moving and General Cargo Transport through Local and Intercity route classes. This customer-facing wedge validates the operating model while preserving the long-term logistics SaaS direction; self-service tenant onboarding is future scope.
 
 ### 5.2 Primary customer segments
 
@@ -89,7 +91,7 @@ Air, maritime, customs brokerage, highly regulated dangerous-goods workflows, an
 
 ## 6. User Types
 
-User types describe expected responsibilities, not a finalized authorization model. Roles and permissions must be validated before authentication or database design begins.
+The table below describes the long-term directional user model. For PDS v1, the approved external actors are Visitor, Guest Customer, and Registered Customer; the approved internal application roles are Super Admin, Sales, Operations, Finance, and Customer Service. Their MVP authorization baseline is defined in [Roles and Permissions](./product/09-Roles-And-Permissions.md). Future roles in this table require separate approval before implementation.
 
 | User type                  | Primary responsibilities                                                              | Typical access expectation                                                  |
 | -------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
@@ -151,6 +153,8 @@ Naqlia is expected to support the following capability groups over time:
 ### 8.2 Foundation scope
 
 The approved repository foundation includes architecture, tooling, documentation, internationalization boundaries, quality gates, and deployment automation. It excludes product behavior.
+
+The approved [Product Documentation Suite v1](./product/01-Business-Requirements-Specification.md) defines the first detailed product requirements, lifecycle, journey, roles, pricing strategy, service catalog, MVP boundary, and roadmap. It remains documentation only and does not add product behavior to the repository.
 
 ### 8.3 Explicitly out of scope without separate approval
 
@@ -731,33 +735,44 @@ Documentation-only changes apply the relevant scope, accuracy, formatting, revie
 
 ## 27. Open Questions
 
-These questions must be resolved by the accountable stakeholders before the dependent implementation begins.
+PDS v1 resolves the following discovery questions for the MVP. Detailed definitions and traceable requirements live in the linked suite and take precedence over the earlier directional descriptions in this blueprint where they are more specific.
 
-| Area              | Open question                                                                                                                 | Decision owner                                 |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Market            | Which customer segment and transport mode define the first commercial product?                                                | Product and commercial leadership              |
-| Value proposition | Which measurable operational problem must the MVP solve better than current alternatives?                                     | Product leadership                             |
-| Commercial model  | What are the packaging, pricing unit, trial, contract, and billing expectations?                                              | Commercial and finance leadership              |
-| Tenancy           | What is the relationship among tenant, organization, workspace, branch, and business unit?                                    | Product, architecture, and security            |
-| Roles             | Which roles, permissions, delegations, and separation-of-duties rules are required?                                           | Product, security, and customer operations     |
-| Domain model      | How are order, shipment, load, stop, route, trip, task, and delivery defined and related?                                     | Domain product owner and architecture          |
-| Network model     | How do shippers, carriers, subcontractors, brokers, and customers collaborate across tenant boundaries?                       | Product, legal, and security                   |
-| Fleet scope       | Which vehicle, equipment, driver, availability, and compliance records belong in the first release?                           | Operations product owner                       |
-| Tracking          | Which location sources, update frequency, consent rules, and fallback methods are acceptable?                                 | Product, security, privacy, and operations     |
-| Documents         | Which documents and evidence are required, who may access them, and how long are they retained?                               | Operations, legal, and compliance              |
-| Integrations      | Which customer systems and external providers are first priority, and what contract standards apply?                          | Product and integration architecture           |
-| Notifications     | Which channels, events, languages, consent rules, quiet hours, and escalation policies are required?                          | Product, legal, and customer operations        |
-| Offline behavior  | Do field workflows require offline capture, background synchronization, or delayed status submission?                         | Product and mobile architecture                |
-| Localization      | Who owns Arabic terminology, translation approval, numerals, calendar behavior, and fallback policy?                          | Product and localization owner                 |
-| Time and units    | Which timezone, calendar, currency display, measurement units, and address conventions are configurable?                      | Product and localization owner                 |
-| Privacy           | What data classifications, lawful purposes, residency constraints, retention periods, and deletion workflows apply?           | Legal, privacy, and security                   |
-| Compliance        | Which transport, cybersecurity, accessibility, contractual, and certification obligations apply to the target segment?        | Legal, compliance, and security                |
-| Availability      | Which workflows are business-critical and what SLO, RPO, RTO, support, and maintenance commitments apply?                     | Product, operations, and engineering           |
-| Support           | What are the service desk, tenant administration, incident communication, and privileged support-access models?               | Customer success, operations, and security     |
-| Analytics         | Which operational metrics are trustworthy, actionable, and permitted for cross-customer benchmarking?                         | Product, data, privacy, and commercial         |
-| AI                | Which assistive AI use cases provide validated value, and what data, approval, explainability, and human-control rules apply? | Product, security, privacy, and legal          |
-| Mobile delivery   | Is responsive web sufficient, or is a native application required for specific users or device capabilities?                  | Product and engineering                        |
-| Regional growth   | Which capabilities must remain Saudi-specific and which should be configurable for future markets?                            | Product and architecture                       |
-| Ownership         | Who is accountable for each core service, SLO, data set, runbook, and roadmap gate?                                           | Executive, product, and engineering leadership |
+| Resolved area              | PDS v1 decision                                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Initial market and service | Saudi Arabia; enabled Riyadh-local and Riyadh-origin intercity transport for Furniture Moving and General Cargo, with Packing and Loading & Unloading add-ons |
+| Initial value proposition  | A traceable request-to-completion service journey with human-reviewed commercial control and privacy-safe customer status                                     |
+| Operating model            | One Naqlia-managed MVP service workspace; tenant-capable architecture retained; self-service SaaS tenant onboarding deferred                                  |
+| Actors and roles           | Visitor, Guest Customer, Registered Customer; Super Admin, Sales, Operations, Finance, and Customer Service                                                   |
+| Identity                   | Guest request permitted; account optional through Email, Google, or Apple                                                                                     |
+| Commercial workflow        | Hybrid pricing; Sales reviews every final Quotation; customer acceptance plus configured internal approvals precede Order conversion                          |
+| Lifecycle                  | Visitor → Lead → Quotation → Approved → Order → Execution → Completed, with independent governed object states                                                |
+| Customer tracking          | Order Number + matching Mobile Number; minimal customer-safe status; live GPS excluded from MVP                                                               |
+| Configuration              | Business values are governed through the Admin Panel; mandatory security/lifecycle/audit/Sales-review invariants are not configurable                         |
+
+The remaining questions below must be resolved by the accountable stakeholders before their dependent implementation or future stage begins.
+
+| Area             | Open question                                                                                                                 | Decision owner                                 |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Commercial model | What exact price values/units, tax treatment, contract, billing, trial, cancellation, and amendment policies apply?           | Commercial and finance leadership              |
+| Tenancy          | What is the relationship among tenant, organization, workspace, branch, and business unit?                                    | Product, architecture, and security            |
+| Future domain    | Which shipment, load, stop, trip, task, delivery, fleet, and dispatch concepts are required beyond the MVP Order lifecycle?   | Domain product owner and architecture          |
+| Network model    | How do shippers, carriers, subcontractors, brokers, and customers collaborate across tenant boundaries?                       | Product, legal, and security                   |
+| Fleet scope      | Which vehicle, equipment, driver, availability, and compliance records belong in a future operational release?                | Operations product owner                       |
+| Future tracking  | Which live-location sources, precision, update frequency, consent, safety, retention, and fallback rules are acceptable?      | Product, security, privacy, and operations     |
+| Documents        | Which documents and evidence are required, who may access them, and how long are they retained?                               | Operations, legal, and compliance              |
+| Integrations     | Which customer systems and external providers are first priority, and what contract standards apply?                          | Product and integration architecture           |
+| Notifications    | Which channels, events, languages, consent rules, quiet hours, and escalation policies are required?                          | Product, legal, and customer operations        |
+| Offline behavior | Do field workflows require offline capture, background synchronization, or delayed status submission?                         | Product and mobile architecture                |
+| Localization     | Who owns Arabic terminology, translation approval, numerals, calendar behavior, and fallback policy?                          | Product and localization owner                 |
+| Time and units   | Which timezone, calendar, currency display, measurement units, and address conventions are configurable?                      | Product and localization owner                 |
+| Privacy          | What data classifications, lawful purposes, residency constraints, retention periods, and deletion workflows apply?           | Legal, privacy, and security                   |
+| Compliance       | Which transport, cybersecurity, accessibility, contractual, and certification obligations apply to the target segment?        | Legal, compliance, and security                |
+| Availability     | Which workflows are business-critical and what SLO, RPO, RTO, support, and maintenance commitments apply?                     | Product, operations, and engineering           |
+| Support          | What are the service desk, tenant administration, incident communication, and privileged support-access models?               | Customer success, operations, and security     |
+| Analytics        | Which operational metrics are trustworthy, actionable, and permitted for cross-customer benchmarking?                         | Product, data, privacy, and commercial         |
+| AI               | Which assistive AI use cases provide validated value, and what data, approval, explainability, and human-control rules apply? | Product, security, privacy, and legal          |
+| Mobile delivery  | Is responsive web sufficient, or is a native application required for specific users or device capabilities?                  | Product and engineering                        |
+| Regional growth  | Which capabilities must remain Saudi-specific and which should be configurable for future markets?                            | Product and architecture                       |
+| Ownership        | Who is accountable for each core service, SLO, data set, runbook, and roadmap gate?                                           | Executive, product, and engineering leadership |
 
 Open questions should move into dated decisions, requirements, or ADRs as they are resolved. This table must be reviewed whenever scope or roadmap priorities change.
