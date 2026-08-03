@@ -115,28 +115,28 @@ The server helper follows this sequence:
 3. fail closed on missing identity, inactive Profile, inactive role, inactive grant, inactive permission, RPC failure, or denial; and
 4. throw only a stable `FORBIDDEN` application error to callers.
 
-| Resource         | Authenticated read boundary                    | Direct mutation boundary                                    | Anonymous boundary |
-| ---------------- | ---------------------------------------------- | ----------------------------------------------------------- | ------------------ |
-| Profiles         | Own Profile or `identity.profile.read`         | Approved security-definer functions or trusted service role | None               |
-| Roles            | Assigned role or `identity.role.read`          | Migration/trusted service role only                         | None               |
-| Permissions      | `identity.permission.read`                     | Migration/trusted service role only                         | None               |
-| Role permissions | Own assigned role or `identity.role.read`      | Migration/trusted service role only                         | None               |
-| Profile roles    | Own assignment or `identity.assignment.manage` | Approved assignment functions or trusted service role       | None               |
+| Resource         | Authenticated read boundary                    | Direct mutation boundary                                  | Anonymous boundary |
+| ---------------- | ---------------------------------------------- | --------------------------------------------------------- | ------------------ |
+| Profiles         | Own Profile or `identity.profile.read`         | Trusted service role; interactive Admin workflow deferred | None               |
+| Roles            | Assigned role or `identity.role.read`          | Migration/trusted service role only                       | None               |
+| Permissions      | `identity.permission.read`                     | Migration/trusted service role only                       | None               |
+| Role permissions | Own assigned role or `identity.role.read`      | Migration/trusted service role only                       | None               |
+| Profile roles    | Own assignment or `identity.assignment.manage` | Trusted service role; interactive Admin workflow deferred | None               |
 
 All five identity tables have RLS enabled. Public and anonymous grants are revoked. Authenticated users receive select capability only, with RLS deciding visible rows. Mutation is not granted directly to authenticated users.
 
 ### 6.1 Approved functions
 
-| Function                         | Caller                     | Purpose                                                                              |
-| -------------------------------- | -------------------------- | ------------------------------------------------------------------------------------ |
-| `current_profile_id()`           | Authenticated/service role | Resolve the current active Profile.                                                  |
-| `has_permission(permission_key)` | Authenticated/service role | Evaluate effective identity authorization.                                           |
-| `assign_staff_role(...)`         | Authorized staff           | Assign or replace one staff role with retained provenance.                           |
-| `revoke_staff_role(...)`         | Authorized staff           | Suspend access and revoke the active assignment.                                     |
-| `set_profile_status(...)`        | Authorized staff           | Apply a governed Profile status transition. Closing also revokes active assignments. |
-| `provision_staff_identity(...)`  | Service role only          | Bootstrap or reconcile a staff Profile from an existing Auth user.                   |
+| Function                         | Caller                     | Purpose                                                                         |
+| -------------------------------- | -------------------------- | ------------------------------------------------------------------------------- |
+| `current_profile_id()`           | Authenticated/service role | Security-invoker wrapper over the private authoritative identity evaluator.     |
+| `has_permission(permission_key)` | Authenticated/service role | Security-invoker wrapper over the private authoritative permission evaluator.   |
+| `assign_staff_role(...)`         | Service role only          | Retained for a future audited Admin command boundary; not interactive-callable. |
+| `revoke_staff_role(...)`         | Service role only          | Retained for a future audited Admin command boundary; not interactive-callable. |
+| `set_profile_status(...)`        | Service role only          | Retained for a future audited Admin command boundary; not interactive-callable. |
+| `provision_staff_identity(...)`  | Service role only          | Bootstrap or reconcile a staff Profile from an existing Auth user.              |
 
-Security-definer functions use an empty fixed search path, fully qualified object names, minimal execute grants, and internal authorization checks. The last active Super Admin cannot be deactivated or revoked.
+The authoritative identity and permission evaluators are private security-definer functions with an empty fixed search path, fully qualified object names, and narrowly scoped execute grants. Public authenticated helpers are security-invoker wrappers. Identity mutation functions retain their internal authorization checks but are not granted to authenticated users until an audited Admin command workflow exists. The last active Super Admin cannot be deactivated or revoked.
 
 ## 7. Staff Provisioning
 
@@ -221,7 +221,7 @@ The implementation addresses the following launch risks:
 
 An application Super Admin is not equivalent to the Supabase service role. Service-role credentials must never enter a user session or browser bundle.
 
-The live Supabase Security Advisor reports zero errors and five reviewed warnings because the authenticated role can execute `current_profile_id`, `has_permission`, `assign_staff_role`, `revoke_staff_role`, and `set_profile_status`, all of which are intentionally `SECURITY DEFINER`. This is an accepted design condition, not an ignored finding: each function has a fixed empty search path, fully qualified references, minimal execute grants, no anonymous access, and either a self-only result or an authoritative permission check before mutation. The service-only provisioning function is not callable by authenticated users. The Performance Advisor reports zero errors and zero warnings; its informational suggestions are expected on a newly provisioned empty schema and must be reevaluated with production query data.
+Sprint 2A hardens this boundary through `20260803154500_identity_harden_authorization_boundary.sql`. Authoritative identity evaluation now lives in the private schema, public authenticated helpers are security-invoker wrappers, and authenticated execution of identity mutation functions is revoked until the audited Admin workflow exists. The service-only provisioning function remains unavailable to authenticated users. The live Supabase Security Advisor consequently reports zero errors, zero warnings, and zero informational findings. The Performance Advisor reports zero errors and zero warnings; informational unused-index suggestions are expected on a newly provisioned schema and must be reevaluated with production query data.
 
 ## 12. Future Customer Account Linking
 
@@ -264,7 +264,7 @@ Until those checklists are complete, both providers must remain disabled in Supa
 - identity migration: rollback-only validation succeeded before commit;
 - live catalog: exactly five identity tables, all with RLS enabled;
 - live policies: five select policies and no anonymous table/RPC access;
-- live advisors: zero Security Advisor errors, five documented intentional definer warnings, and zero Performance Advisor errors/warnings;
+- live advisors after Sprint 2A hardening: zero Security Advisor errors/warnings/informational findings and zero Performance Advisor errors/warnings;
 - seed data: five roles, five identity permissions, and five Super Admin permission grants;
 - lifecycle: two Auth-user triggers installed;
 - storage migration: rollback-only validation succeeded before commit;
