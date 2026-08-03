@@ -138,6 +138,8 @@ type AddressRow = AuditFields &
   };
 
 type LeadRow = AuditFields & {
+  cargo_description: string | null;
+  cargo_quantity: number | null;
   closed_at: string | null;
   customer_name: string;
   customer_notes: string | null;
@@ -148,6 +150,8 @@ type LeadRow = AuditFields & {
   mobile_number: string;
   pickup_address_id: string;
   preferred_locale: "ar" | "en";
+  privacy_consent_version: string | null;
+  privacy_consented_at: string | null;
   profile_id: string | null;
   qualified_at: string | null;
   reference_number: string;
@@ -158,6 +162,7 @@ type LeadRow = AuditFields & {
   source: "admin" | "phone" | "web";
   status: "cancelled" | "closed" | "converted" | "new" | "qualified" | "quoted";
   submitted_at: string;
+  submission_key: string | null;
 };
 
 type LeadAttachmentRow = AuditFields &
@@ -256,6 +261,16 @@ export type Database = {
           target_status: string;
         };
         Returns: boolean;
+      };
+      submit_guest_service_request: {
+        Args: {
+          attachment_payload?: Json;
+          request_payload: Json;
+        };
+        Returns: Array<{
+          lead_id: string;
+          reference_number: string;
+        }>;
       };
     };
     Tables: {
