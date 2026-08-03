@@ -4,7 +4,7 @@ Naqlia is the foundation of an enterprise logistics SaaS platform for logistics 
 
 ## Foundation status
 
-This repository contains the platform and identity foundation only. Supabase Auth integration, authenticated-user Profiles, fixed staff RBAC, RLS, and the two storage buckets are established; no homepage, login UI, Customer, Lead, Quotation, Order, business API, or business feature exists. Until a product route is approved and implemented, the deployed root URL is expected to return the framework's not-found response.
+This repository contains the approved MVP foundation through Sprint 4: guest service-request submission, private attachment intake, staff identity/RBAC, the core business database, and a Sales-only workspace for reviewing Leads and preparing quotations. Authentication remains optional for customers and required only for internal staff; no customer login UI, Operations workspace, Finance workspace, payment, dispatch, or order-creation feature is included.
 
 ## Stack
 
@@ -72,6 +72,7 @@ npm run build
   - [Identity Foundation](docs/implementation/02-Identity-Foundation.md)
   - [Core Business Database](docs/implementation/03-Core-Business-Database.md)
   - [Public Request Flow](docs/implementation/04-Public-Request-Flow.md)
+  - [Sales Workspace](docs/implementation/05-Sales-Workspace.md)
 - Backlog
   - [Business Settings Management](docs/backlog/01-Business-Settings-Management.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
