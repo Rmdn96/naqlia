@@ -15,6 +15,8 @@ This document defines the complete conceptual database architecture for Naqlia. 
 
 The approved [Domain Model Suite v1](domain/01-Domain-Model.md) is the definitive logical business model for PDS v1. It supplies the implementation entity inventory, fields, relationships, lifecycle, deletion policy, and events. The broader pre-PDS entities in this architecture and the Conceptual ERD remain future context only when the Domain Model Suite marks them `FUTURE` or omits them.
 
+For the four-week production launch, the [MVP Database Scope](mvp/02-MVP-Database-Scope.md) controls which logical facts receive dedicated or consolidated physical storage. It intentionally defers multi-tenancy and other enterprise abstractions while retaining the security, integrity, audit, migration, and recovery principles in this architecture.
+
 This is documentation only. It contains no SQL, physical database objects, migrations, Supabase configuration, APIs, or product implementation. Entity names describe future relational structures; their presence here does not authorize implementation.
 
 ## 2. Architectural Decisions

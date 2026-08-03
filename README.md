@@ -63,6 +63,10 @@ npm run build
   - [Relationship Matrix](docs/domain/03-Relationship-Matrix.md)
   - [Field Catalog](docs/domain/04-Field-Catalog.md)
   - [Domain Events](docs/domain/05-Domain-Events.md)
+- Production MVP Scope
+  - [MVP Entity Selection](docs/mvp/01-MVP-Entity-Selection.md)
+  - [MVP Database Scope](docs/mvp/02-MVP-Database-Scope.md)
+  - [Four-Week Implementation Roadmap](docs/mvp/03-MVP-Implementation-Roadmap.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
 - [Conceptual ERD](docs/02-ERD.md)
 - [Database Naming Conventions](docs/03-Naming-Conventions.md)

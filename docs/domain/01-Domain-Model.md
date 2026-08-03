@@ -16,6 +16,8 @@ This suite is the definitive logical business model for implementing the Naqlia 
 
 It defines **what business facts exist and who owns them**. Physical PostgreSQL types, table/column design, indexes, constraint syntax, partitions, RLS policies, storage buckets, generated types, and migration order remain implementation-design work governed by the existing database documents.
 
+For the approved four-week launch, the [Production MVP Scope](../mvp/01-MVP-Entity-Selection.md) controls implementation timing, consolidation, and the 22-table physical boundary. This suite continues to control long-term business meaning; its `FOUNDATION` or `MVP` dispositions do not independently authorize a dedicated MVP table.
+
 ## 2. Authority and Conflict Rules
 
 The authority chain is:
