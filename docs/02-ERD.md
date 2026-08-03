@@ -1,21 +1,127 @@
-# Naqlia Conceptual Entity-Relationship Design
+# Naqlia Entity-Relationship Design
 
-| Document field | Value                                                                                |
-| -------------- | ------------------------------------------------------------------------------------ |
-| Status         | Approved pre-PDS conceptual future reference; not an implementation entity inventory |
-| Version        | 1.1                                                                                  |
-| Current model  | [Domain Model Suite v1](domain/01-Domain-Model.md)                                   |
-| Architecture   | [Database Architecture](01-Database-Architecture.md)                                 |
-| Security       | [RLS Strategy](04-RLS-Strategy.md)                                                   |
-| Last updated   | 2026-08-03                                                                           |
+| Document field | Value                                                       |
+| -------------- | ----------------------------------------------------------- |
+| Status         | Sprint 2A physical MVP ERD plus conceptual future reference |
+| Version        | 1.2                                                         |
+| Current model  | [Domain Model Suite v1](domain/01-Domain-Model.md)          |
+| Architecture   | [Database Architecture](01-Database-Architecture.md)        |
+| Security       | [RLS Strategy](04-RLS-Strategy.md)                          |
+| Last updated   | 2026-08-03                                                  |
 
 ## 1. Purpose
 
-This document represents Naqlia's broad pre-PDS future entities and relationships. It is a logical reference, not SQL, a physical schema, a migration, or the current implementation inventory. The approved [Domain Model Suite v1](domain/01-Domain-Model.md) now defines the definitive PDS v1 entities, fields, relationships, lifecycle, events, and implementation dispositions. An entity shown here but omitted or marked `FUTURE` there MUST NOT be introduced into the MVP schema.
+Section 2 is the physical relationship source of truth for the eight business tables implemented in Sprint 2A. The remaining sections preserve Naqlia's broad pre-PDS future model as a logical reference; they are not an inventory of deployed tables. The approved [Domain Model Suite v1](domain/01-Domain-Model.md) defines future entities, fields, relationships, lifecycle, events, and implementation dispositions. An entity shown only in the conceptual diagrams MUST NOT be assumed to exist in the current schema.
 
-The diagrams are split by bounded context so cardinality remains readable. The [Domain Model](domain/01-Domain-Model.md) defines current ownership and semantics; the [Relationship Matrix](domain/03-Relationship-Matrix.md) controls PDS v1 cardinality and deletion/reference behavior.
+The future diagrams are split by bounded context so cardinality remains readable. The [Sprint 2A implementation guide](implementation/03-Core-Business-Database.md) controls the deployed schema; the [Domain Model](domain/01-Domain-Model.md) and [Relationship Matrix](domain/03-Relationship-Matrix.md) control future scope.
 
-## 2. Notation
+## 2. Implemented MVP ERD — Sprint 2A
+
+```mermaid
+erDiagram
+  AUTH_USER ||--o| PROFILE : "may own"
+  PROFILE ||--o{ LEAD : "submits when authenticated"
+  PROFILE ||--o{ ADDRESS : "may own"
+  CITY ||--o{ ADDRESS : "classifies"
+  SERVICE ||--o{ SERVICE_OPTION : "offers"
+  SERVICE ||--o{ LEAD : "requested for"
+  ADDRESS ||--o{ LEAD : "pickup address"
+  ADDRESS ||--o{ LEAD : "delivery address"
+  LEAD ||--o{ LEAD_ATTACHMENT : "has metadata"
+  LEAD ||--o{ QUOTATION : "receives revisions"
+  QUOTATION ||--o| ORDER : "approved source creates"
+
+  AUTH_USER {
+    uuid id PK
+  }
+  PROFILE {
+    uuid id PK
+    uuid auth_user_id UK
+  }
+  CITY {
+    uuid id PK
+    string city_code UK
+    string slug UK
+    string name_ar
+    string name_en
+    string status
+  }
+  ADDRESS {
+    uuid id PK
+    uuid city_id FK
+    uuid profile_id FK
+    string formatted_address
+    string provider_place_id
+    decimal latitude
+    decimal longitude
+  }
+  SERVICE {
+    uuid id PK
+    string service_key UK
+    string name_ar
+    string name_en
+    string status
+  }
+  SERVICE_OPTION {
+    uuid id PK
+    uuid service_id FK
+    string option_key
+    string name_ar
+    string name_en
+    string status
+  }
+  LEAD {
+    uuid id PK
+    string reference_number UK
+    uuid profile_id FK
+    uuid service_id FK
+    uuid pickup_address_id FK
+    uuid delivery_address_id FK
+    uuid_array requested_service_option_ids
+    string mobile_number
+    string status
+  }
+  LEAD_ATTACHMENT {
+    uuid id PK
+    uuid lead_id FK
+    string storage_bucket
+    string storage_path
+    string original_filename
+    string mime_type
+    integer size_bytes
+  }
+  QUOTATION {
+    uuid id PK
+    uuid lead_id FK
+    integer revision_number
+    decimal quoted_amount
+    string currency
+    timestamp expires_at
+    string status
+  }
+  ORDER {
+    uuid id PK
+    uuid quotation_id FK,UK
+    string order_number UK
+    string execution_status
+    timestamp scheduled_for
+    timestamp completed_at
+    decimal total_amount
+  }
+```
+
+Implementation rules:
+
+- `profiles` and Supabase Auth are existing Sprint 1B identity resources; guest Leads keep `profile_id` null.
+- Pickup and delivery are distinct foreign keys to immutable-on-reference Address records.
+- A null `service_options.service_id` denotes a global option. Lead option selections are a UUID array validated against active, eligible options; no join table is introduced in this MVP slice.
+- A Lead may have multiple Quotation revisions, but at most one approved Quotation.
+- A Quotation may create at most one Order. The database accepts the Order only when its source Quotation is approved and unexpired.
+- `lead_attachments` stores Storage object metadata only; object bytes remain in the private `attachments` bucket.
+- Attachment object identity is unique on the composite (`storage_bucket`, `storage_path`) pair.
+- Actor references from all business records to `profiles` are intentionally omitted from the diagram to preserve readability.
+
+## 3. Notation
 
 - `||` means exactly one.
 - `o|` means zero or one.
@@ -27,7 +133,7 @@ The diagrams are split by bounded context so cardinality remains readable. The [
 - Every application-owned tenant entity also carries immutable `organization_id`, even when a diagram omits the repeated relationship for readability.
 - Every mutable aggregate root carries lifecycle timestamps and `version`; immutable event entities carry `occurred_at` and `recorded_at`.
 
-## 3. Global Domain Context
+## 4. Global Domain Context
 
 ```mermaid
 flowchart LR
@@ -69,7 +175,7 @@ flowchart LR
   TRACKING --> REPORTING
 ```
 
-## 4. Core Tenancy and Identity ERD
+## 5. Core Tenancy and Identity ERD
 
 ```mermaid
 erDiagram
@@ -268,7 +374,7 @@ erDiagram
   ORGANIZATION_CONNECTION ||--o{ RESOURCE_SHARE : "authorizes"
 ```
 
-### 4.1 Identity invariants
+### 5.1 Identity invariants
 
 - `PROFILE.auth_user_id` uniquely references only `AUTH_USER.id`, the managed primary key.
 - A profile has at most one active membership per organization.
@@ -279,7 +385,7 @@ erDiagram
 - An access review item references exactly one review subject: a membership or a platform access grant.
 - Organization reference keys are unique within organization and category; an optional base reference must belong to the same approved category.
 
-## 5. Party Network and Fleet ERD
+## 6. Party Network and Fleet ERD
 
 ```mermaid
 erDiagram
@@ -509,7 +615,7 @@ erDiagram
   EQUIPMENT ||--o{ EQUIPMENT_EXTERNAL_REFERENCE : "is identified by"
 ```
 
-### 5.1 Network and fleet invariants
+### 6.1 Network and fleet invariants
 
 - Source and target parties in a relationship belong to the same organization and are different records.
 - Party role, contact, and address assignments are effective-dated when historical use matters.
@@ -518,7 +624,7 @@ erDiagram
 - Compliance requirement type must match the type-specific compliance record.
 - Each external identifier is unique within organization, namespace, and resource type.
 
-## 6. Transport, Dispatch, and Tracking ERD
+## 7. Transport, Dispatch, and Tracking ERD
 
 ```mermaid
 erDiagram
@@ -825,7 +931,7 @@ erDiagram
   OPERATIONAL_EXCEPTION ||--|{ EXCEPTION_EVENT : "records"
 ```
 
-### 6.1 Transport invariants
+### 7.1 Transport invariants
 
 - Order, shipment, leg, trip, resources, parties, and locations linked by an operational workflow must share one organization.
 - Shipment stop and trip stop sequence numbers are unique inside their parent and begin at one.
@@ -837,7 +943,7 @@ erDiagram
 - An ETA estimate targets exactly one shipment stop or one trip stop.
 - An exception targets at least one shipment or trip and cannot point outside its organization.
 
-## 7. Documents and Proof ERD
+## 8. Documents and Proof ERD
 
 ```mermaid
 erDiagram
@@ -977,7 +1083,7 @@ erDiagram
   PROFILE o|--o{ DOCUMENT_ACCESS_EVENT : "performs"
 ```
 
-### 7.1 Document invariants
+### 8.1 Document invariants
 
 - Document and linked domain entity share one organization.
 - Version numbers are unique and increasing within a document.
@@ -985,7 +1091,7 @@ erDiagram
 - A proof references the immutable document version reviewed at capture time, not only the mutable current version.
 - Stored object integrity digest and size are immutable after version acceptance.
 
-## 8. Communications and Integration ERD
+## 9. Communications and Integration ERD
 
 ```mermaid
 erDiagram
@@ -1155,7 +1261,7 @@ erDiagram
   INTEGRATION_MAPPING o|--o{ INTEGRATION_RECONCILIATION : "may be examined by"
 ```
 
-### 8.1 Communication and integration invariants
+### 9.1 Communication and integration invariants
 
 - A preference or recipient targets one profile or one contact, never both.
 - Notification templates are unique by owner, key, locale, channel, and version.
@@ -1164,7 +1270,7 @@ erDiagram
 - Idempotency keys are unique within organization, scope, and validity period.
 - A closed reconciliation preserves its resolution event and never rewrites the original inbound or outbound message.
 
-## 9. Billing, Audit, Reporting, and Platform ERD
+## 10. Billing, Audit, Reporting, and Platform ERD
 
 ```mermaid
 erDiagram
@@ -1404,7 +1510,7 @@ erDiagram
   ORGANIZATION o|--o{ JOB_RUN : "may scope"
 ```
 
-### 9.1 Billing and control-plane invariants
+### 10.1 Billing and control-plane invariants
 
 - An organization has one active billing account per commercial context.
 - Monetary values always include currency and fixed precision; invoice and line currencies must match unless an approved conversion model exists.
@@ -1416,7 +1522,7 @@ erDiagram
 - Report output expires and is access-checked again at download time.
 - Export output is purpose-bound, expires, and is audited at creation and download; metric snapshots retain their definition version.
 
-## 10. Relationship Registry
+## 11. Relationship Registry
 
 This registry clarifies the most important cross-domain dependencies.
 
@@ -1443,7 +1549,7 @@ This registry clarifies the most important cross-domain dependencies.
 | Integration connection | Message                 | 1 to many                            | Tenant, provider, correlation, and idempotency.          |
 | Governed action        | Audit event             | 1 to one-or-many                     | Same transaction for required audit evidence.            |
 
-## 11. Prohibited Relationship Patterns
+## 12. Prohibited Relationship Patterns
 
 - No tenant-owned relationship may rely only on matching IDs without matching `organization_id`.
 - No business entity may reference mutable Auth metadata for authorization.
@@ -1454,7 +1560,7 @@ This registry clarifies the most important cross-domain dependencies.
 - No cascade deletion may erase completed operational, financial, audit, or integration history.
 - No cross-tenant relationship exists without an organization connection and explicit resource share.
 
-## 12. Physical Design Checklist
+## 13. Physical Design Checklist
 
 Before implementation, a database engineer must turn every conceptual entity into a reviewed specification containing:
 

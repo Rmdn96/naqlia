@@ -3,8 +3,8 @@
 | Document field | Value                                                   |
 | -------------- | ------------------------------------------------------- |
 | Suite          | Production MVP Scope                                    |
-| Status         | Domain scope; Sprint 1B identity foundation implemented |
-| Version        | 1.1.0 — Sprint 1B identity amendment                    |
+| Status         | Domain scope; Sprint 2A core business slice implemented |
+| Version        | 1.2.0 — Sprint 2A implementation amendment              |
 | Effective date | 2026-08-03                                              |
 | Target         | 22 domain tables plus 4 identity control tables         |
 | Parent         | [MVP Entity Selection](./01-MVP-Entity-Selection.md)    |
@@ -15,6 +15,23 @@
 This document is the final database boundary for the four-week Naqlia MVP. It identifies the exact application tables the physical PostgreSQL design may implement and the business facts each table must preserve. It contains no SQL, migrations, Supabase resources, or implementation instructions.
 
 The original scope authorizes the 22 domain tables named here. Sprint 1B subsequently approved four compact identity control tables—`roles`, `permissions`, `role_permissions`, and `profile_roles`—to satisfy the explicit RBAC, role-assignment, and database-authoritative permission-checking requirement. `profiles` remains table 1 in the domain inventory. Supabase Auth is an external managed dependency and is not counted. Storage buckets, database views, search indexes, scheduled jobs, and observability systems are also outside the table count and require their own design approval.
+
+### 1.1 Sprint 2A implementation amendment
+
+Sprint 2A is the first approved business implementation slice. It creates exactly eight business tables: `cities`, `addresses`, `services`, `service_options`, `leads`, `lead_attachments`, `quotations`, and `orders`. These concrete names and boundaries supersede the corresponding conceptual registry names for the deployed slice only:
+
+| Conceptual MVP capability | Sprint 2A physical implementation |
+| ------------------------- | --------------------------------- |
+| Coverage areas            | `cities`                          |
+| Saved/request addresses   | `addresses`                       |
+| Service offerings         | `services`                        |
+| Service add-ons           | `service_options`                 |
+| Lead intake               | `leads`                           |
+| Lead file metadata        | `lead_attachments`                |
+| Commercial offer          | `quotations`                      |
+| Accepted commitment       | `orders`                          |
+
+The compact slice deliberately embeds requested option identifiers on the Lead and financial snapshots on Quotation and Order. It does not implement separate Customer, line-item, lifecycle-history, notification, CMS, support, audit-log, or idempotency tables. Those registry entries remain approved future MVP scope and require a later sprint before they become physical resources. The [Core Business Database guide](../implementation/03-Core-Business-Database.md) is authoritative for the deployed schema.
 
 ## 2. Scope Decision
 
