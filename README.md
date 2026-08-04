@@ -1,6 +1,6 @@
-# Naqlia
+# Naqlk
 
-Naqlia is the foundation of an enterprise logistics SaaS platform for logistics companies in Saudi Arabia. Arabic (`ar`, RTL) is the default product language and English (`en`, LTR) is the secondary language.
+Naqlk (`نقلك`) is an Arabic-first logistics platform for Saudi Arabia: **نقلك... ننقل كل ما يهمك**. Arabic (`ar`, RTL) is the default product language and English (`en`, LTR) is the secondary language. The canonical production domain is [naqlk.com](https://naqlk.com).
 
 ## Foundation status
 
@@ -34,7 +34,7 @@ npm run build
 
 ## Documentation
 
-- [Naqlia Constitution](.ai/constitution.md)
+- [Naqlk Constitution](.ai/constitution.md)
 - [Product Principles](.ai/product-principles.md)
 - [Engineering Principles](.ai/engineering-principles.md)
 - [Coding Principles](.ai/coding-principles.md)
@@ -43,6 +43,11 @@ npm run build
 - [UI Principles](.ai/ui-principles.md)
 - [SEO Principles](.ai/seo-principles.md)
 - [Master Project Blueprint](docs/00-Project-Blueprint.md)
+- Brand
+  - [Brand Guidelines](docs/branding/01-Brand-Guidelines.md)
+  - [Voice and Tone](docs/branding/02-Voice-And-Tone.md)
+  - [Visual Identity](docs/branding/03-Visual-Identity.md)
+  - [Asset Register](docs/branding/04-Asset-Register.md)
 - Product Documentation Suite v1
   - [Business Requirements Specification](docs/product/01-Business-Requirements-Specification.md)
   - [Functional Requirements](docs/product/02-Functional-Requirements.md)
@@ -74,6 +79,7 @@ npm run build
   - [Public Request Flow](docs/implementation/04-Public-Request-Flow.md)
   - [Sales Workspace](docs/implementation/05-Sales-Workspace.md)
   - [Production Lead Reference Reconciliation](docs/implementation/06-Production-Lead-Reference-Reconciliation.md)
+  - [Naqlk Brand Migration](docs/implementation/05-Naqlk-Brand-Migration.md)
 - Backlog
   - [Business Settings Management](docs/backlog/01-Business-Settings-Management.md)
   - [Leaked-Password Protection](docs/backlog/02-Leaked-Password-Protection.md)

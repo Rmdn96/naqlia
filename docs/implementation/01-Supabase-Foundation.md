@@ -1,4 +1,4 @@
-# Naqlia Supabase Foundation
+# Naqlk Supabase Foundation
 
 | Document field | Value                                         |
 | -------------- | --------------------------------------------- |
@@ -11,7 +11,7 @@
 
 ## 1. Purpose
 
-This document defines the production connection, authentication, storage, and environment foundation for using Supabase from the Naqlia Next.js 15 App Router application. Sprint 1A creates no business table, migration, RLS policy, page, dashboard, upload flow, or business API.
+This document defines the production connection, authentication, storage, and environment foundation for using Supabase from the Naqlk Next.js 15 App Router application. Sprint 1A creates no business table, migration, RLS policy, page, dashboard, upload flow, or business API.
 
 ## 2. Implemented Scope
 
@@ -80,7 +80,7 @@ It MUST be present in the Supabase redirect allowlist. Google and Apple provider
 
 ### 4.2 Account boundaries
 
-- An Auth user is not automatically a Naqlia Customer or staff member.
+- An Auth user is not automatically a Naqlk Customer or staff member.
 - Customer/Profile linking and internal role assignment require the future approved business schema and authorization flow.
 - Staff and customer permissions remain distinct even when the same person controls identities.
 - Provider tokens are not requested, persisted, or logged by this foundation.

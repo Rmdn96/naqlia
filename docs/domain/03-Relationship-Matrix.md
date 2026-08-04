@@ -1,4 +1,4 @@
-# Naqlia Relationship Matrix
+# Naqlk Relationship Matrix
 
 | Document field | Value                                                                 |
 | -------------- | --------------------------------------------------------------------- |

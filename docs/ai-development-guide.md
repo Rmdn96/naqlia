@@ -8,7 +8,7 @@ AI tools may accelerate implementation, tests, documentation, and review, but th
 
 Before changing code, an AI collaborator should read, in order:
 
-1. the [Naqlia Constitution](../.ai/constitution.md) and every applicable principle document in `.ai/`;
+1. the [Naqlk Constitution](../.ai/constitution.md) and every applicable principle document in `.ai/`;
 2. the current authorized user, issue, or requirement scope and explicit non-goals;
 3. the Project Blueprint, README, applicable architecture decisions, and supporting guides;
 4. the owning feature's public contract and nearby tests; and

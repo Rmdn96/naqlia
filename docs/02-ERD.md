@@ -1,4 +1,4 @@
-# Naqlia Entity-Relationship Design
+# Naqlk Entity-Relationship Design
 
 | Document field | Value                                                       |
 | -------------- | ----------------------------------------------------------- |
@@ -11,7 +11,7 @@
 
 ## 1. Purpose
 
-Section 2 is the physical relationship source of truth for the eight business tables implemented in Sprint 2A. The remaining sections preserve Naqlia's broad pre-PDS future model as a logical reference; they are not an inventory of deployed tables. The approved [Domain Model Suite v1](domain/01-Domain-Model.md) defines future entities, fields, relationships, lifecycle, events, and implementation dispositions. An entity shown only in the conceptual diagrams MUST NOT be assumed to exist in the current schema.
+Section 2 is the physical relationship source of truth for the eight business tables implemented in Sprint 2A. The remaining sections preserve Naqlk's broad pre-PDS future model as a logical reference; they are not an inventory of deployed tables. The approved [Domain Model Suite v1](domain/01-Domain-Model.md) defines future entities, fields, relationships, lifecycle, events, and implementation dispositions. An entity shown only in the conceptual diagrams MUST NOT be assumed to exist in the current schema.
 
 The future diagrams are split by bounded context so cardinality remains readable. The [Sprint 2A implementation guide](implementation/03-Core-Business-Database.md) controls the deployed schema; the [Domain Model](domain/01-Domain-Model.md) and [Relationship Matrix](domain/03-Relationship-Matrix.md) control future scope.
 

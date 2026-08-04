@@ -1,4 +1,4 @@
-# Naqlia Functional Requirements
+# Naqlk Functional Requirements
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |

@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
 
+import { BRAND } from "@/config/brand";
 import { getMetadataBase } from "@/config/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
+    host: BRAND.domains.primary,
     rules: [
       { allow: ["/ar", "/ar/", "/en", "/en/"], disallow: ["/*/request/success"], userAgent: "*" },
     ],

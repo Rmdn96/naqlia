@@ -1,4 +1,4 @@
-# Naqlia User Stories
+# Naqlk User Stories
 
 | Document field | Value                                                      |
 | -------------- | ---------------------------------------------------------- |

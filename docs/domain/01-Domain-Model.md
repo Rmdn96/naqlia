@@ -1,4 +1,4 @@
-# Naqlia Complete Business Domain Model
+# Naqlk Complete Business Domain Model
 
 | Document field         | Value                                                                                  |
 | ---------------------- | -------------------------------------------------------------------------------------- |
@@ -12,7 +12,7 @@
 
 ## 1. Purpose
 
-This suite is the definitive logical business model for implementing the Naqlia database. It resolves domain boundaries, aggregate ownership, entities, fields, relationships, lifecycles, events, deletion behavior, and future extension seams before any SQL, migration, Supabase resource, API, backend, or UI work begins.
+This suite is the definitive logical business model for implementing the Naqlk database. It resolves domain boundaries, aggregate ownership, entities, fields, relationships, lifecycles, events, deletion behavior, and future extension seams before any SQL, migration, Supabase resource, API, backend, or UI work begins.
 
 It defines **what business facts exist and who owns them**. Physical PostgreSQL types, table/column design, indexes, constraint syntax, partitions, RLS policies, storage buckets, generated types, and migration order remain implementation-design work governed by the existing database documents.
 
@@ -22,7 +22,7 @@ For the approved four-week launch, the [Production MVP Scope](../mvp/01-MVP-Enti
 
 The authority chain is:
 
-1. [Naqlia Constitution](../../.ai/constitution.md);
+1. [Naqlk Constitution](../../.ai/constitution.md);
 2. [Master Project Blueprint](../00-Project-Blueprint.md);
 3. approved PDS v1 product meaning and scope;
 4. this Domain Model Suite for logical data meaning;
@@ -60,7 +60,7 @@ Future entities are defined to prevent incompatible MVP choices. Their presence 
 
 | Term                   | Canonical meaning                                                                                                                              |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Organization           | Immutable tenant/company ownership boundary. The MVP has one Naqlia operating organization.                                                    |
+| Organization           | Immutable tenant/company ownership boundary. The MVP has one Naqlk operating organization.                                                     |
 | Customer               | Tenant-local person or business requesting/receiving service; may exist without an account.                                                    |
 | Profile                | Application representation of one authenticated human identity.                                                                                |
 | Guest Customer         | Customer without a linked Profile; authorization is purpose-bound verification, not tenant membership.                                         |
@@ -164,7 +164,7 @@ Solid arrows are approved dependency direction. Dotted arrows are future seams. 
 
 ### 7.4 `DOM-CAT` — Service Catalog and Eligibility
 
-**Purpose:** define what Naqlia offers, where it is eligible, what information is required, and which restrictions apply.
+**Purpose:** define what Naqlk offers, where it is eligible, what information is required, and which restrictions apply.
 
 **Responsibilities:** Cargo Services, Route Classes, add-ons, offerings, coverage, lanes, qualification fields, restrictions, reason definitions, localized content, and customer-status mappings.
 
@@ -385,7 +385,7 @@ No mutable label, external reference, email, mobile number, Order Number, or pro
 ## 10. Tenancy and Multi-Company Rules
 
 1. Every tenant-owned entity belongs to exactly one Organization from creation to destruction.
-2. The MVP seeds/configures one Naqlia operating Organization; customers are Customer records inside it, not Organizations.
+2. The MVP seeds/configures one Naqlk operating Organization; customers are Customer records inside it, not Organizations.
 3. Internal workforce access requires Organization Membership. Registered customers use Customer Account Link, not internal membership.
 4. Cross-Organization relationships are forbidden unless an active Organization Connection and explicit Resource Share authorize the exact resource/purpose.
 5. Child and reference relationships MUST prove common Organization ownership; matching IDs alone are insufficient.

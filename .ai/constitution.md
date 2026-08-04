@@ -1,4 +1,4 @@
-# Naqlia Constitution
+# Naqlk Constitution
 
 | Document field | Value                                                                                                      |
 | -------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -11,7 +11,7 @@
 
 ## 1. Purpose
 
-This Constitution is the permanent governing standard for Naqlia. It defines how the product and engineering organization makes decisions, protects users and customers, changes the system, and demonstrates that work is ready and complete.
+This Constitution is the permanent governing standard for Naqlk. It defines how the product and engineering organization makes decisions, protects users and customers, changes the system, and demonstrates that work is ready and complete.
 
 Every future task MUST comply with this Constitution and the applicable companion principles. A roadmap item, issue, prompt, design, deadline, customer request, or generated implementation does not override these rules by implication.
 
@@ -25,7 +25,7 @@ This document governs behavior and delivery; it does not authorize a feature, AP
 
 ## 2. Authority and Document Hierarchy
 
-Naqlia uses the following authority order:
+Naqlk uses the following authority order:
 
 1. Applicable law, binding regulation, contractual obligation, and emergency security control.
 2. This Constitution.
@@ -63,7 +63,7 @@ The companion documents are mandatory within their domains. Cross-domain work MU
 
 ## 4. Project Philosophy
 
-Naqlia exists to become a trusted Arabic-first operating platform for logistics organizations in Saudi Arabia. Trust, operational clarity, and durable customer value matter more than feature count or delivery theater.
+Naqlk exists to become a trusted Arabic-first operating platform for logistics organizations in Saudi Arabia. Trust, operational clarity, and durable customer value matter more than feature count or delivery theater.
 
 The project follows these commitments:
 
@@ -151,7 +151,7 @@ An experiment MUST state its hypothesis, audience, success and guardrail metrics
 
 ## 8. Architecture Rules
 
-Naqlia begins as a feature-based modular monolith. This is a deliberate architecture, not an absence of architecture.
+Naqlk begins as a feature-based modular monolith. This is a deliberate architecture, not an absence of architecture.
 
 ### 8.1 Mandatory boundaries
 
@@ -173,7 +173,7 @@ Naqlia begins as a feature-based modular monolith. This is a deliberate architec
 
 ### 8.3 Configuration over customization
 
-Naqlia MUST prefer configuration over customer-specific code.
+Naqlk MUST prefer configuration over customer-specific code.
 
 Configuration MUST be:
 
@@ -251,7 +251,7 @@ Primary workflows MUST be designed for the smallest supported viewport and const
 
 ### 11.4 Accessibility first
 
-Naqlia targets WCAG 2.2 AA for applicable experiences. Semantic structure, keyboard access, visible focus, labels, error association, contrast, target size, motion preferences, zoom, reflow, screen-reader behavior, and language metadata MUST be designed and verified.
+Naqlk targets WCAG 2.2 AA for applicable experiences. Semantic structure, keyboard access, visible focus, labels, error association, contrast, target size, motion preferences, zoom, reflow, screen-reader behavior, and language metadata MUST be designed and verified.
 
 Accessibility cannot be waived because a user role is internal or because a component library supplies a primitive.
 

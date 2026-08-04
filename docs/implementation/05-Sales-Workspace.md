@@ -1,4 +1,4 @@
-# Naqlia Sales Workspace
+# Naqlk Sales Workspace
 
 | Document field | Value                                                |
 | -------------- | ---------------------------------------------------- |
@@ -115,10 +115,10 @@ The builder supports required line descriptions, quantities, unit prices, automa
 
 Until [Business Settings Management](../backlog/01-Business-Settings-Management.md) is implemented, the server-side fallbacks are:
 
-| Environment variable                     | Required format                | Example | Future source                                |
-| ---------------------------------------- | ------------------------------ | ------- | -------------------------------------------- |
-| `NAQLIA_DEFAULT_QUOTATION_VAT_RATE`      | Decimal from `0` through `1`   | `0.15`  | Business Settings VAT/default-pricing policy |
-| `NAQLIA_DEFAULT_QUOTATION_VALIDITY_DAYS` | Integer from `1` through `365` | `7`     | Business Settings default quotation validity |
+| Environment variable                    | Required format                | Example | Future source                                |
+| --------------------------------------- | ------------------------------ | ------- | -------------------------------------------- |
+| `NAQLK_DEFAULT_QUOTATION_VAT_RATE`      | Decimal from `0` through `1`   | `0.15`  | Business Settings VAT/default-pricing policy |
+| `NAQLK_DEFAULT_QUOTATION_VALIDITY_DAYS` | Integer from `1` through `365` | `7`     | Business Settings default quotation validity |
 
 They are intentionally not `NEXT_PUBLIC_` values. The server passes the default to the rendered form; the database stores the actual selected VAT rate on every quotation so the issued record remains explainable after configuration changes.
 

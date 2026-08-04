@@ -6,13 +6,14 @@ import type { ReactNode } from "react";
 
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/shared/site-header";
-import { getMetadataBase, SITE_NAME } from "@/config/site";
+import { BRAND } from "@/config/brand";
+import { getMetadataBase } from "@/config/site";
 import { routing } from "@/i18n/routing";
 
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  applicationName: SITE_NAME,
+  applicationName: BRAND.names.en,
   metadataBase: getMetadataBase(),
   robots: { follow: true, index: true },
 };

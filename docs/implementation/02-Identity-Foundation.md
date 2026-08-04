@@ -1,4 +1,4 @@
-# Naqlia Identity Foundation
+# Naqlk Identity Foundation
 
 | Document field | Value                                              |
 | -------------- | -------------------------------------------------- |
@@ -12,12 +12,12 @@
 
 ## 1. Purpose
 
-Sprint 1B establishes Naqlia's production identity, access-control, and storage foundation. It deliberately creates no Customer, Lead, Quotation, Order, business API, business page, or business permission.
+Sprint 1B establishes Naqlk's production identity, access-control, and storage foundation. It deliberately creates no Customer, Lead, Quotation, Order, business API, business page, or business permission.
 
 The implementation has four boundaries:
 
 1. Supabase Auth owns authentication identities, credentials, provider links, verification, and sessions.
-2. Naqlia profiles exist only for authenticated users.
+2. Naqlk profiles exist only for authenticated users.
 3. PostgreSQL owns authoritative staff roles, identity permissions, assignments, and permission checks.
 4. Guest business journeys remain unauthenticated and independent from the identity model.
 

@@ -1,4 +1,4 @@
-# Naqlia Public Request Flow
+# Naqlk Public Request Flow
 
 | Document field | Value                                                                  |
 | -------------- | ---------------------------------------------------------------------- |
@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-Sprint 3 delivers the first complete customer-facing Naqlia journey. A guest can discover the service, complete a five-step Arabic-first request, add map-ready route coordinates and optional cargo photos, submit once, receive a Lead reference, and continue through WhatsApp. English has route and content parity.
+Sprint 3 delivers the first complete customer-facing Naqlk journey. A guest can discover the service, complete a five-step Arabic-first request, add map-ready route coordinates and optional cargo photos, submit once, receive a Lead reference, and continue through WhatsApp. English has route and content parity.
 
 ## 2. Public routes
 

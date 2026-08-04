@@ -10,7 +10,7 @@ Enable Supabase Auth native leaked-password protection so sign-up and password-c
 
 ## Current limitation
 
-The production project is on the Supabase Free plan. The Attack Protection page displays the feature description but no enable control. Naqlia must not implement a custom password-breach service as a workaround.
+The production project is on the Supabase Free plan. The Attack Protection page displays the feature description but no enable control. Naqlk must not implement a custom password-breach service as a workaround.
 
 ## Activation criteria
 

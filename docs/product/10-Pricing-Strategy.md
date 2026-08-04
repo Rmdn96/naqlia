@@ -1,4 +1,4 @@
-# Naqlia Pricing Strategy
+# Naqlk Pricing Strategy
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
@@ -10,13 +10,13 @@
 
 ## 1. Purpose
 
-This document defines how Naqlia prices MVP services without inventing commercial values. It establishes the hybrid quotation model, configurable price structure, decision rights, customer transparency, versioning, and controls needed for later implementation.
+This document defines how Naqlk prices MVP services without inventing commercial values. It establishes the hybrid quotation model, configurable price structure, decision rights, customer transparency, versioning, and controls needed for later implementation.
 
 It contains no price, tax rate, fee, discount, threshold, duration, or validity value. Those values MUST be approved, localized where applicable, versioned, and published through the Admin Panel before release.
 
 ## 2. Approved Model
 
-Naqlia uses a **hybrid quotation model**:
+Naqlk uses a **hybrid quotation model**:
 
 1. configured rules and Sales-entered facts MAY produce an internal estimate or price guidance;
 2. Sales validates eligibility, service scope, route, cargo, access, add-ons, assumptions, and calculation inputs;
@@ -143,7 +143,7 @@ Every final Quotation MUST communicate, in the customer's selected supported lan
 - schedule/availability qualification where applicable;
 - terms, cancellation/amendment references, and acceptance method;
 - support/contact guidance; and
-- statement that the issued version was reviewed by Naqlia Sales.
+- statement that the issued version was reviewed by Naqlk Sales.
 
 Arabic and English versions of the same Quotation MUST represent identical commercial facts. Translation changes must never recalculate amounts.
 

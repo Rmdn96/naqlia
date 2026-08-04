@@ -6,13 +6,21 @@ import type { AppLocale } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  robots: { follow: false, index: false, noarchive: true, nocache: true },
-};
-
 type StaffSignInPageProps = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: StaffSignInPageProps): Promise<Metadata> {
+  const { locale: localeParam } = await params;
+  const locale = localeParam as AppLocale;
+  const t = await getTranslations({ locale, namespace: "StaffAuth" });
+
+  return {
+    description: t("description"),
+    robots: { follow: false, index: false, noarchive: true, nocache: true },
+    title: t("title"),
+  };
+}
 
 export default async function StaffSignInPage({ params }: StaffSignInPageProps) {
   const { locale: localeParam } = await params;

@@ -1,4 +1,4 @@
-# Naqlia Core Business Database
+# Naqlk Core Business Database
 
 | Document field | Value                                                        |
 | -------------- | ------------------------------------------------------------ |
@@ -11,7 +11,7 @@
 
 ## 1. Purpose
 
-Sprint 2A implements the smallest production database slice that supports Naqlia's guest-first intake and the Lead → Quotation → Order lifecycle. It creates eight business tables, fixed staff permissions, RLS policies, reference seeds, lifecycle guards, and rollback support. It does not create frontend pages, dashboard behavior, business API routes, a pricing engine, payment integration, or customer-facing tracking logic.
+Sprint 2A implements the smallest production database slice that supports Naqlk's guest-first intake and the Lead → Quotation → Order lifecycle. It creates eight business tables, fixed staff permissions, RLS policies, reference seeds, lifecycle guards, and rollback support. It does not create frontend pages, dashboard behavior, business API routes, a pricing engine, payment integration, or customer-facing tracking logic.
 
 This document is the implementation source of truth for the deployed Sprint 2A schema. The broader domain and MVP documents remain the source for future scope.
 

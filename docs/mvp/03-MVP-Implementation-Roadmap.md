@@ -1,4 +1,4 @@
-# Naqlia Four-Week MVP Implementation Roadmap
+# Naqlk Four-Week MVP Implementation Roadmap
 
 | Document field    | Value                                                      |
 | ----------------- | ---------------------------------------------------------- |
@@ -12,7 +12,7 @@
 
 ## 1. Objective
 
-Launch the smallest safe, maintainable Naqlia product that allows a real customer in the approved geography to discover a bilingual service, submit a guest or account request, receive a human-reviewed Quotation, approve it, receive an Order, receive transactional updates, and track completion—while internal staff operate the journey through fixed, least-privilege roles.
+Launch the smallest safe, maintainable Naqlk product that allows a real customer in the approved geography to discover a bilingual service, submit a guest or account request, receive a human-reviewed Quotation, approve it, receive an Order, receive transactional updates, and track completion—while internal staff operate the journey through fixed, least-privilege roles.
 
 The four-week target is achievable only through strict scope control, early vertical integration, daily acceptance, and no speculative enterprise infrastructure. This roadmap authorizes planning; it does not create SQL, migrations, Supabase resources, APIs, pages, components, or backend code.
 

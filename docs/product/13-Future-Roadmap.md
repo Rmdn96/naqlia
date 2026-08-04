@@ -1,4 +1,4 @@
-# Naqlia Future Roadmap
+# Naqlk Future Roadmap
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
@@ -40,7 +40,7 @@ The roadmap MUST NOT be interpreted as authorization to create features, schema,
 
 ## 4. Stage 1 — MVP Build and Internal Validation
 
-**Outcome:** Authorized Naqlia staff can operate the full configured lifecycle in production-like environments, and customers can complete the approved bilingual journey safely.
+**Outcome:** Authorized Naqlk staff can operate the full configured lifecycle in production-like environments, and customers can complete the approved bilingual journey safely.
 
 The build follows the thin slices in [MVP Scope](./12-MVP-Scope.md): governed catalog/access, guest request/Lead, human-reviewed Quotation, Order/Execution, tracking/support, and hardening.
 
@@ -62,7 +62,7 @@ Focus areas:
 
 ## 6. Stage 3 — Operational Maturity and Geographic Expansion
 
-**Outcome:** Naqlia increases service reach and operational throughput without reducing reliability or control.
+**Outcome:** Naqlk increases service reach and operational throughput without reducing reliability or control.
 
 Candidates, subject to discovery:
 
@@ -81,7 +81,7 @@ Candidates, subject to discovery:
 
 ## 7. Stage 4 — Digital Commerce and Ecosystem Integration
 
-**Outcome:** Approved customers and Naqlia teams complete more commercial and partner workflows digitally with reconciled records and controlled financial risk.
+**Outcome:** Approved customers and Naqlk teams complete more commercial and partner workflows digitally with reconciled records and controlled financial risk.
 
 Candidates, subject to separate legal/finance/security architecture:
 
@@ -99,7 +99,7 @@ Candidates, subject to separate legal/finance/security architecture:
 
 ## 8. Stage 5 — Multi-Tenant SaaS Platform
 
-**Outcome:** Qualified logistics companies can operate isolated workspaces on Naqlia with governed configuration and platform-level administration.
+**Outcome:** Qualified logistics companies can operate isolated workspaces on Naqlk with governed configuration and platform-level administration.
 
 Candidates, subject to a dedicated SaaS business case:
 

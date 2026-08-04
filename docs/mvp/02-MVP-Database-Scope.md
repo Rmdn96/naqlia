@@ -1,4 +1,4 @@
-# Naqlia MVP Database Scope
+# Naqlk MVP Database Scope
 
 | Document field | Value                                                   |
 | -------------- | ------------------------------------------------------- |
@@ -12,7 +12,7 @@
 
 ## 1. Purpose
 
-This document is the final database boundary for the four-week Naqlia MVP. It identifies the exact application tables the physical PostgreSQL design may implement and the business facts each table must preserve. It contains no SQL, migrations, Supabase resources, or implementation instructions.
+This document is the final database boundary for the four-week Naqlk MVP. It identifies the exact application tables the physical PostgreSQL design may implement and the business facts each table must preserve. It contains no SQL, migrations, Supabase resources, or implementation instructions.
 
 The original scope authorizes the 22 domain tables named here. Sprint 1B subsequently approved four compact identity control tables—`roles`, `permissions`, `role_permissions`, and `profile_roles`—to satisfy the explicit RBAC, role-assignment, and database-authoritative permission-checking requirement. `profiles` remains table 1 in the domain inventory. Supabase Auth is an external managed dependency and is not counted. Storage buckets, database views, search indexes, scheduled jobs, and observability systems are also outside the table count and require their own design approval.
 
@@ -41,7 +41,7 @@ The compact slice deliberately embeds requested option identifiers on the Lead a
 | Identity control tables       | **4** supplemental fixed-RBAC tables                             |
 | Total planned physical tables | **26** after full MVP implementation                             |
 | Managed authentication tables | Supabase-owned; not duplicated or modified by this plan          |
-| Tenant/company tables         | None in MVP; Naqlia is the sole operator                         |
+| Tenant/company tables         | None in MVP; Naqlk is the sole operator                          |
 | Role/permission model         | Fixed database RBAC; no custom roles or Admin permission editor  |
 | Domain event/outbox tables    | None; persisted Notifications handle launch delivery work        |
 | Pricing-engine tables         | None; Quotations are human-authored                              |
@@ -413,7 +413,7 @@ Search is not authorization. Every query remains role-, record-, field-, and pur
 
 The MVP keeps opaque identifiers, stable business keys, immutable snapshots, explicit owners, normalized contacts, UTC business time, idempotency, fixed RBAC, and closed subject kinds. These choices allow later migration to organizations, tenant-custom RBAC, normalized execution/fleet, domain events, public APIs, workflow, payments, and analytics.
 
-The MVP intentionally does **not** add `organization_id` columns or dormant enterprise parents. Phase 3 multi-company adoption requires an explicit backfill/migration that creates the Naqlia organization, assigns every owned record, adds referential tenant integrity and RLS, and proves zero cross-tenant leakage before onboarding a second company.
+The MVP intentionally does **not** add `organization_id` columns or dormant enterprise parents. Phase 3 multi-company adoption requires an explicit backfill/migration that creates the Naqlk organization, assigns every owned record, adds referential tenant integrity and RLS, and proves zero cross-tenant leakage before onboarding a second company.
 
 ## 13. Physical Design Readiness Gate
 

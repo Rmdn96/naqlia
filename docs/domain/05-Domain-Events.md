@@ -1,4 +1,4 @@
-# Naqlia Domain Events
+# Naqlk Domain Events
 
 | Document field | Value                                                                          |
 | -------------- | ------------------------------------------------------------------------------ |
@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-This document defines the durable business events emitted by Naqlia aggregates. Events provide immutable facts for notifications, projections, integrations, mobile synchronization, workflow orchestration, analytics, and later service extraction without allowing consumers to mutate producer-owned data directly.
+This document defines the durable business events emitted by Naqlk aggregates. Events provide immutable facts for notifications, projections, integrations, mobile synchronization, workflow orchestration, analytics, and later service extraction without allowing consumers to mutate producer-owned data directly.
 
 An event name in this document does not authorize a public API, webhook, queue, analytics pipeline, notification, or future feature. It defines business meaning and compatibility before those delivery mechanisms exist.
 

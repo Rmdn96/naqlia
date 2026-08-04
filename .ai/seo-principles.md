@@ -1,16 +1,16 @@
-# Naqlia SEO Principles
+# Naqlk SEO Principles
 
 | Document field   | Value                                                                                                                                  |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | Status           | Mandatory SEO policy                                                                                                                   |
 | Version          | 1.0.0                                                                                                                                  |
-| Parent authority | [Naqlia Constitution](./constitution.md)                                                                                               |
+| Parent authority | [Naqlk Constitution](./constitution.md)                                                                                                |
 | Owner            | Product, Content, and Engineering leadership                                                                                           |
 | Applies to       | Approved public content, localized routes, metadata, crawl/index behavior, structured data, performance, accessibility, and monitoring |
 
 ## 1. SEO Standard
 
-SEO helps intended audiences discover accurate, useful, accessible public Naqlia content. It MUST NOT expose authenticated operations, customer data, previews, internal environments, support tools, or thin pages created only to manipulate search visibility.
+SEO helps intended audiences discover accurate, useful, accessible public Naqlk content. It MUST NOT expose authenticated operations, customer data, previews, internal environments, support tools, or thin pages created only to manipulate search visibility.
 
 SEO begins with audience, search intent, information architecture, content, language, rendering, and performance—not a final metadata checklist.
 

@@ -1,4 +1,4 @@
-# Naqlia MVP Scope
+# Naqlk MVP Scope
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
@@ -10,15 +10,15 @@
 
 ## 1. Purpose
 
-This document defines the minimum complete product outcome for Naqlia MVP, including boundaries, release slices, dependencies, readiness gates, evidence, and explicit exclusions. It is a scope contract, not authorization to begin implementation without the Constitution's Definition of Ready.
+This document defines the minimum complete product outcome for Naqlk MVP, including boundaries, release slices, dependencies, readiness gates, evidence, and explicit exclusions. It is a scope contract, not authorization to begin implementation without the Constitution's Definition of Ready.
 
 The later [Production MVP Scope](../mvp/01-MVP-Entity-Selection.md) is the controlling four-week implementation plan. It preserves the customer outcome and mandatory controls defined here while superseding earlier assumptions about dedicated enterprise entities, configurable platform abstractions, and database-table selection.
 
 ## 2. MVP Outcome
 
-The MVP proves that a customer in the approved geography can request an eligible transport service in Arabic or English without being forced to create an account; Naqlia can qualify the Lead, prepare and human-review a hybrid Quotation, receive a verified decision, convert approval into an Order, schedule and execute it, and expose privacy-safe status tracking through Order Number + Mobile Number.
+The MVP proves that a customer in the approved geography can request an eligible transport service in Arabic or English without being forced to create an account; Naqlk can qualify the Lead, prepare and human-review a hybrid Quotation, receive a verified decision, convert approval into an Order, schedule and execute it, and expose privacy-safe status tracking through Order Number + Mobile Number.
 
-The operating model is one Naqlia-managed service workspace with internal Sales, Operations, Finance, Customer Service, and Super Admin roles. The architecture remains tenant-capable, but self-service SaaS tenant onboarding and logistics-company workspaces are not MVP product capabilities.
+The operating model is one Naqlk-managed service workspace with internal Sales, Operations, Finance, Customer Service, and Super Admin roles. The architecture remains tenant-capable, but self-service SaaS tenant onboarding and logistics-company workspaces are not MVP product capabilities.
 
 ## 3. Approved MVP Boundaries
 

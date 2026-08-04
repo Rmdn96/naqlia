@@ -1,16 +1,16 @@
-# Naqlia Coding Principles
+# Naqlk Coding Principles
 
 | Document field   | Value                                                                                                 |
 | ---------------- | ----------------------------------------------------------------------------------------------------- |
 | Status           | Mandatory coding policy                                                                               |
 | Version          | 1.0.0                                                                                                 |
-| Parent authority | [Naqlia Constitution](./constitution.md)                                                              |
+| Parent authority | [Naqlk Constitution](./constitution.md)                                                               |
 | Owner            | Engineering leadership                                                                                |
 | Applies to       | TypeScript, React, Next.js, modules, tests, configuration, errors, logs, comments, and generated code |
 
 ## 1. Coding Standard
 
-Naqlia code MUST make ownership, intent, valid state, side effects, failure, and security boundaries understandable to a qualified engineer.
+Naqlk code MUST make ownership, intent, valid state, side effects, failure, and security boundaries understandable to a qualified engineer.
 
 Code is accepted for clarity and correctness over brevity or novelty. A framework feature, generated snippet, lint pass, or successful build does not establish architectural or product correctness.
 
