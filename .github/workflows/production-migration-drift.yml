@@ -1,6 +1,14 @@
 name: Production Migration Drift
 
 on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - ".github/workflows/production-migration-drift.yml"
+      - "scripts/supabase/verify-migration-drift.mjs"
+      - "supabase/migration-checksums.json"
+      - "supabase/migrations/**"
   workflow_dispatch:
   schedule:
     - cron: "17 2 * * *"
@@ -15,6 +23,7 @@ concurrency:
 jobs:
   verify:
     name: Verify repository and production migration history
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 10
 

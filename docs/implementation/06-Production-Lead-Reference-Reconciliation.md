@@ -90,7 +90,7 @@ Run the read-only operator check with a secret direct database URL:
 npm run supabase:migrations:verify
 ```
 
-The scheduled/manual `Production Migration Drift` GitHub workflow uses the encrypted `SUPABASE_PRODUCTION_DB_URL` repository secret and maps it to `SUPABASE_DB_URL`. The verifier never prints the URL or database credentials.
+The same-repository pull-request, scheduled, and manual `Production Migration Drift` GitHub workflow uses the encrypted `SUPABASE_PRODUCTION_DB_URL` repository secret and maps it to `SUPABASE_DB_URL`. Pull requests from forks are explicitly excluded from the secret-backed job. The verifier never prints the URL or database credentials.
 
 For every future migration:
 
