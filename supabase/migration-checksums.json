@@ -19,28 +19,28 @@
     {
       "filename": "20260803153000_core_business_create_schema.sql",
       "name": "core_business_create_schema",
-      "production_history_sha256": "e790b6fcd3e02cb7ac0c00d55bfa43428748472b9a7f5c5ca0f7753357c7ae2b",
+      "production_history_sha256": "e790b6de510feb44262527450ae2592b3a46d0472f529c19be524bb724879d46",
       "repository_sha256": "9fd6c9ec9047a38b4968388346ee10533c8ade0131cf04d8c1aa56e0dce955bc",
       "version": "20260803153000"
     },
     {
       "filename": "20260803154000_core_business_apply_security.sql",
       "name": "core_business_apply_security",
-      "production_history_sha256": "f156d1c8ec4be870d6c22d7cbb7da9462703801fe93732c42e94f9cb31fa4e73",
+      "production_history_sha256": "f156d18303815c16a837e971723ea847de3e717a164cd65e59f1fdd8f900b286",
       "repository_sha256": "5a6a33fd66981fd7cbb3355fe28df03d72f295cba109d54525e8548a0763069f",
       "version": "20260803154000"
     },
     {
       "filename": "20260803154500_identity_harden_authorization_boundary.sql",
       "name": "identity_harden_authorization_boundary",
-      "production_history_sha256": "3854e33eb3a9579958db6ee25363518587c26b1dc9cb27ce2a8b67158365605e",
+      "production_history_sha256": "3854e3667d4ab8199f709b9f3820a94e40b7ef46e0d7f446f6f2fe5317b9dba7",
       "repository_sha256": "60774df6ebd759fe6f568d9c35ca06461e0ae36dac631e1c61d83462ba3ca8c5",
       "version": "20260803154500"
     },
     {
       "filename": "20260803155000_core_business_seed_reference_data.sql",
       "name": "core_business_seed_reference_data",
-      "production_history_sha256": "d127f5d3973519103986734e75247ddd9520c0bd0e960ac8a90f6a96385780bb",
+      "production_history_sha256": "d127f5c4a4f67cad20bead6aa6d5094af48686181e04b12162d35e133f2a5ae4",
       "repository_sha256": "8fa7984ad208a66ccb37ad95f82decbcca449bd46b51e6207ed61a998a322291",
       "version": "20260803155000"
     },
@@ -54,7 +54,7 @@
     {
       "filename": "20260803170500_public_request_repair_arabic_catalog.sql",
       "name": "public_request_repair_arabic_catalog",
-      "production_history_sha256": "c1a1b00dca7b031689807357293281520fb83e7b77c083b2c1ade0a92d7ec520",
+      "production_history_sha256": "c1a1b0f17ed53c511ceba0dde16b4f12e13816dcc6f84b4b68fef127c6917ac0",
       "repository_sha256": "3e33c294419a4537d4ec6ce6abda047f4b22983cd452f386ff42298f2fb73272",
       "version": "20260803170500"
     },
