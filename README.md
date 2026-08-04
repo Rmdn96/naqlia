@@ -73,8 +73,10 @@ npm run build
   - [Core Business Database](docs/implementation/03-Core-Business-Database.md)
   - [Public Request Flow](docs/implementation/04-Public-Request-Flow.md)
   - [Sales Workspace](docs/implementation/05-Sales-Workspace.md)
+  - [Production Lead Reference Reconciliation](docs/implementation/06-Production-Lead-Reference-Reconciliation.md)
 - Backlog
   - [Business Settings Management](docs/backlog/01-Business-Settings-Management.md)
+  - [Leaked-Password Protection](docs/backlog/02-Leaked-Password-Protection.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
 - [Conceptual ERD](docs/02-ERD.md)
 - [Database Naming Conventions](docs/03-Naming-Conventions.md)
