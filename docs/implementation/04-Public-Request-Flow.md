@@ -91,6 +91,8 @@ The rollback is `supabase/rollbacks/20260803170000_public_request_flow.rollback.
 
 Migration `20260803170500_public_request_repair_arabic_catalog.sql` corrects mojibake discovered in the inherited Sprint 2A Arabic reference values during deployed browser verification. It updates only Arabic display fields through stable City, Service, and Service Option keys and fails atomically if any catalog name retains the known corruption markers. This data-quality correction is intentionally forward-only: reverting to corrupted customer-facing text is not an acceptable rollback state.
 
+Production migration drift discovered on 2026-08-04 is reconciled by `20260804113000_reconcile_lead_reference_generation.sql`. The full incident record, active allocator contract, live verification evidence, cleanup, and prevention controls are documented in [Production Lead Reference Reconciliation](06-Production-Lead-Reference-Reconciliation.md). Applied migrations are immutable; the corrective migration supersedes the defective allocator without rewriting its history.
+
 Business contact values remain environment-backed during MVP. The approved future source of truth is documented in [Business Settings Management](../backlog/01-Business-Settings-Management.md); runtime code must prefer its published values when that capability is implemented and use environment variables only as fallback.
 
 ## 8. Security and privacy

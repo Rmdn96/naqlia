@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "canonicalization": "UTF-8 text with CRLF normalized to LF; history statement arrays joined by LF",
+  "migrations": [
+    {
+      "filename": "20260803140500_identity_create_foundation.sql",
+      "name": "identity_create_foundation",
+      "production_history_sha256": "be6fc4bfc9dd7176ac8e3c87a9fdcef0c472b72375f1a080d8758a8df547eedb",
+      "repository_sha256": "be6fc4bfc9dd7176ac8e3c87a9fdcef0c472b72375f1a080d8758a8df547eedb",
+      "version": "20260803140500"
+    },
+    {
+      "filename": "20260803142000_storage_create_foundation_buckets.sql",
+      "name": "storage_create_foundation_buckets",
+      "production_history_sha256": "f47bfe5ddef6efaefa7a70394a4ff1638fe125142c1bccfe0e08f048382b5a8a",
+      "repository_sha256": "f47bfe5ddef6efaefa7a70394a4ff1638fe125142c1bccfe0e08f048382b5a8a",
+      "version": "20260803142000"
+    },
+    {
+      "filename": "20260803153000_core_business_create_schema.sql",
+      "name": "core_business_create_schema",
+      "production_history_sha256": "e790b6de510feb44262527450ae2592b3a46d0472f529c19be524bb724879d46",
+      "repository_sha256": "9fd6c9ec9047a38b4968388346ee10533c8ade0131cf04d8c1aa56e0dce955bc",
+      "version": "20260803153000"
+    },
+    {
+      "filename": "20260803154000_core_business_apply_security.sql",
+      "name": "core_business_apply_security",
+      "production_history_sha256": "f156d18303815c16a837e971723ea847de3e717a164cd65e59f1fdd8f900b286",
+      "repository_sha256": "5a6a33fd66981fd7cbb3355fe28df03d72f295cba109d54525e8548a0763069f",
+      "version": "20260803154000"
+    },
+    {
+      "filename": "20260803154500_identity_harden_authorization_boundary.sql",
+      "name": "identity_harden_authorization_boundary",
+      "production_history_sha256": "3854e3667d4ab8199f709b9f3820a94e40b7ef46e0d7f446f6f2fe5317b9dba7",
+      "repository_sha256": "60774df6ebd759fe6f568d9c35ca06461e0ae36dac631e1c61d83462ba3ca8c5",
+      "version": "20260803154500"
+    },
+    {
+      "filename": "20260803155000_core_business_seed_reference_data.sql",
+      "name": "core_business_seed_reference_data",
+      "production_history_sha256": "d127f5c4a4f67cad20bead6aa6d5094af48686181e04b12162d35e133f2a5ae4",
+      "repository_sha256": "8fa7984ad208a66ccb37ad95f82decbcca449bd46b51e6207ed61a998a322291",
+      "version": "20260803155000"
+    },
+    {
+      "filename": "20260803170000_public_request_flow.sql",
+      "name": "public_request_flow",
+      "production_history_sha256": "a1817f01ef7816638f21ef430976f9a1e234116b0d74c9af0cf5a09ed6ecdf50",
+      "repository_sha256": "a1817f01ef7816638f21ef430976f9a1e234116b0d74c9af0cf5a09ed6ecdf50",
+      "version": "20260803170000"
+    },
+    {
+      "filename": "20260803170500_public_request_repair_arabic_catalog.sql",
+      "name": "public_request_repair_arabic_catalog",
+      "production_history_sha256": "c1a1b0f17ed53c511ceba0dde16b4f12e13816dcc6f84b4b68fef127c6917ac0",
+      "repository_sha256": "3e33c294419a4537d4ec6ce6abda047f4b22983cd452f386ff42298f2fb73272",
+      "version": "20260803170500"
+    },
+    {
+      "filename": "20260803171000_standardize_lead_references.sql",
+      "name": "standardize_lead_references",
+      "production_history_sha256": "905944d049d37930e4c0fe78cdf2fa46b0283c19a2a129629dae36efd73e997e",
+      "repository_sha256": "905944d049d37930e4c0fe78cdf2fa46b0283c19a2a129629dae36efd73e997e",
+      "version": "20260803171000"
+    },
+    {
+      "filename": "20260804090000_sales_workspace.sql",
+      "name": "sales_workspace",
+      "production_history_sha256": "bd43e70ea9e1e1951afc93cede2816a3ea5e7745705b75926f2e468ffa1c8033",
+      "repository_sha256": "bd43e70ea9e1e1951afc93cede2816a3ea5e7745705b75926f2e468ffa1c8033",
+      "version": "20260804090000"
+    },
+    {
+      "filename": "20260804113000_reconcile_lead_reference_generation.sql",
+      "name": "reconcile_lead_reference_generation",
+      "production_history_sha256": "e8f566ed2ce4cc65b720b3c5d2e57c684cfc6f8956703468529b0fb61d01fa97",
+      "repository_sha256": "e8f566ed2ce4cc65b720b3c5d2e57c684cfc6f8956703468529b0fb61d01fa97",
+      "version": "20260804113000"
+    }
+  ]
+}
