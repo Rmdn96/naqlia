@@ -198,6 +198,38 @@ type QuotationRow = AuditFields & {
   tax_amount: number;
   terms_ar: string;
   terms_en: string;
+  vat_rate: number;
+};
+
+type QuotationLineItemRow = {
+  created_at: string;
+  created_by_profile_id: string | null;
+  description: string;
+  id: string;
+  line_number: number;
+  line_total_amount: number;
+  quantity: number;
+  quotation_id: string;
+  unit_price: number;
+};
+
+type LeadActivityLogRow = {
+  actor_profile_id: string | null;
+  created_at: string;
+  details: Json;
+  event_key: string;
+  id: string;
+  lead_id: string;
+  occurred_at: string;
+  quotation_id: string | null;
+};
+
+type LeadWorkspaceViewRow = {
+  created_at: string;
+  last_viewed_at: string;
+  lead_id: string;
+  profile_id: string;
+  updated_at: string;
 };
 
 type OrderRow = AuditFields & {
@@ -262,6 +294,39 @@ export type Database = {
         };
         Returns: boolean;
       };
+      sales_get_lead_detail: {
+        Args: { p_lead_id: string };
+        Returns: Json;
+      };
+      sales_list_lead_inbox: {
+        Args: {
+          p_city_id?: string | null;
+          p_page?: number | null;
+          p_page_size?: number | null;
+          p_search?: string | null;
+          p_service_id?: string | null;
+          p_sort_by?: string | null;
+          p_sort_direction?: string | null;
+          p_status?: string | null;
+        };
+        Returns: Json;
+      };
+      sales_mark_lead_viewed: {
+        Args: { p_lead_id: string };
+        Returns: boolean;
+      };
+      sales_save_quotation: {
+        Args: {
+          p_draft_payload?: Json;
+          p_lead_id: string;
+          p_quotation_id?: string | null;
+        };
+        Returns: Json;
+      };
+      sales_send_quotation: {
+        Args: { p_quotation_id: string };
+        Returns: Json;
+      };
       submit_guest_service_request: {
         Args: {
           attachment_payload?: Json;
@@ -297,6 +362,18 @@ export type Database = {
         Relationships: [];
         Row: LeadAttachmentRow;
         Update: Partial<LeadAttachmentRow>;
+      };
+      lead_activity_logs: {
+        Insert: InsertWithRequired<LeadActivityLogRow, "event_key" | "lead_id">;
+        Relationships: [];
+        Row: LeadActivityLogRow;
+        Update: Partial<LeadActivityLogRow>;
+      };
+      lead_workspace_views: {
+        Insert: InsertWithRequired<LeadWorkspaceViewRow, "lead_id" | "profile_id">;
+        Relationships: [];
+        Row: LeadWorkspaceViewRow;
+        Update: Partial<LeadWorkspaceViewRow>;
       };
       leads: {
         Insert: InsertWithRequired<
@@ -383,6 +460,15 @@ export type Database = {
         Relationships: [];
         Row: QuotationRow;
         Update: Partial<QuotationRow>;
+      };
+      quotation_line_items: {
+        Insert: InsertWithRequired<
+          QuotationLineItemRow,
+          "description" | "line_number" | "quantity" | "quotation_id" | "unit_price"
+        >;
+        Relationships: [];
+        Row: QuotationLineItemRow;
+        Update: Partial<QuotationLineItemRow>;
       };
       role_permissions: {
         Insert: {

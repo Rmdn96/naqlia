@@ -14,3 +14,5 @@ export type IdentityPermission =
   | "identity.profile.manage"
   | "identity.profile.read"
   | "identity.role.read";
+
+export type SalesWorkspacePermission = "sales.workspace.manage" | "sales.workspace.read";
