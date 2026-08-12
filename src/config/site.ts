@@ -1,7 +1,7 @@
-import { BRAND, PRODUCTION_ORIGIN } from "@/config/brand";
+import { ACTIVE_PRODUCTION_ORIGIN, BRAND } from "@/config/brand";
 
 export function getMetadataBase(): URL {
-  return new URL(PRODUCTION_ORIGIN);
+  return new URL(ACTIVE_PRODUCTION_ORIGIN);
 }
 
 export function getWhatsAppHref(message: string): string {

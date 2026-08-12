@@ -18,14 +18,24 @@ describe("Naqlk SEO identity", () => {
   it("uses the canonical origin for every sitemap entry", () => {
     const entries = sitemap();
     expect(entries).toHaveLength(6);
-    expect(entries.every(({ url }) => url.startsWith(`${BRAND.domains.primary}/`))).toBe(true);
+    expect(
+      entries.every(({ url }) => url.startsWith(`${BRAND.domains.activeProductionOrigin}/`)),
+    ).toBe(true);
   });
 
   it("publishes the canonical sitemap and host through robots", () => {
     expect(robots()).toMatchObject({
-      host: "https://naqlk.com",
-      sitemap: "https://naqlk.com/sitemap.xml",
+      host: "https://naqlk.vercel.app",
+      sitemap: "https://naqlk.vercel.app/sitemap.xml",
     });
+  });
+
+  it("does not promote the future or preview domain into active SEO output", () => {
+    expect(BRAND.domains.activeProductionOrigin).toBe("https://naqlk.vercel.app");
+    expect(BRAND.domains.futureCustomDomain).toBe("https://naqlk.com");
+    expect(sitemap().some(({ url }) => url.startsWith(BRAND.domains.futureCustomDomain))).toBe(
+      false,
+    );
   });
 
   it("uses Naqlk in both WhatsApp templates", () => {

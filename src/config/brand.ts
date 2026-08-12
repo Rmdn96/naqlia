@@ -5,8 +5,9 @@ type LocalizedBrandValue = Readonly<Record<BrandLocale, string>>;
 export type BrandConfiguration = Readonly<{
   abbreviation: "NQ";
   domains: Readonly<{
-    primary: "https://naqlk.com";
-    www: "https://www.naqlk.com";
+    activeProductionOrigin: "https://naqlk.vercel.app";
+    futureCustomDomain: "https://naqlk.com";
+    futureWwwDomain: "https://www.naqlk.com";
   }>;
   metadata: Readonly<{
     defaultDescription: LocalizedBrandValue;
@@ -34,8 +35,9 @@ export type BrandConfiguration = Readonly<{
 export const BRAND: BrandConfiguration = {
   abbreviation: "NQ",
   domains: {
-    primary: "https://naqlk.com",
-    www: "https://www.naqlk.com",
+    activeProductionOrigin: "https://naqlk.vercel.app",
+    futureCustomDomain: "https://naqlk.com",
+    futureWwwDomain: "https://www.naqlk.com",
   },
   metadata: {
     defaultDescription: {
@@ -67,7 +69,8 @@ export const BRAND: BrandConfiguration = {
   },
 };
 
-export const PRODUCTION_ORIGIN = BRAND.domains.primary;
+export const ACTIVE_PRODUCTION_ORIGIN = BRAND.domains.activeProductionOrigin;
+export const FUTURE_CUSTOM_DOMAIN = BRAND.domains.futureCustomDomain;
 
 export function getBrandName(locale: BrandLocale): string {
   return BRAND.names[locale];
@@ -84,7 +87,7 @@ export function getOrganizationStructuredData(locale: BrandLocale) {
     alternateName: locale === "ar" ? BRAND.names.en : BRAND.names.ar,
     name: getBrandName(locale),
     slogan: getBrandTagline(locale),
-    url: BRAND.domains.primary,
+    url: BRAND.domains.activeProductionOrigin,
   } as const;
 }
 

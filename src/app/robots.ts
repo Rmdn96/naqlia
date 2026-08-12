@@ -5,7 +5,7 @@ import { getMetadataBase } from "@/config/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    host: BRAND.domains.primary,
+    host: BRAND.domains.activeProductionOrigin,
     rules: [
       { allow: ["/ar", "/ar/", "/en", "/en/"], disallow: ["/*/request/success"], userAgent: "*" },
     ],

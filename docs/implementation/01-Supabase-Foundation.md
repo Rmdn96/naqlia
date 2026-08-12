@@ -114,23 +114,23 @@ Do not run `init` in production until the Platform owner confirms the target pro
 
 ## 6. Environment Variables
 
-| Variable                               | Exposure           | Required            | Purpose                                                                                                                                                          |
-| -------------------------------------- | ------------------ | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_APP_URL`                  | Public             | Yes                 | Canonical origin used to construct OAuth callback URLs; environment-specific.                                                                                    |
-| `NEXT_PUBLIC_DEFAULT_LOCALE`           | Public             | Yes                 | Default locale; remains `ar`.                                                                                                                                    |
-| `NEXT_PUBLIC_SUPPORTED_LOCALES`        | Public             | Yes                 | Comma-separated supported locales; remains `ar,en`.                                                                                                              |
-| `NEXT_PUBLIC_SUPABASE_URL`             | Public             | Yes                 | Supabase project URL from the Connect dialog.                                                                                                                    |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public             | Yes                 | Current publishable API key; replaces the legacy anon-key variable.                                                                                              |
-| `NEXT_PUBLIC_AUTH_GOOGLE_ENABLED`      | Public             | Yes                 | `true` only after Google provider and redirect configuration is complete; otherwise `false`.                                                                     |
-| `NEXT_PUBLIC_AUTH_APPLE_ENABLED`       | Public             | Yes                 | `true` only after Apple provider and rotation ownership is complete; otherwise `false`.                                                                          |
-| `SUPABASE_SECRET_KEY`                  | Secret/server-only | Initialization only | Elevated key used solely by the storage initialization script. It bypasses RLS and must never enter browser code, logs, source control, or public documentation. |
+| Variable                               | Exposure           | Required            | Purpose                                                                                                                                                                                                                  |
+| -------------------------------------- | ------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `NEXT_PUBLIC_APP_URL`                  | Public             | Yes                 | Approved application origin used to construct OAuth callback URLs. Production and Preview use the stable active production origin; local development uses localhost. SEO canonicals come from the typed brand authority. |
+| `NEXT_PUBLIC_DEFAULT_LOCALE`           | Public             | Yes                 | Default locale; remains `ar`.                                                                                                                                                                                            |
+| `NEXT_PUBLIC_SUPPORTED_LOCALES`        | Public             | Yes                 | Comma-separated supported locales; remains `ar,en`.                                                                                                                                                                      |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Public             | Yes                 | Supabase project URL from the Connect dialog.                                                                                                                                                                            |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public             | Yes                 | Current publishable API key; replaces the legacy anon-key variable.                                                                                                                                                      |
+| `NEXT_PUBLIC_AUTH_GOOGLE_ENABLED`      | Public             | Yes                 | `true` only after Google provider and redirect configuration is complete; otherwise `false`.                                                                                                                             |
+| `NEXT_PUBLIC_AUTH_APPLE_ENABLED`       | Public             | Yes                 | `true` only after Apple provider and rotation ownership is complete; otherwise `false`.                                                                                                                                  |
+| `SUPABASE_SECRET_KEY`                  | Secret/server-only | Initialization only | Elevated key used solely by the storage initialization script. It bypasses RLS and must never enter browser code, logs, source control, or public documentation.                                                         |
 
 Environment rules:
 
 1. Real values belong in `.env.local`, encrypted CI settings, Vercel environment variables, or another approved secret manager.
 2. `.env.example` contains names and non-secret examples only.
 3. No application client imports or reads `SUPABASE_SECRET_KEY`.
-4. Preview and production use different approved `NEXT_PUBLIC_APP_URL` values and redirect allowlists.
+4. Production and Preview use the stable approved production `NEXT_PUBLIC_APP_URL`; preview and localhost callback origins remain explicitly allowlisted for flows that derive the current browser origin.
 5. A missing/invalid required public connection value fails when a Supabase client is created; it does not silently fall back to another project.
 
 ## 7. Implementation Decisions

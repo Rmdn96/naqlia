@@ -20,6 +20,11 @@ describe("Naqlk brand authority", () => {
     expect(getBrandTagline("ar")).toBe("نقلك... ننقل كل ما يهمك");
     expect(getBrandTagline("en")).toBe("Your move. Everything that matters.");
     expect(BRAND.abbreviation).toBe("NQ");
+    expect(BRAND.domains).toEqual({
+      activeProductionOrigin: "https://naqlk.vercel.app",
+      futureCustomDomain: "https://naqlk.com",
+      futureWwwDomain: "https://www.naqlk.com",
+    });
   });
 
   it("keeps Arabic as the default locale with English available", () => {
@@ -32,7 +37,7 @@ describe("Naqlk brand authority", () => {
     vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://preview.example.vercel.app");
     vi.stubEnv("VERCEL_URL", "preview.example.vercel.app");
 
-    expect(getMetadataBase().toString()).toBe("https://naqlk.com/");
+    expect(getMetadataBase().toString()).toBe("https://naqlk.vercel.app/");
 
     vi.unstubAllEnvs();
   });
@@ -50,7 +55,7 @@ describe("Naqlk brand authority", () => {
       alternateName: "Naqlk",
       name: "نقلك",
       slogan: "نقلك... ننقل كل ما يهمك",
-      url: "https://naqlk.com",
+      url: "https://naqlk.vercel.app",
     });
   });
 

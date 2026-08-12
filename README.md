@@ -1,6 +1,6 @@
 # Naqlk
 
-Naqlk (`نقلك`) is an Arabic-first logistics platform for Saudi Arabia: **نقلك... ننقل كل ما يهمك**. Arabic (`ar`, RTL) is the default product language and English (`en`, LTR) is the secondary language. The canonical production domain is [naqlk.com](https://naqlk.com).
+Naqlk (`نقلك`) is an Arabic-first logistics platform for Saudi Arabia: **نقلك... ننقل كل ما يهمك**. Arabic (`ar`, RTL) is the default product language and English (`en`, LTR) is the secondary language. During MVP development and pre-launch, the active production and canonical origin is [naqlk.vercel.app](https://naqlk.vercel.app). The planned commercial domain is [naqlk.com](https://naqlk.com) and is not yet registered.
 
 ## Foundation status
 
@@ -83,6 +83,7 @@ npm run build
 - Backlog
   - [Business Settings Management](docs/backlog/01-Business-Settings-Management.md)
   - [Leaked-Password Protection](docs/backlog/02-Leaked-Password-Protection.md)
+  - [Naqlk Custom Domain Production Cutover](docs/backlog/03-Naqlk-Custom-Domain-Production-Cutover.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
 - [Conceptual ERD](docs/02-ERD.md)
 - [Database Naming Conventions](docs/03-Naming-Conventions.md)
