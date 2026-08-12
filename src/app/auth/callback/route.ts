@@ -18,14 +18,20 @@ function createRedirect(request: NextRequest, path: string, result?: "error") {
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
+  const tokenHash = request.nextUrl.searchParams.get("token_hash");
+  const tokenType = request.nextUrl.searchParams.get("type");
   const nextPath = getSafeRedirectPath(request.nextUrl.searchParams.get("next"));
 
-  if (!code || request.nextUrl.searchParams.has("error")) {
+  if (request.nextUrl.searchParams.has("error")) {
     return createRedirect(request, nextPath, "error");
   }
 
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { error } = code
+    ? await supabase.auth.exchangeCodeForSession(code)
+    : tokenHash && tokenType === "magiclink"
+      ? await supabase.auth.verifyOtp({ token_hash: tokenHash, type: tokenType })
+      : { error: new Error("Missing or unsupported authentication credentials.") };
 
   if (error) {
     return createRedirect(request, nextPath, "error");
