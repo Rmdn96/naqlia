@@ -37,8 +37,6 @@ These rules prevent an identity table from becoming an accidental prerequisite f
 
 ## 3. Authentication Architecture
 
-Staff passwordless email links use the existing `/auth/callback` endpoint. The endpoint accepts Supabase PKCE authorization codes and the explicit `magiclink` token-hash format used by the production email template. Both paths exchange or verify the short-lived credential server-side, write session cookies, validate the local `next` path, and redirect without exposing authentication credentials in application URLs or logs.
-
 | Method         | Project state      | Sprint 1B boundary                                                                                                                                                   |
 | -------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Guest          | Ready without Auth | No Supabase user or Profile is created.                                                                                                                              |
