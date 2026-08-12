@@ -18,7 +18,7 @@ Sprint 4 delivers the first internal staff vertical slice: a Sales-only workspac
 Guest request → Lead → Draft quotation → Sent → Approved → Order ready
 ```
 
-The implementation deliberately stops at an issued quotation. Customer delivery, quotation approval UI, order creation, operations, finance, payment, dispatch, and customer-account features remain outside this sprint.
+Sprint 4 deliberately stopped at an issued quotation. The later [Customer Quotation Response Flow](07-Customer-Quotation-Response-Flow.md) now owns secure guest review, acceptance/rejection, and accepted-quotation Order creation; operations, finance, payment, dispatch, and customer-account features remain outside the Sales Workspace scope.
 
 ## 2. Access boundary
 
@@ -152,7 +152,7 @@ npm run build
 
 ## 10. Explicit non-goals and next dependencies
 
-This sprint does **not** add an admin dashboard, Operations workspace, Finance workspace, payments, dispatch, pricing engine, customer quotation approval, order creation, public quotation endpoint, or delivery-channel integration.
+Sprint 4 did **not** add an admin dashboard, Operations workspace, Finance workspace, payments, dispatch, pricing engine, customer quotation approval, order creation, public quotation endpoint, or delivery-channel integration. The secure public response and Order boundary was added later and is documented separately; automated delivery remains excluded.
 
 The next approved work must separately define:
 

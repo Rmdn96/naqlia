@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus, Save, Send } from "lucide-react";
+import { Copy, ExternalLink, Minus, Plus, RefreshCw, Save, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type FormEvent, useMemo, useState, useTransition } from "react";
 
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  reissueQuotationAccessAction,
   saveQuotationAction,
   sendQuotationAction,
 } from "@/features/sales-workspace/actions/sales-workspace.actions";
@@ -22,6 +23,7 @@ import type {
 import type { AppLocale } from "@/i18n/routing";
 
 type QuotationBuilderProps = {
+  customerLocale: AppLocale;
   defaultValidityDays: number;
   defaultVatRate: number;
   initialQuotation: SalesQuotation | null;
@@ -75,6 +77,7 @@ function messageKey(
     invalid_draft: "errorInvalidDraft",
     not_authorized: "errorUnauthorized",
     not_found: "errorNotFound",
+    reissue_failed: "errorReissue",
     save_failed: "errorSave",
     send_failed: "errorSend",
   } as const;
@@ -83,6 +86,7 @@ function messageKey(
 }
 
 export function QuotationBuilder({
+  customerLocale,
   defaultValidityDays,
   defaultVatRate,
   initialQuotation,
@@ -96,6 +100,7 @@ export function QuotationBuilder({
     getInitialDraft(initialQuotation, defaultValidityDays, defaultVatRate),
   );
   const [notice, setNotice] = useState<{ tone: "error" | "success"; text: string } | null>(null);
+  const [customerLink, setCustomerLink] = useState<string | null>(null);
   const isReadOnly = initialQuotation !== null && initialQuotation.status !== "draft";
   const subtotal = useMemo(
     () => draft.lineItems.reduce((total, line) => total + line.quantity * line.unitPrice, 0),
@@ -167,15 +172,53 @@ export function QuotationBuilder({
         return;
       }
 
-      const sendResult = await sendQuotationAction(leadId, saveResult.quotationId, locale);
+      const sendResult = await sendQuotationAction(
+        leadId,
+        saveResult.quotationId,
+        locale,
+        customerLocale,
+      );
 
       if (sendResult.status === "error") {
         setNotice({ tone: "error", text: t(messageKey(sendResult.message)) });
         return;
       }
 
+      setCustomerLink(
+        sendResult.customerPath
+          ? new URL(sendResult.customerPath, window.location.origin).toString()
+          : null,
+      );
       setNotice({ tone: "success", text: t("sendSuccess") });
     });
+  }
+
+  function reissueAccess() {
+    if (!activeQuotationId) return;
+    startTransition(async () => {
+      setNotice(null);
+      const result = await reissueQuotationAccessAction(
+        leadId,
+        activeQuotationId,
+        locale,
+        customerLocale,
+      );
+      if (result.status === "error") {
+        setNotice({ tone: "error", text: t(messageKey(result.message)) });
+        return;
+      }
+      const link = result.customerPath
+        ? new URL(result.customerPath, window.location.origin).toString()
+        : null;
+      setCustomerLink(link);
+      setNotice({ tone: "success", text: t("reissueSuccess") });
+    });
+  }
+
+  async function copyCustomerLink() {
+    if (!customerLink) return;
+    await navigator.clipboard.writeText(customerLink);
+    setNotice({ tone: "success", text: t("copySuccess") });
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -218,6 +261,28 @@ export function QuotationBuilder({
           >
             {notice.text}
           </p>
+        ) : null}
+
+        {customerLink ? (
+          <div className="mt-5 rounded-md border border-emerald-500/25 bg-emerald-500/10 p-4">
+            <p className="text-sm font-black text-emerald-900">{t("customerLinkReady")}</p>
+            <p className="mt-1 text-xs text-emerald-900/75">{t("customerLinkOneTimeNotice")}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Button onClick={copyCustomerLink} type="button" variant="outline">
+                <Copy aria-hidden="true" className="size-4" />
+                {t("copyCustomerLink")}
+              </Button>
+              <a
+                className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground"
+                href={customerLink}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <ExternalLink aria-hidden="true" className="size-4" />
+                {t("openCustomerPage")}
+              </a>
+            </div>
+          </div>
         ) : null}
 
         <fieldset className="mt-7" disabled={isPending || isReadOnly}>
@@ -365,6 +430,22 @@ export function QuotationBuilder({
                 {isPending ? t("sending") : t("sendQuotation")}
               </Button>
             </div>
+          </div>
+        ) : null}
+
+        {isReadOnly && initialQuotation?.status === "sent" ? (
+          <div className="mt-7 border-t border-border pt-6">
+            <p className="text-sm leading-6 text-muted-foreground">{t("reissueNotice")}</p>
+            <Button
+              className="mt-3"
+              disabled={isPending}
+              onClick={reissueAccess}
+              type="button"
+              variant="outline"
+            >
+              <RefreshCw aria-hidden="true" className="size-4" />
+              {isPending ? t("reissuing") : t("reissueCustomerAccess")}
+            </Button>
           </div>
         ) : null}
       </form>

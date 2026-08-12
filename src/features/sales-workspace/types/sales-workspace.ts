@@ -71,6 +71,7 @@ export type SalesQuotation = {
   line_items: QuotationLineItem[];
   quotation_number: string;
   quoted_amount: number;
+  rejected_at?: string | null;
   revision_number: number;
   sent_at: string | null;
   status: QuotationStatus;
@@ -131,10 +132,17 @@ export type QuotationDraftPayload = {
 
 export type QuotationCommandResult =
   | {
+      customerPath?: string;
       quotationId: string;
       status: "success";
     }
   | {
-      message: "invalid_draft" | "not_authorized" | "not_found" | "save_failed" | "send_failed";
+      message:
+        | "invalid_draft"
+        | "not_authorized"
+        | "not_found"
+        | "reissue_failed"
+        | "save_failed"
+        | "send_failed";
       status: "error";
     };

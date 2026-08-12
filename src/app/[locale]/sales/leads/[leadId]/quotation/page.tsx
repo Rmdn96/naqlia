@@ -45,6 +45,7 @@ export default async function QuotationBuilderPage({
           defaultValidityDays={getDefaultQuotationValidityDays()}
           defaultVatRate={getDefaultQuotationVatRate()}
           initialQuotation={selectedQuotation ?? null}
+          customerLocale={detail.lead.preferred_locale}
           leadId={leadId}
           locale={locale}
         />
