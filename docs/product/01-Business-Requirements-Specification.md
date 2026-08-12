@@ -1,4 +1,4 @@
-# Naqlia Business Requirements Specification
+# Naqlk Business Requirements Specification
 
 | Document field | Value                                                  |
 | -------------- | ------------------------------------------------------ |
@@ -12,9 +12,9 @@
 
 ## 1. Purpose
 
-This Business Requirements Specification defines the approved business model, scope, actors, outcomes, capabilities, constraints, and success measures for Naqlia PDS v1. It is the business-level source for the detailed requirements in this directory.
+This Business Requirements Specification defines the approved business model, scope, actors, outcomes, capabilities, constraints, and success measures for Naqlk PDS v1. It is the business-level source for the detailed requirements in this directory.
 
-This document does not authorize implementation by itself. Every implementation increment MUST also satisfy the [Naqlia Constitution](../../.ai/constitution.md), [Product Principles](../../.ai/product-principles.md), applicable architecture, and the Definition of Ready.
+This document does not authorize implementation by itself. Every implementation increment MUST also satisfy the [Naqlk Constitution](../../.ai/constitution.md), [Product Principles](../../.ai/product-principles.md), applicable architecture, and the Definition of Ready.
 
 ## 2. Normative Language and Traceability
 
@@ -35,11 +35,11 @@ An identifier MUST NOT be reused after retirement. Changed meaning requires a ne
 
 ## 3. Executive Summary
 
-Naqlia PDS v1 defines an Arabic-first service-request and transport-order platform for customers in Saudi Arabia. The MVP accepts guest or registered customer requests for furniture moving and general cargo transport within Riyadh or from Riyadh to supported Saudi cities.
+Naqlk PDS v1 defines an Arabic-first service-request and transport-order platform for customers in Saudi Arabia. The MVP accepts guest or registered customer requests for furniture moving and general cargo transport within Riyadh or from Riyadh to supported Saudi cities.
 
 Every valid request becomes a lead. A Sales representative reviews the request and prepares a final quotation using a hybrid pricing model: configurable pricing rules may produce an internal estimate, but no customer quotation becomes final without human Sales review. Customer acceptance and any required internal approval convert the quotation into an order. Operations schedules and executes the order. Customers track an order using its Order Number and the matching Mobile Number.
 
-Naqlia internal work is separated among Super Admin, Sales, Operations, Finance, and Customer Service roles. Business values are managed through a governed Admin Panel rather than hardcoded application logic.
+Naqlk internal work is separated among Super Admin, Sales, Operations, Finance, and Customer Service roles. Business values are managed through a governed Admin Panel rather than hardcoded application logic.
 
 ## 4. Approved Business Decisions
 
@@ -64,7 +64,7 @@ Naqlia internal work is separated among Super Admin, Sales, Operations, Finance,
 
 ## 5. Operating Model
 
-PDS v1 defines one Naqlia-operated service workspace. External customers request transport services; Naqlia staff qualify, quote, schedule, execute, support, and financially govern those requests.
+PDS v1 defines one Naqlk-operated service workspace. External customers request transport services; Naqlk staff qualify, quote, schedule, execute, support, and financially govern those requests.
 
 The approved system and database architecture remain organization-aware and capable of future multi-tenant evolution. PDS v1 does not include self-service onboarding of logistics companies, organization administrators, subcontractor portals, driver applications, or customer-configured workspaces.
 
@@ -72,7 +72,7 @@ The internal role named **Super Admin** is a governed application role. It is no
 
 ## 6. Business Problem
 
-Customers need a clear, Arabic-first way to request moving or cargo transport without first creating an account. Naqlia needs a controlled process that turns incomplete customer intent into a reviewed quotation, an executable order, and a traceable completion record.
+Customers need a clear, Arabic-first way to request moving or cargo transport without first creating an account. Naqlk needs a controlled process that turns incomplete customer intent into a reviewed quotation, an executable order, and a traceable completion record.
 
 The platform addresses these problems:
 
@@ -124,7 +124,7 @@ The platform addresses these problems:
 | ------------------- | ------------------------------------------------------------------ | -------------------------------- |
 | Visitor             | Unauthenticated person discovering services or beginning a request | None                             |
 | Guest Customer      | Person who submitted a request without an account                  | None                             |
-| Registered Customer | Customer with an optional Naqlia account                           | Email, Google, or Apple identity |
+| Registered Customer | Customer with an optional Naqlk account                            | Email, Google, or Apple identity |
 
 Guest and registered customers have the same right to request a supported service and track an order. An account MAY provide convenience and history, but MUST NOT be required to obtain a quotation or execute an approved order.
 
@@ -162,7 +162,7 @@ Visitor is a journey actor, not a persisted lifecycle state. Submitting a valid 
 
 ## 11. Service Model
 
-Naqlia's catalog has three composable dimensions:
+Naqlk's catalog has three composable dimensions:
 
 1. **Cargo service:** Furniture Moving or General Cargo Transport.
 2. **Route class:** Local Transport or Intercity Transport.

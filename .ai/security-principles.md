@@ -1,16 +1,16 @@
-# Naqlia Security Principles
+# Naqlk Security Principles
 
 | Document field   | Value                                                                                                            |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------- |
 | Status           | Mandatory security policy                                                                                        |
 | Version          | 1.0.0                                                                                                            |
-| Parent authority | [Naqlia Constitution](./constitution.md)                                                                         |
+| Parent authority | [Naqlk Constitution](./constitution.md)                                                                          |
 | Owner            | Security and Engineering leadership                                                                              |
 | Applies to       | Product design, identity, authorization, data, code, dependencies, infrastructure, operations, incidents, and AI |
 
 ## 1. Security Standard
 
-Naqlia protects the confidentiality, integrity, availability, privacy, and accountable use of customer, user, operational, and platform data.
+Naqlk protects the confidentiality, integrity, availability, privacy, and accountable use of customer, user, operational, and platform data.
 
 Security is a release condition and architecture input. It MUST NOT depend on obscurity, UI restrictions, customer caution, a private repository, or a single provider feature.
 

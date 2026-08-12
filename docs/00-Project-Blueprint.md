@@ -1,10 +1,10 @@
-# Naqlia Master Project Blueprint
+# Naqlk Master Project Blueprint
 
 | Document field     | Value                                                                   |
 | ------------------ | ----------------------------------------------------------------------- |
 | Document status    | Baseline — authoritative project reference                              |
 | Version            | 1.0                                                                     |
-| Product            | Naqlia                                                                  |
+| Product            | Naqlk                                                                   |
 | Product type       | Multi-tenant logistics software as a service (SaaS)                     |
 | Primary market     | Kingdom of Saudi Arabia                                                 |
 | Default language   | Arabic (`ar`, RTL)                                                      |
@@ -15,15 +15,15 @@
 
 ## Document Authority
 
-This document is the single source of truth for Naqlia's product identity, direction, scope, and approved technical baseline. The [Naqlia Constitution](../.ai/constitution.md) is the higher authority for how product and engineering decisions, implementation, review, release, and operations are governed. The approved [Product Documentation Suite v1](./product/01-Business-Requirements-Specification.md) is the detailed MVP product baseline beneath this blueprint. Neither this blueprint nor the PDS authorizes implementation of a roadmap item by itself.
+This document is the single source of truth for Naqlk's product identity, direction, scope, and approved technical baseline. The [Naqlk Constitution](../.ai/constitution.md) is the higher authority for how product and engineering decisions, implementation, review, release, and operations are governed. The approved [Product Documentation Suite v1](./product/01-Business-Requirements-Specification.md) is the detailed MVP product baseline beneath this blueprint. Neither this blueprint nor the PDS authorizes implementation of a roadmap item by itself.
 
 The terms **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** indicate requirement strength. When another project document conflicts with this blueprint on product meaning or approved scope, this blueprint takes precedence unless the Constitution is the source of the governing rule. Detailed principles and guides may add implementation requirements but must remain consistent with both documents. Material architectural decisions must be recorded as Architecture Decision Records (ADRs) and reflected here when they alter the baseline.
 
 ## 1. Executive Summary
 
-Naqlia is an Arabic-first, enterprise-grade logistics SaaS platform intended to help logistics organizations in Saudi Arabia coordinate transport operations through a secure, scalable, and maintainable digital system. The platform is expected to connect operational planning, shipment execution, fleet resources, tracking, documentation, communication, reporting, and integrations while preserving clear organizational and data boundaries.
+Naqlk is an Arabic-first, enterprise-grade logistics SaaS platform intended to help logistics organizations in Saudi Arabia coordinate transport operations through a secure, scalable, and maintainable digital system. The platform is expected to connect operational planning, shipment execution, fleet resources, tracking, documentation, communication, reporting, and integrations while preserving clear organizational and data boundaries.
 
-Naqlia will begin as a feature-based modular monolith built with Next.js, React, TypeScript, Supabase, PostgreSQL, and Vercel. This architecture minimizes operational complexity during product discovery while creating explicit boundaries that can evolve as usage and organizational scale justify change.
+Naqlk will begin as a feature-based modular monolith built with Next.js, React, TypeScript, Supabase, PostgreSQL, and Vercel. This architecture minimizes operational complexity during product discovery while creating explicit boundaries that can evolve as usage and organizational scale justify change.
 
 The current repository contains the project foundation and documentation only. It intentionally contains no product page, authentication flow, API, business feature, or database schema. Functional scope is directional unless an approved requirements baseline defines it. PDS v1 now defines the first MVP product scope, but implementation still requires the Constitution's Definition of Ready and separate delivery authorization.
 
@@ -40,7 +40,7 @@ The platform's defining commitments are:
 
 To become the trusted digital operating platform for modern logistics in Saudi Arabia, enabling organizations to move goods with greater clarity, control, reliability, and efficiency.
 
-Naqlia should make complex transport operations understandable and actionable for Arabic-speaking teams while remaining interoperable with the broader logistics ecosystem.
+Naqlk should make complex transport operations understandable and actionable for Arabic-speaking teams while remaining interoperable with the broader logistics ecosystem.
 
 ## 3. Mission
 
@@ -69,7 +69,7 @@ The hybrid Quotation approach is approved in PDS v1. Exact commercial targets, p
 
 The initial market is the Kingdom of Saudi Arabia. Product decisions should reflect Saudi operating conditions, Arabic terminology, local time and currency conventions, mobile usage patterns, and applicable regulatory obligations. Regional expansion is a future decision and must not dilute Arabic-first delivery.
 
-For PDS v1, the initial operating wedge is one Naqlia-managed service workspace serving customer requests within enabled Riyadh coverage and from Riyadh to enabled Saudi cities. It supports Furniture Moving and General Cargo Transport through Local and Intercity route classes. This customer-facing wedge validates the operating model while preserving the long-term logistics SaaS direction; self-service tenant onboarding is future scope.
+For PDS v1, the initial operating wedge is one Naqlk-managed service workspace serving customer requests within enabled Riyadh coverage and from Riyadh to enabled Saudi cities. It supports Furniture Moving and General Cargo Transport through Local and Intercity route classes. This customer-facing wedge validates the operating model while preserving the long-term logistics SaaS direction; self-service tenant onboarding is future scope.
 
 ### 5.2 Primary customer segments
 
@@ -93,21 +93,21 @@ Air, maritime, customs brokerage, highly regulated dangerous-goods workflows, an
 
 The table below describes the long-term directional user model. For PDS v1, the approved external actors are Visitor, Guest Customer, and Registered Customer; the approved internal application roles are Super Admin, Sales, Operations, Finance, and Customer Service. Their MVP authorization baseline is defined in [Roles and Permissions](./product/09-Roles-And-Permissions.md). Future roles in this table require separate approval before implementation.
 
-| User type                  | Primary responsibilities                                                              | Typical access expectation                                                  |
-| -------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Platform operator          | Operate the Naqlia service, support tenants, and manage platform-level configuration. | Restricted platform administration with audited, exceptional tenant access. |
-| Organization owner         | Own the customer account, commercial relationship, and high-level configuration.      | Full organization administration, subject to separation-of-duties controls. |
-| Organization administrator | Manage users, roles, locations, settings, and approved integrations.                  | Administrative access within one tenant.                                    |
-| Operations manager         | Oversee workload, service levels, exceptions, and operational performance.            | Broad operational read/write access within authorized business units.       |
-| Dispatcher or planner      | Plan, assign, sequence, and monitor transport work.                                   | Operational planning and assignment permissions.                            |
-| Fleet manager              | Maintain vehicles, equipment, drivers, availability, and compliance records.          | Fleet and resource management permissions.                                  |
-| Driver or field operator   | Receive assigned work, update execution status, and provide operational evidence.     | Mobile-focused access limited to assigned or permitted work.                |
-| Customer service user      | Investigate status, communicate updates, and manage service exceptions.               | Read-oriented operational access with controlled communication actions.     |
-| Finance user               | Review charges, invoices, reconciliation, and commercial reporting.                   | Financial permissions separated from operational administration.            |
-| Compliance or audit user   | Review records, changes, evidence, and policy adherence.                              | Read-only or narrowly scoped review access with export controls.            |
-| Analyst or executive       | Review dashboards, trends, and organizational performance.                            | Aggregated read access according to organizational scope.                   |
-| Customer or shipper user   | Submit or review authorized requests and shipment information.                        | Portal access limited to the user's organization and permitted records.     |
-| Integration identity       | Exchange data through approved system-to-system contracts.                            | Non-human, least-privilege credentials with rotation and auditability.      |
+| User type                  | Primary responsibilities                                                             | Typical access expectation                                                  |
+| -------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| Platform operator          | Operate the Naqlk service, support tenants, and manage platform-level configuration. | Restricted platform administration with audited, exceptional tenant access. |
+| Organization owner         | Own the customer account, commercial relationship, and high-level configuration.     | Full organization administration, subject to separation-of-duties controls. |
+| Organization administrator | Manage users, roles, locations, settings, and approved integrations.                 | Administrative access within one tenant.                                    |
+| Operations manager         | Oversee workload, service levels, exceptions, and operational performance.           | Broad operational read/write access within authorized business units.       |
+| Dispatcher or planner      | Plan, assign, sequence, and monitor transport work.                                  | Operational planning and assignment permissions.                            |
+| Fleet manager              | Maintain vehicles, equipment, drivers, availability, and compliance records.         | Fleet and resource management permissions.                                  |
+| Driver or field operator   | Receive assigned work, update execution status, and provide operational evidence.    | Mobile-focused access limited to assigned or permitted work.                |
+| Customer service user      | Investigate status, communicate updates, and manage service exceptions.              | Read-oriented operational access with controlled communication actions.     |
+| Finance user               | Review charges, invoices, reconciliation, and commercial reporting.                  | Financial permissions separated from operational administration.            |
+| Compliance or audit user   | Review records, changes, evidence, and policy adherence.                             | Read-only or narrowly scoped review access with export controls.            |
+| Analyst or executive       | Review dashboards, trends, and organizational performance.                           | Aggregated read access according to organizational scope.                   |
+| Customer or shipper user   | Submit or review authorized requests and shipment information.                       | Portal access limited to the user's organization and permitted records.     |
+| Integration identity       | Exchange data through approved system-to-system contracts.                           | Non-human, least-privilege credentials with rotation and auditability.      |
 
 ## 7. Core Services
 
@@ -135,7 +135,7 @@ Each service area must have a named owner, defined data ownership, explicit publ
 
 ### 8.1 Directional product scope
 
-Naqlia is expected to support the following capability groups over time:
+Naqlk is expected to support the following capability groups over time:
 
 1. Organization onboarding and controlled workspace configuration.
 2. User, team, role, and permission administration.
@@ -244,7 +244,7 @@ See the [Architecture Guide](architecture-guide.md) for the current detailed dep
 ## 12. Folder Organization
 
 ```text
-naqlia/
+naqlk/
 ├── .ai/                    # Constitution, governing principles, non-secret AI context, and reusable prompts
 ├── .github/                # Workflows and repository collaboration configuration
 ├── .husky/                 # Local Git hooks
@@ -474,7 +474,7 @@ No public marketing information architecture is approved by this blueprint.
 
 ## 19. Accessibility Standards
 
-Naqlia user experiences must target WCAG 2.2 Level AA.
+Naqlk user experiences must target WCAG 2.2 Level AA.
 
 Minimum standards include:
 
@@ -715,8 +715,8 @@ Documentation-only changes apply the relevant scope, accuracy, formatting, revie
 | Integration identity | A non-human identity used for approved system-to-system access.                                         |
 | LTR                  | Left-to-right content and layout direction.                                                             |
 | Modular monolith     | One deployable application with explicit internal capability boundaries.                                |
-| Naqlia               | The logistics SaaS platform governed by this blueprint.                                                 |
-| Organization         | A customer or operating entity using Naqlia; the exact tenancy relationship is pending design.          |
+| Naqlk                | The logistics SaaS platform governed by this blueprint.                                                 |
+| Organization         | A customer or operating entity using Naqlk; the exact tenancy relationship is pending design.           |
 | Preview deployment   | A non-production Vercel deployment associated with a branch or pull request.                            |
 | Proof of delivery    | Evidence that a delivery event occurred, subject to approved workflow requirements.                     |
 | RLS                  | PostgreSQL Row Level Security, used to enforce data-access policies at the database layer.              |
@@ -741,7 +741,7 @@ PDS v1 resolves the following discovery questions for the MVP. Detailed definiti
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Initial market and service | Saudi Arabia; enabled Riyadh-local and Riyadh-origin intercity transport for Furniture Moving and General Cargo, with Packing and Loading & Unloading add-ons |
 | Initial value proposition  | A traceable request-to-completion service journey with human-reviewed commercial control and privacy-safe customer status                                     |
-| Operating model            | One Naqlia-managed MVP service workspace; tenant-capable architecture retained; self-service SaaS tenant onboarding deferred                                  |
+| Operating model            | One Naqlk-managed MVP service workspace; tenant-capable architecture retained; self-service SaaS tenant onboarding deferred                                   |
 | Actors and roles           | Visitor, Guest Customer, Registered Customer; Super Admin, Sales, Operations, Finance, and Customer Service                                                   |
 | Identity                   | Guest request permitted; account optional through Email, Google, or Apple                                                                                     |
 | Commercial workflow        | Hybrid pricing; Sales reviews every final Quotation; customer acceptance plus configured internal approvals precede Order conversion                          |

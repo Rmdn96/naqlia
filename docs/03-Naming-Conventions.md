@@ -1,4 +1,4 @@
-# Naqlia Database Naming Conventions
+# Naqlk Database Naming Conventions
 
 | Document field    | Value                                                                                                                                                      |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -9,7 +9,7 @@
 
 ## 1. Purpose
 
-This document is the authoritative naming and lifecycle standard for Naqlia's future database implementation. It converts the conceptual model into deterministic physical naming rules without creating SQL, tables, migrations, policies, or other database objects.
+This document is the authoritative naming and lifecycle standard for Naqlk's future database implementation. It converts the conceptual model into deterministic physical naming rules without creating SQL, tables, migrations, policies, or other database objects.
 
 The words **must**, **must not**, **should**, and **may** are normative. Any exception must be documented in the implementing change and approved during database review.
 
@@ -116,17 +116,17 @@ The primary key must:
 
 Association entities that can carry lifecycle state, scope, provenance, audit meaning, or future attributes must also receive their own `id`. The relevant relationship must additionally be protected by a named unique constraint.
 
-External identifiers must not replace Naqlia primary keys. For example, a profile retains its Naqlia `id` and references the Supabase Auth identifier through `auth_user_id`.
+External identifiers must not replace Naqlk primary keys. For example, a profile retains its Naqlk `id` and references the Supabase Auth identifier through `auth_user_id`.
 
 ## 6. UUID Strategy
 
-Naqlia uses UUIDv7 for newly created application-owned identifiers because it preserves global uniqueness while improving time locality. Supabase Auth and other external systems may supply UUIDv4 or another opaque identifier; those values remain external references.
+Naqlk uses UUIDv7 for newly created application-owned identifiers because it preserves global uniqueness while improving time locality. Supabase Auth and other external systems may supply UUIDv4 or another opaque identifier; those values remain external references.
 
 Implementation rules:
 
 1. Select exactly one trusted UUIDv7 generator after confirming the deployed PostgreSQL version and supported runtime.
 2. Do not mix application-generated and database-generated strategies within one entity.
-3. Validate that supplied identifiers are well-formed and use the expected version where Naqlia owns generation.
+3. Validate that supplied identifiers are well-formed and use the expected version where Naqlk owns generation.
 4. Treat every UUID as opaque in business logic and public interfaces.
 5. Do not use UUID ordering as the authoritative creation time. `created_at` remains authoritative.
 6. Never derive organization membership, authorization, or data classification from an identifier.
@@ -150,7 +150,7 @@ Actor attributes use explicit names such as `created_by_profile_id`, `updated_by
 ### 7.2 Event and validity time
 
 - `occurred_at`: when an event happened in the business or source system;
-- `recorded_at`: when Naqlia durably recorded it;
+- `recorded_at`: when Naqlk durably recorded it;
 - `effective_at`: when a decision or state becomes effective;
 - `valid_from` and `valid_until`: an explicit validity interval;
 - `starts_at` and `ends_at`: a scheduled or actual interval;

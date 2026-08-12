@@ -1,4 +1,4 @@
-# Naqlia Customer Journey
+# Naqlk Customer Journey
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
@@ -29,7 +29,7 @@ The journey MUST be:
 
 | Participant         | Journey responsibility                                                                       |
 | ------------------- | -------------------------------------------------------------------------------------------- |
-| Visitor             | Discovers services and decides whether Naqlia fits the need                                  |
+| Visitor             | Discovers services and decides whether Naqlk fits the need                                   |
 | Guest Customer      | Submits and manages a request through verified contact paths without an account              |
 | Registered Customer | Uses the same service journey with account-linked history and profile conveniences           |
 | Sales               | Owns Lead qualification, clarification, final Quotation review, and commercial communication |
@@ -42,7 +42,7 @@ The journey MUST be:
 
 | Stage                 | Customer goal and action                                           | Required experience and information                                                                                            | Internal owner / handoff                | Success evidence                                       |
 | --------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------- | ------------------------------------------------------ |
-| 1. Discover           | Understand what Naqlia transports and where                        | Clear core services, route classes, add-ons, coverage concept, exclusions, Arabic default, no misleading instant-price promise | Product / Admin configuration           | Eligible visitors can identify a relevant service      |
+| 1. Discover           | Understand what Naqlk transports and where                         | Clear core services, route classes, add-ons, coverage concept, exclusions, Arabic default, no misleading instant-price promise | Product / Admin configuration           | Eligible visitors can identify a relevant service      |
 | 2. Configure need     | Select cargo service, route, and optional services                 | Service guidance; origin/destination eligibility; accessible explanations; no hardcoded values                                 | Platform → Sales rules                  | Valid service combination or clear unsupported outcome |
 | 3. Describe request   | Provide contact, route, cargo, timing, access, and service details | Progressive disclosure, localized validation, purpose notice, consent, review summary                                          | Platform                                | Complete and valid submission payload                  |
 | 4. Submit             | Request Sales review                                               | One deliberate action, duplicate protection, safe retry, no account gate                                                       | Platform → Sales                        | Exactly one Lead and acknowledgement                   |

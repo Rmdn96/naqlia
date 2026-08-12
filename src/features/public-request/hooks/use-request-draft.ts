@@ -8,7 +8,7 @@ import { createEmptyRequestDraft } from "@/features/public-request/lib/wizard";
 import type { PublicRequestDraft } from "@/features/public-request/types/public-request";
 import type { AppLocale } from "@/i18n/routing";
 
-const STORAGE_KEY = `naqlia.public-request.v${PUBLIC_REQUEST_DRAFT_VERSION}`;
+const STORAGE_KEY = `naqlk.public-request.v${PUBLIC_REQUEST_DRAFT_VERSION}`;
 
 type DraftSaveStatus = "idle" | "saved" | "saving";
 

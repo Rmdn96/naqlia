@@ -1,4 +1,4 @@
-# Naqlia MVP Entity Selection
+# Naqlk MVP Entity Selection
 
 | Document field | Value                                                         |
 | -------------- | ------------------------------------------------------------- |
@@ -13,7 +13,7 @@
 
 ## 1. Purpose
 
-This document reduces the 121-entity enterprise domain model to the smallest production-capable model that can launch Naqlia safely in four weeks. It classifies every existing domain, logical entity, relationship, and business capability as `MVP`, `PHASE 2`, or `PHASE 3` and explains the effect of every deferral.
+This document reduces the 121-entity enterprise domain model to the smallest production-capable model that can launch Naqlk safely in four weeks. It classifies every existing domain, logical entity, relationship, and business capability as `MVP`, `PHASE 2`, or `PHASE 3` and explains the effect of every deferral.
 
 This plan changes implementation priority, not business meaning. The Constitution, approved business rules, Arabic/English parity, mandatory Sales review, authorization, lifecycle integrity, privacy, and audit remain binding. Where several logical entities are consolidated into one MVP table, their business facts remain distinguishable fields or immutable records.
 
@@ -50,7 +50,7 @@ Rules:
 
 | Domain                                      | Classification | MVP decision and deferred impact                                                                                                                                               |
 | ------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `DOM-TEN` Tenancy and Organization          | `PHASE 3`      | MVP operates one Naqlia company. Tenant onboarding, organization boundaries, connections, and sharing are excluded; no customer impact for the launch operating model.         |
+| `DOM-TEN` Tenancy and Organization          | `PHASE 3`      | MVP operates one Naqlk company. Tenant onboarding, organization boundaries, connections, and sharing are excluded; no customer impact for the launch operating model.          |
 | `DOM-IAM` Identity and Access               | `MVP`          | Profiles plus fixed database RBAC support customer and workforce access. Tenant-custom roles, access campaigns, machine identities, and devices follow later.                  |
 | `DOM-CFG` Configuration Governance          | `MVP`          | A versioned `app_settings` record per key provides auditable bilingual configuration. Release bundles and schema-driven configuration governance move to Phase 2.              |
 | `DOM-CAT` Service Catalog and Eligibility   | `MVP`          | Offerings, add-ons, and coverage are explicit tables. Dynamic questionnaires and independently versioned restriction libraries move to Phase 2.                                |
@@ -76,7 +76,7 @@ Rules:
 
 | ID / entity                           | Class     | MVP representation or exclusion reason                       | Business impact                                                                         |
 | ------------------------------------- | --------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| `ENT-TEN-001` Organization            | `PHASE 3` | Single Naqlia operator makes a tenant root unnecessary.      | No self-service company workspaces or tenant isolation until enterprise SaaS expansion. |
+| `ENT-TEN-001` Organization            | `PHASE 3` | Single Naqlk operator makes a tenant root unnecessary.       | No self-service company workspaces or tenant isolation until enterprise SaaS expansion. |
 | `ENT-TEN-002` Organization Setting    | `MVP`     | Consolidated into `app_settings`; no organization dimension. | Launch settings remain editable and audited for the single operator.                    |
 | `ENT-TEN-003` Business Unit           | `PHASE 2` | Riyadh launch does not need branch hierarchy.                | Work queues are company-wide; branch-level ownership/reporting waits.                   |
 | `ENT-TEN-004` Organization Connection | `PHASE 3` | Cross-company collaboration is outside the launch model.     | No partner-company sharing or federation.                                               |
@@ -243,7 +243,7 @@ Rules:
 | `ENT-INT-001` Idempotency Record     | `MVP`     | Dedicated `idempotency_keys` table for request submission and Order conversion. | Duplicate retries are safe.                                                            |
 | `ENT-INT-002` Integration Connection | `PHASE 3` | No partner/provider integration product scope.                                  | No customer-managed external connections.                                              |
 | `ENT-INT-003` External Reference     | `PHASE 3` | Depends on integrations.                                                        | No generic provider identity mapping.                                                  |
-| `ENT-INT-004` Inbound Message        | `PHASE 3` | Public/partner inbound APIs and EDI are excluded.                               | External systems cannot command Naqlia directly.                                       |
+| `ENT-INT-004` Inbound Message        | `PHASE 3` | Public/partner inbound APIs and EDI are excluded.                               | External systems cannot command Naqlk directly.                                        |
 | `ENT-INT-005` Webhook Subscription   | `PHASE 3` | Public webhook product is excluded.                                             | Partners cannot subscribe to events.                                                   |
 | `ENT-INT-006` Webhook Delivery       | `PHASE 3` | Depends on subscriptions and event contracts.                                   | No partner delivery ledger.                                                            |
 
@@ -259,15 +259,15 @@ Rules:
 
 ### 5.17 Billing and Payment
 
-| ID / entity                       | Class     | Exclusion reason                                                        | Business impact and future phase                                                  |
-| --------------------------------- | --------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `ENT-FIN-001` Billing Account     | `PHASE 3` | Launch is quotation/order management, not accounts receivable.          | No customer credit or billing profile.                                            |
-| `ENT-FIN-002` Invoice             | `PHASE 3` | Invoicing and tax evidence require a separately approved finance scope. | Finance works from Quotation/Order commercial snapshots outside Naqlia invoicing. |
-| `ENT-FIN-003` Invoice Line        | `PHASE 3` | Depends on Invoice.                                                     | No posted charge ledger.                                                          |
-| `ENT-PAY-001` Payment Intent      | `PHASE 3` | Online payment gateway is excluded.                                     | Customers cannot pay online in Naqlia.                                            |
-| `ENT-PAY-002` Payment Transaction | `PHASE 3` | Depends on a payment provider.                                          | No authorization/capture/settlement history.                                      |
-| `ENT-PAY-003` Payment Allocation  | `PHASE 3` | Invoices and transactions are excluded.                                 | No automated reconciliation.                                                      |
-| `ENT-PAY-004` Refund              | `PHASE 3` | Payments are excluded and refund policy is unapproved.                  | Refunds remain outside the platform.                                              |
+| ID / entity                       | Class     | Exclusion reason                                                        | Business impact and future phase                                                 |
+| --------------------------------- | --------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `ENT-FIN-001` Billing Account     | `PHASE 3` | Launch is quotation/order management, not accounts receivable.          | No customer credit or billing profile.                                           |
+| `ENT-FIN-002` Invoice             | `PHASE 3` | Invoicing and tax evidence require a separately approved finance scope. | Finance works from Quotation/Order commercial snapshots outside Naqlk invoicing. |
+| `ENT-FIN-003` Invoice Line        | `PHASE 3` | Depends on Invoice.                                                     | No posted charge ledger.                                                         |
+| `ENT-PAY-001` Payment Intent      | `PHASE 3` | Online payment gateway is excluded.                                     | Customers cannot pay online in Naqlk.                                            |
+| `ENT-PAY-002` Payment Transaction | `PHASE 3` | Depends on a payment provider.                                          | No authorization/capture/settlement history.                                     |
+| `ENT-PAY-003` Payment Allocation  | `PHASE 3` | Invoices and transactions are excluded.                                 | No automated reconciliation.                                                     |
+| `ENT-PAY-004` Refund              | `PHASE 3` | Payments are excluded and refund policy is unapproved.                  | Refunds remain outside the platform.                                             |
 
 ### 5.18 Audit, Retention, Reporting, and Analytics
 
@@ -390,7 +390,7 @@ All 135 `REL-*` identifiers from the approved Relationship Matrix are present ex
 | Report builder, exports, metric definitions                         | `PHASE 2` | Operators use fixed dashboards.                                                                          |
 | Event/outbox platform                                               | `PHASE 2` | Notification jobs are persisted directly; no generic integration stream.                                 |
 | Public APIs, webhooks, partner integrations                         | `PHASE 3` | Browser product and internal services only.                                                              |
-| Multi-company SaaS                                                  | `PHASE 3` | One Naqlia company; no tenant onboarding/white-labeling.                                                 |
+| Multi-company SaaS                                                  | `PHASE 3` | One Naqlk company; no tenant onboarding/white-labeling.                                                  |
 | Workflow engine                                                     | `PHASE 3` | Fixed aggregate transitions only.                                                                        |
 | Invoicing, payments, refunds, accounting                            | `PHASE 3` | Commercial records stop at Quotation/Order.                                                              |
 | Advanced analytics/warehouse/AI optimization                        | `PHASE 3` | Operational records and audit provide future source data.                                                |

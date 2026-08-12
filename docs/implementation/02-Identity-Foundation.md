@@ -1,4 +1,4 @@
-# Naqlia Identity Foundation
+# Naqlk Identity Foundation
 
 | Document field | Value                                              |
 | -------------- | -------------------------------------------------- |
@@ -12,12 +12,12 @@
 
 ## 1. Purpose
 
-Sprint 1B establishes Naqlia's production identity, access-control, and storage foundation. It deliberately creates no Customer, Lead, Quotation, Order, business API, business page, or business permission.
+Sprint 1B establishes Naqlk's production identity, access-control, and storage foundation. It deliberately creates no Customer, Lead, Quotation, Order, business API, business page, or business permission.
 
 The implementation has four boundaries:
 
 1. Supabase Auth owns authentication identities, credentials, provider links, verification, and sessions.
-2. Naqlia profiles exist only for authenticated users.
+2. Naqlk profiles exist only for authenticated users.
 3. PostgreSQL owns authoritative staff roles, identity permissions, assignments, and permission checks.
 4. Guest business journeys remain unauthenticated and independent from the identity model.
 
@@ -193,14 +193,14 @@ The target Supabase project runs PostgreSQL 17.6 and does not expose a native or
 
 ## 10. Environment Variables
 
-| Variable                               | Exposure           | Required                     | Purpose                                                                                           |
-| -------------------------------------- | ------------------ | ---------------------------- | ------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_APP_URL`                  | Public             | Application runtime          | Canonical application origin and OAuth callback construction.                                     |
-| `NEXT_PUBLIC_SUPABASE_URL`             | Public             | Supabase clients and scripts | Project URL.                                                                                      |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public             | Application runtime          | Public project key; all data protection still depends on RLS.                                     |
-| `NEXT_PUBLIC_AUTH_GOOGLE_ENABLED`      | Public             | Application runtime          | `true` only after Google is fully configured and verified.                                        |
-| `NEXT_PUBLIC_AUTH_APPLE_ENABLED`       | Public             | Application runtime          | `true` only after Apple is fully configured and verified.                                         |
-| `SUPABASE_SECRET_KEY`                  | Secret/server-only | Operator scripts only        | Storage reconciliation and controlled staff provisioning. Never used by browser application code. |
+| Variable                               | Exposure           | Required                     | Purpose                                                                                                               |
+| -------------------------------------- | ------------------ | ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_APP_URL`                  | Public             | Application runtime          | Active application origin for OAuth callback construction. SEO canonicals use `BRAND.domains.activeProductionOrigin`. |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Public             | Supabase clients and scripts | Project URL.                                                                                                          |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public             | Application runtime          | Public project key; all data protection still depends on RLS.                                                         |
+| `NEXT_PUBLIC_AUTH_GOOGLE_ENABLED`      | Public             | Application runtime          | `true` only after Google is fully configured and verified.                                                            |
+| `NEXT_PUBLIC_AUTH_APPLE_ENABLED`       | Public             | Application runtime          | `true` only after Apple is fully configured and verified.                                                             |
+| `SUPABASE_SECRET_KEY`                  | Secret/server-only | Operator scripts only        | Storage reconciliation and controlled staff provisioning. Never used by browser application code.                     |
 
 No new secret is committed. Secret values belong only in an approved local secret store or encrypted CI/operator environment. The elevated key must be short-lived or purpose-controlled where the platform supports that model.
 

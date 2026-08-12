@@ -1,10 +1,10 @@
-# Naqlia Database Principles
+# Naqlk Database Principles
 
 | Document field   | Value                                                                                                        |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
 | Status           | Mandatory database policy                                                                                    |
 | Version          | 1.0.0                                                                                                        |
-| Parent authority | [Naqlia Constitution](./constitution.md)                                                                     |
+| Parent authority | [Naqlk Constitution](./constitution.md)                                                                      |
 | Owner            | Database and Engineering leadership                                                                          |
 | Applies to       | Data modeling, PostgreSQL, Supabase access, migrations, RLS, audit, retention, recovery, and data operations |
 
@@ -37,9 +37,9 @@ Principles:
 ## 3. Source of Truth
 
 - PostgreSQL is the authoritative transactional store for approved operational entities.
-- Supabase Auth owns managed authentication records; Naqlia owns application profiles and authorization state.
+- Supabase Auth owns managed authentication records; Naqlk owns application profiles and authorization state.
 - Object storage owns file bytes; PostgreSQL owns governed document metadata, integrity identifiers, versions, ownership, and access relationships.
-- External provider state is not trusted as Naqlia state until validated and accepted by the owning domain.
+- External provider state is not trusted as Naqlk state until validated and accepted by the owning domain.
 - Analytics and reporting are projections and MUST NOT become the mutation source for operational facts.
 - Caches are disposable derived state and MUST define authoritative fallback and invalidation.
 
@@ -71,7 +71,7 @@ An organization is the hard tenant and ownership boundary.
 ## 6. Identity and Keys
 
 - Application-owned persistent entities use a single `id` primary key with the approved UUIDv7 strategy.
-- Externally managed identifiers remain alternate references and MUST NOT replace Naqlia identity.
+- Externally managed identifiers remain alternate references and MUST NOT replace Naqlk identity.
 - Identifiers are opaque and contain no authorization or business meaning.
 - Primary keys are never reused.
 - Natural identifiers receive explicit normalization, provenance, and scoped uniqueness.

@@ -10,14 +10,20 @@ import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/utils/cn";
 
-export const metadata: Metadata = {
-  robots: { follow: false, index: false, noarchive: true },
-};
-
 type SuccessPageProps = {
   params: Promise<{ locale: AppLocale }>;
   searchParams: Promise<{ reference?: string }>;
 };
+
+export async function generateMetadata({ params }: SuccessPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Success" });
+
+  return {
+    robots: { follow: false, index: false, noarchive: true },
+    title: t("metaTitle"),
+  };
+}
 
 export default async function SuccessPage({ params, searchParams }: SuccessPageProps) {
   noStore();

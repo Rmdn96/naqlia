@@ -1,4 +1,4 @@
-# Naqlia Public Request Flow
+# Naqlk Public Request Flow
 
 | Document field | Value                                                                  |
 | -------------- | ---------------------------------------------------------------------- |
@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-Sprint 3 delivers the first complete customer-facing Naqlia journey. A guest can discover the service, complete a five-step Arabic-first request, add map-ready route coordinates and optional cargo photos, submit once, receive a Lead reference, and continue through WhatsApp. English has route and content parity.
+Sprint 3 delivers the first complete customer-facing Naqlk journey. A guest can discover the service, complete a five-step Arabic-first request, add map-ready route coordinates and optional cargo photos, submit once, receive a Lead reference, and continue through WhatsApp. English has route and content parity.
 
 ## 2. Public routes
 
@@ -117,13 +117,13 @@ Business contact values remain environment-backed during MVP. The approved futur
 
 ## 10. Environment
 
-| Variable                               | Visibility  | Requirement                                                          |
-| -------------------------------------- | ----------- | -------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`             | Public      | Existing Supabase project URL.                                       |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public      | Existing publishable client key.                                     |
-| `SUPABASE_SECRET_KEY`                  | Server only | Required for signed uploads, verification, cleanup, and trusted RPC. |
-| `NEXT_PUBLIC_APP_URL`                  | Public      | Preferred canonical production origin.                               |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER`          | Public      | Optional `9665XXXXXXXX`; without it WhatsApp opens contact choice.   |
+| Variable                               | Visibility  | Requirement                                                                                                        |
+| -------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Public      | Existing Supabase project URL.                                                                                     |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public      | Existing publishable client key.                                                                                   |
+| `SUPABASE_SECRET_KEY`                  | Server only | Required for signed uploads, verification, cleanup, and trusted RPC.                                               |
+| `NEXT_PUBLIC_APP_URL`                  | Public      | Active application/callback origin; `https://naqlk.vercel.app` in Vercel Production and Preview during pre-launch. |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER`          | Public      | Optional `9665XXXXXXXX`; without it WhatsApp opens contact choice.                                                 |
 
 ## 11. Deferred scope
 

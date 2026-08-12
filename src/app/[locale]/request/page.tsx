@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { RequestWizard } from "@/features/public-request/components/request-wizard";
 import { getPublicRequestCatalog } from "@/features/public-request/services/public-request.service";
+import { getBrandName, getLocaleAlternates } from "@/config/brand";
 import type { AppLocale } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -16,12 +17,22 @@ export async function generateMetadata({ params }: RequestPageProps): Promise<Me
   const t = await getTranslations({ locale, namespace: "Request" });
 
   return {
-    alternates: {
-      canonical: `/${locale}/request`,
-      languages: { ar: "/ar/request", en: "/en/request" },
-    },
+    alternates: getLocaleAlternates(locale, "/request"),
     description: t("metaDescription"),
+    openGraph: {
+      description: t("metaDescription"),
+      locale: locale === "ar" ? "ar_SA" : "en_SA",
+      siteName: getBrandName(locale),
+      title: t("metaTitle"),
+      type: "website",
+      url: `/${locale}/request`,
+    },
     title: t("metaTitle"),
+    twitter: {
+      card: "summary",
+      description: t("metaDescription"),
+      title: t("metaTitle"),
+    },
   };
 }
 

@@ -12,6 +12,12 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  BRAND,
+  getBrandName,
+  getLocaleAlternates,
+  getOrganizationStructuredData,
+} from "@/config/brand";
 import { getPublicRequestCatalog } from "@/features/public-request/services/public-request.service";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -28,20 +34,22 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
   const t = await getTranslations({ locale, namespace: "Home" });
 
   return {
-    alternates: {
-      canonical: `/${locale}`,
-      languages: { ar: "/ar", en: "/en" },
-    },
+    alternates: getLocaleAlternates(locale),
     description: t("metaDescription"),
     openGraph: {
       description: t("metaDescription"),
-      locale: locale === "ar" ? "ar_SA" : "en_SA",
-      siteName: "Naqlia",
+      locale: BRAND.metadata.locale[locale],
+      siteName: getBrandName(locale),
       title: t("metaTitle"),
       type: "website",
       url: `/${locale}`,
     },
     title: t("metaTitle"),
+    twitter: {
+      card: "summary",
+      description: t("metaDescription"),
+      title: t("metaTitle"),
+    },
   };
 }
 
@@ -58,9 +66,16 @@ export default async function HomePage({ params }: LocalePageProps) {
     { description: t("process2Description"), icon: PackageSearch, title: t("process2Title") },
     { description: t("process3Description"), icon: MessageCircleMore, title: t("process3Title") },
   ];
+  const organizationJsonLd = getOrganizationStructuredData(locale);
 
   return (
     <main id="main-content">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
+        }}
+        type="application/ld+json"
+      />
       <section className="surface-grid relative overflow-hidden border-b border-border">
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/75 to-background" />
         <div className="container relative grid min-h-[calc(100vh-5rem)] items-center gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">

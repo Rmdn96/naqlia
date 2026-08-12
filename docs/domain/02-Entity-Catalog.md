@@ -1,4 +1,4 @@
-# Naqlia Entity Catalog
+# Naqlk Entity Catalog
 
 | Document field | Value                                                   |
 | -------------- | ------------------------------------------------------- |

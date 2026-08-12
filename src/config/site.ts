@@ -1,23 +1,7 @@
-export const SITE_NAME = "Naqlia";
+import { ACTIVE_PRODUCTION_ORIGIN, BRAND } from "@/config/brand";
 
 export function getMetadataBase(): URL {
-  const configuredUrl = process.env.NEXT_PUBLIC_APP_URL?.trim();
-  const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  const vercelDeploymentUrl = process.env.VERCEL_URL?.trim();
-
-  if (configuredUrl) {
-    return new URL(configuredUrl);
-  }
-
-  if (vercelProductionUrl) {
-    return new URL(`https://${vercelProductionUrl}`);
-  }
-
-  if (vercelDeploymentUrl) {
-    return new URL(`https://${vercelDeploymentUrl}`);
-  }
-
-  return new URL("http://localhost:3000");
+  return new URL(ACTIVE_PRODUCTION_ORIGIN);
 }
 
 export function getWhatsAppHref(message: string): string {
@@ -29,3 +13,5 @@ export function getWhatsAppHref(message: string): string {
 
   return url.toString();
 }
+
+export { BRAND };

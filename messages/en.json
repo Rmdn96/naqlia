@@ -1,21 +1,19 @@
 {
   "Common": {
-    "brand": "Naqlia",
-    "brandTagline": "Clearer requests. More confident delivery.",
     "skipToContent": "Skip to content",
     "primaryNavigation": "Primary navigation",
     "startRequest": "Start a request",
     "services": "Services",
-    "howItWorks": "How Naqlia works",
+    "howItWorks": "How Naqlk works",
     "privacy": "Privacy",
     "switchLocale": "العربية",
     "switchLocaleLabel": "View the website in Arabic",
     "footerText": "An Arabic-first transport and logistics request platform for Saudi Arabia.",
-    "copyright": "All rights reserved by Naqlia."
+    "copyright": "All rights reserved by Naqlk."
   },
   "Home": {
-    "metaTitle": "Naqlia | Request transport in Riyadh and across Saudi cities",
-    "metaDescription": "Submit a furniture moving or cargo request in minutes. Naqlia reviews every request before preparing the right quotation.",
+    "metaTitle": "Naqlk | Request transport in Riyadh and across Saudi cities",
+    "metaDescription": "Submit a furniture moving or cargo request in minutes. Naqlk reviews every request before preparing the right quotation.",
     "eyebrow": "Serving Riyadh and Saudi cities",
     "title": "Every reliable move starts with a clear request",
     "subtitle": "Choose a service, set the pickup and delivery locations, and share the details. Our team reviews every request before preparing a quotation.",
@@ -26,7 +24,7 @@
     "arabicNote": "Arabic-first experience",
     "servicesEyebrow": "Core services",
     "servicesTitle": "Flexible transport for your needs",
-    "servicesDescription": "Services come directly from Naqlia's managed catalog and are reviewed against your route and cargo details.",
+    "servicesDescription": "Services come directly from Naqlk's managed catalog and are reviewed against your route and cargo details.",
     "processEyebrow": "A simple process",
     "processTitle": "From request to quotation",
     "process1Title": "Tell us what you need moved",
@@ -40,8 +38,8 @@
     "catalogError": "The service catalog is temporarily unavailable. Please try again shortly."
   },
   "Request": {
-    "metaTitle": "Transport service request | Naqlia",
-    "metaDescription": "Send a transport service request to Naqlia in five clear and secure steps.",
+    "metaTitle": "Transport service request | Naqlk",
+    "metaDescription": "Send a transport service request to Naqlk in five clear and secure steps.",
     "eyebrow": "New request",
     "title": "Tell us about your transport needs",
     "subtitle": "Five short steps, with progress saved on this device until you finish.",
@@ -131,7 +129,7 @@
     }
   },
   "Success": {
-    "metaTitle": "Request received | Naqlia",
+    "metaTitle": "Request received | Naqlk",
     "title": "Your request has been received",
     "description": "A sales representative will review the details and contact you before preparing the final quotation.",
     "referenceLabel": "Request reference",
@@ -140,12 +138,12 @@
     "track": "Track via WhatsApp",
     "home": "Back to homepage",
     "invalidReference": "We could not display a valid reference. Return home and start a new request if you have not already submitted one.",
-    "whatsappMessage": "Hello Naqlia, I would like to ask about request {reference}.",
-    "trackingMessage": "Hello Naqlia, I would like to track request {reference}."
+    "whatsappMessage": "Hello Naqlk, I would like to ask about request {reference}.",
+    "trackingMessage": "Hello Naqlk, I would like to track request {reference}."
   },
   "StaffAuth": {
     "eyebrow": "Internal access",
-    "title": "Sign in to Naqlia",
+    "title": "Sign in to Naqlk",
     "description": "Use your approved staff email. We will send a one-time secure sign-in link; no shared password is required.",
     "email": "Staff email",
     "emailPlaceholder": "name@company.com",
@@ -158,7 +156,7 @@
     "errorUnavailable": "We could not send the secure link. Confirm the account is provisioned and try again."
   },
   "SalesWorkspace": {
-    "metaTitle": "Sales workspace | Naqlia",
+    "metaTitle": "Sales workspace | Naqlk",
     "metaDescription": "Internal sales workspace for reviewing requests and preparing quotations.",
     "workspace": "Sales workspace",
     "signOut": "Sign out",
@@ -281,7 +279,7 @@
     }
   },
   "Privacy": {
-    "metaTitle": "Transport request privacy notice | Naqlia",
+    "metaTitle": "Transport request privacy notice | Naqlk",
     "title": "Service request privacy notice",
     "updated": "Version: public-request-v1",
     "intro": "This short notice explains how information submitted through the service request form is used.",

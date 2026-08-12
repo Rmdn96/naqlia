@@ -39,22 +39,22 @@ export function getSupabasePublicEnvironment(): SupabasePublicEnvironment {
 }
 
 export function getDefaultQuotationVatRate(): number {
-  const value = process.env.NAQLIA_DEFAULT_QUOTATION_VAT_RATE ?? "0.15";
+  const value = process.env.NAQLK_DEFAULT_QUOTATION_VAT_RATE ?? "0.15";
   const vatRate = Number(value);
 
   if (!Number.isFinite(vatRate) || vatRate < 0 || vatRate > 1) {
-    throw new Error("NAQLIA_DEFAULT_QUOTATION_VAT_RATE must be a decimal between 0 and 1");
+    throw new Error("NAQLK_DEFAULT_QUOTATION_VAT_RATE must be a decimal between 0 and 1");
   }
 
   return vatRate;
 }
 
 export function getDefaultQuotationValidityDays(): number {
-  const value = process.env.NAQLIA_DEFAULT_QUOTATION_VALIDITY_DAYS ?? "7";
+  const value = process.env.NAQLK_DEFAULT_QUOTATION_VALIDITY_DAYS ?? "7";
   const validityDays = Number(value);
 
   if (!Number.isInteger(validityDays) || validityDays < 1 || validityDays > 365) {
-    throw new Error("NAQLIA_DEFAULT_QUOTATION_VALIDITY_DAYS must be an integer between 1 and 365");
+    throw new Error("NAQLK_DEFAULT_QUOTATION_VALIDITY_DAYS must be an integer between 1 and 365");
   }
 
   return validityDays;

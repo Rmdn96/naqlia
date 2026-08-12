@@ -1,4 +1,4 @@
-# Naqlia Row-Level Security Strategy
+# Naqlk Row-Level Security Strategy
 
 | Document field    | Value                                                                                                                                                                  |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -9,7 +9,7 @@
 
 ## 1. Purpose
 
-This document defines how Naqlia will isolate organizations and authorize database access. It is a design specification only. It creates no RLS policies, SQL functions, roles, grants, schemas, or Supabase configuration.
+This document defines how Naqlk will isolate organizations and authorize database access. It is a design specification only. It creates no RLS policies, SQL functions, roles, grants, schemas, or Supabase configuration.
 
 RLS is one layer of defense, not the sole authorization system. Every request must pass application authorization, database grants, row-level policy, validation, and audit requirements appropriate to its risk.
 
@@ -27,7 +27,7 @@ The implementation must guarantee that:
 
 ## 3. Trust Model
 
-Naqlia assumes:
+Naqlk assumes:
 
 - browser and mobile clients are untrusted;
 - request payloads, URL identifiers, object paths, and client metadata are untrusted;
@@ -74,7 +74,7 @@ Shared human accounts and shared integration credentials are prohibited.
 
 ## 5. Authorization Model
 
-Naqlia combines role-based access control with contextual attributes.
+Naqlk combines role-based access control with contextual attributes.
 
 ### 5.1 Role-based permissions
 

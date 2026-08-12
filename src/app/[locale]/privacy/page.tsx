@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, LockKeyhole } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { buttonVariants } from "@/components/ui/button";
+import { getBrandName, getLocaleAlternates } from "@/config/brand";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/utils/cn";
@@ -16,11 +17,16 @@ export async function generateMetadata({ params }: PrivacyPageProps): Promise<Me
   const t = await getTranslations({ locale, namespace: "Privacy" });
 
   return {
-    alternates: {
-      canonical: `/${locale}/privacy`,
-      languages: { ar: "/ar/privacy", en: "/en/privacy" },
+    alternates: getLocaleAlternates(locale, "/privacy"),
+    openGraph: {
+      locale: locale === "ar" ? "ar_SA" : "en_SA",
+      siteName: getBrandName(locale),
+      title: t("metaTitle"),
+      type: "website",
+      url: `/${locale}/privacy`,
     },
     title: t("metaTitle"),
+    twitter: { card: "summary", title: t("metaTitle") },
   };
 }
 

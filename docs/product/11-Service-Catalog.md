@@ -1,4 +1,4 @@
-# Naqlia Service Catalog
+# Naqlk Service Catalog
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
@@ -16,10 +16,10 @@ This document defines the MVP service taxonomy, combinations, eligibility, quali
 
 The approved four Core Services describe two independent dimensions of one transport request:
 
-| Dimension     | Core Service values                       | Meaning                                       |
-| ------------- | ----------------------------------------- | --------------------------------------------- |
-| Cargo Service | Furniture Moving; General Cargo Transport | What kind of transport need Naqlia is serving |
-| Route Class   | Local Transport; Intercity Transport      | Where the transport movement occurs           |
+| Dimension     | Core Service values                       | Meaning                                      |
+| ------------- | ----------------------------------------- | -------------------------------------------- |
+| Cargo Service | Furniture Moving; General Cargo Transport | What kind of transport need Naqlk is serving |
+| Route Class   | Local Transport; Intercity Transport      | Where the transport movement occurs          |
 
 Every MVP request MUST select exactly one Cargo Service and exactly one Route Class. This prevents ambiguous records such as “Local Transport” with no cargo context or “Furniture Moving” with no route context.
 

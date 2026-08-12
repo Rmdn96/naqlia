@@ -1,4 +1,4 @@
-# Naqlia Audit Strategy
+# Naqlk Audit Strategy
 
 | Document field    | Value                                                                                                                                                                |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -9,7 +9,7 @@
 
 ## 1. Purpose
 
-This document defines the audit evidence Naqlia must produce, protect, retain, and review. It is an architecture specification only. It creates no database objects, SQL, triggers, logging configuration, storage resources, or compliance certification.
+This document defines the audit evidence Naqlk must produce, protect, retain, and review. It is an architecture specification only. It creates no database objects, SQL, triggers, logging configuration, storage resources, or compliance certification.
 
 The strategy is designed to answer five questions reliably:
 
@@ -46,12 +46,12 @@ Audit events are not:
 
 ## 3. Audit Planes
 
-Naqlia preserves separate evidence planes because no single log source can establish every fact.
+Naqlk preserves separate evidence planes because no single log source can establish every fact.
 
 | Plane                        | Purpose                                                    | Examples                                                         | Authority                                                  |
 | ---------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------- |
 | Domain history               | Explain business lifecycle and reconstruct aggregate state | Shipment status, assignment, tracking milestone, invoice posting | Domain-owned event records                                 |
-| Application audit            | Record accountable access and change actions               | Membership grant, export, document approval, soft deletion       | Naqlia `audit_events`                                      |
+| Application audit            | Record accountable access and change actions               | Membership grant, export, document approval, soft deletion       | Naqlk `audit_events`                                       |
 | Authentication audit         | Record identity and session activity                       | Sign-in, password reset, token refresh, logout                   | Supabase Auth audit logs                                   |
 | Database activity audit      | Observe database-level access and privileged statements    | DDL, role changes, direct administrative activity                | PostgreSQL audit facilities such as pgAudit                |
 | Platform control-plane audit | Record project and infrastructure administration           | Project settings, secrets, team actions                          | Supabase, Vercel, GitHub, and cloud provider audit sources |
@@ -274,9 +274,9 @@ Sensitive detail is separated from the searchable envelope and requires a strong
 
 ### 13.1 Supabase Auth audit logs
 
-Supabase Auth audit logs provide authentication activity such as sign-ins, sign-outs, account and token events. They complement but do not replace Naqlia's membership, authorization, impersonation, and business audit events.
+Supabase Auth audit logs provide authentication activity such as sign-ins, sign-outs, account and token events. They complement but do not replace Naqlk's membership, authorization, impersonation, and business audit events.
 
-Auth audit identifiers and timestamps should be correlated to Naqlia requests where supported. Export and retention must be designed before relying on the managed retention window.
+Auth audit identifiers and timestamps should be correlated to Naqlk requests where supported. Export and retention must be designed before relying on the managed retention window.
 
 ### 13.2 PostgreSQL activity audit
 
@@ -324,7 +324,7 @@ Periodic reconciliation compares accountable business operations with expected a
 
 This architecture prepares for, but does not claim, compliance with future obligations such as Saudi privacy and cybersecurity requirements, customer security controls, ISO 27001, SOC 2, or sector-specific rules.
 
-Before a compliance commitment, Naqlia must establish:
+Before a compliance commitment, Naqlk must establish:
 
 - an approved data-classification and retention schedule;
 - control owners and segregation of duties;

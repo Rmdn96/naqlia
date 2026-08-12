@@ -1,16 +1,16 @@
-# Naqlia Engineering Principles
+# Naqlk Engineering Principles
 
 | Document field   | Value                                                                                              |
 | ---------------- | -------------------------------------------------------------------------------------------------- |
 | Status           | Mandatory engineering policy                                                                       |
 | Version          | 1.0.0                                                                                              |
-| Parent authority | [Naqlia Constitution](./constitution.md)                                                           |
+| Parent authority | [Naqlk Constitution](./constitution.md)                                                            |
 | Owner            | Engineering leadership                                                                             |
 | Applies to       | Architecture, implementation, testing, delivery, operations, dependencies, and technical decisions |
 
 ## 1. Engineering Standard
 
-Naqlia engineering delivers secure, reliable, maintainable product value through explicit ownership, stable contracts, automated evidence, and reversible change.
+Naqlk engineering delivers secure, reliable, maintainable product value through explicit ownership, stable contracts, automated evidence, and reversible change.
 
 The preferred system is:
 
@@ -36,7 +36,7 @@ The preferred system is:
 
 ## 3. Architectural Style
 
-Naqlia uses a feature-based modular monolith deployed through the Next.js application until measured constraints justify a different topology.
+Naqlk uses a feature-based modular monolith deployed through the Next.js application until measured constraints justify a different topology.
 
 ### 3.1 Ownership model
 

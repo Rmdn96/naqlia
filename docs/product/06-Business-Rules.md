@@ -1,4 +1,4 @@
-# Naqlia Business Rules
+# Naqlk Business Rules
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
