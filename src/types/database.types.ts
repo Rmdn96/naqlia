@@ -242,8 +242,29 @@ type LeadActivityLogRow = {
   event_key: string;
   id: string;
   lead_id: string;
+  job_id: string | null;
   occurred_at: string;
   quotation_id: string | null;
+  trip_id: string | null;
+};
+
+type DriverRow = AuditFields & {
+  display_name: string;
+  external_company_id: string | null;
+  id: string;
+  mobile_number: string;
+  relationship_type: "company" | "external_company" | "independent";
+  status: "active" | "inactive";
+};
+
+type VehicleRow = AuditFields & {
+  external_company_id: string | null;
+  id: string;
+  operational_metadata: Json;
+  plate_number: string;
+  provider_type: "company" | "external_company" | "independent";
+  status: "active" | "inactive";
+  vehicle_type: string;
 };
 
 type LeadWorkspaceViewRow = {
@@ -304,9 +325,59 @@ export type Database = {
         };
         Returns: Json;
       };
+      customer_confirm_job_receipt: { Args: { p_token: string }; Returns: Json };
+      customer_get_job_tracking: { Args: { p_token: string }; Returns: Json };
+      customer_recover_job_tracking: {
+        Args: { p_mobile: string; p_reference: string };
+        Returns: Json;
+      };
+      customer_request_job_cancellation: {
+        Args: { p_reason?: string | null; p_token: string };
+        Returns: Json;
+      };
       has_permission: {
         Args: { requested_permission: string };
         Returns: boolean;
+      };
+      operations_complete_job: {
+        Args: { p_job: string; p_reason: string };
+        Returns: Json;
+      };
+      operations_create_trip: { Args: { p_job: string }; Returns: Json };
+      operations_get_job: { Args: { p_job: string }; Returns: Json };
+      operations_issue_tracking_access: { Args: { p_job: string }; Returns: Json };
+      operations_list_jobs: {
+        Args: {
+          p_page?: number;
+          p_page_size?: number;
+          p_search?: string | null;
+          p_status?: string | null;
+        };
+        Returns: Json;
+      };
+      operations_review_cancellation: {
+        Args: { p_decision: string; p_reason: string; p_request: string };
+        Returns: Json;
+      };
+      operations_save_trip: { Args: { p_payload: Json; p_trip: string }; Returns: Json };
+      operations_set_trip_condition: {
+        Args: {
+          p_condition: string;
+          p_customer_ar?: string | null;
+          p_customer_en?: string | null;
+          p_internal_reason?: string | null;
+          p_trip: string;
+        };
+        Returns: Json;
+      };
+      operations_transition_trip: {
+        Args: {
+          p_override?: boolean;
+          p_reason?: string | null;
+          p_status: string;
+          p_trip: string;
+        };
+        Returns: Json;
       };
       provision_staff_identity: {
         Args: {
@@ -378,6 +449,15 @@ export type Database = {
       };
     };
     Tables: {
+      drivers: {
+        Insert: InsertWithRequired<
+          DriverRow,
+          "display_name" | "mobile_number" | "relationship_type"
+        >;
+        Relationships: [];
+        Row: DriverRow;
+        Update: Partial<DriverRow>;
+      };
       addresses: {
         Insert: InsertWithRequired<AddressRow, "city_id" | "formatted_address">;
         Relationships: [];
@@ -440,6 +520,12 @@ export type Database = {
         Relationships: [];
         Row: OrderRow;
         Update: Partial<OrderRow>;
+      };
+      vehicles: {
+        Insert: InsertWithRequired<VehicleRow, "plate_number" | "provider_type" | "vehicle_type">;
+        Relationships: [];
+        Row: VehicleRow;
+        Update: Partial<VehicleRow>;
       };
       permissions: {
         Insert: {

@@ -85,6 +85,13 @@
       "production_history_sha256": "7d8fe6e66ee671d3aad9e6b77baecc4d0f8c7c564e35bdbfa9e52b37c51bda9d",
       "repository_sha256": "7d8fe6e66ee671d3aad9e6b77baecc4d0f8c7c564e35bdbfa9e52b37c51bda9d",
       "version": "20260812190000"
+    },
+    {
+      "filename": "20260813150000_operations_management.sql",
+      "name": "operations_management",
+      "production_history_sha256": "908efd86857f41a0ab3eb90db995753c3e0a30509ca3c86c4b9f0d665833a87d",
+      "repository_sha256": "908efd86857f41a0ab3eb90db995753c3e0a30509ca3c86c4b9f0d665833a87d",
+      "version": "20260813150000"
     }
   ]
 }

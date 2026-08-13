@@ -13,7 +13,13 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  return refreshSupabaseSession(request, response);
+  const refreshed = await refreshSupabaseSession(request, response);
+  if (/^\/(ar|en)\/track(?:\/|$)/.test(request.nextUrl.pathname)) {
+    refreshed.headers.set("Cache-Control", "private, no-store, max-age=0");
+    refreshed.headers.set("Referrer-Policy", "no-referrer");
+    refreshed.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  }
+  return refreshed;
 }
 
 export const config = {

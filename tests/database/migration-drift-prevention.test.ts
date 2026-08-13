@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -23,7 +23,10 @@ const manifest = JSON.parse(
 
 describe("production migration drift prevention", () => {
   it("pins repository and production-history checksums for every migration", () => {
-    expect(manifest.migrations).toHaveLength(12);
+    const migrationFiles = readdirSync(resolve(process.cwd(), "supabase/migrations")).filter(
+      (filename) => filename.endsWith(".sql"),
+    );
+    expect(manifest.migrations).toHaveLength(migrationFiles.length);
 
     for (const migration of manifest.migrations) {
       expect(migration.version).toMatch(/^\d{14}$/);
