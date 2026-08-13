@@ -4,15 +4,19 @@ import {
   requestCancellationAction,
 } from "@/features/operations/actions/operations.actions";
 import type { TrackingPayload } from "@/features/operations/types/operations";
+import { CustomerReviewForm } from "@/features/reviews-quality/components/customer-review-form";
+import type { CustomerReviewContext } from "@/features/reviews-quality/types/reviews-quality";
 import type { AppLocale } from "@/i18n/routing";
 
 export function TrackingView({
   data,
   locale,
+  reviewContext,
   token,
 }: {
   data: TrackingPayload;
   locale: AppLocale;
+  reviewContext: CustomerReviewContext | null;
   token: string;
 }) {
   const ar = locale === "ar";
@@ -148,6 +152,9 @@ export function TrackingView({
             </button>
           </form>
         )}
+      {data.job.status === "completed" && reviewContext && (
+        <CustomerReviewForm context={reviewContext} locale={locale} token={token} />
+      )}
     </main>
   );
 }

@@ -16,4 +16,15 @@ export function getWhatsAppHref(message: string): string {
   return url.toString();
 }
 
+export function getGoogleReviewUrl(): string | null {
+  const value = process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL?.trim();
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 export { BRAND };

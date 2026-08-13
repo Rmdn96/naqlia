@@ -19,6 +19,8 @@ Introduce one authorized, audited **Business Settings** source for customer-faci
 - company address;
 - social media links;
 - default quotation validity period; and
+- customer Review edit-window policy (no fixed period is enforced in v1);
+- optional Google Review URL (shown without review gating); and
 - future configurable branding, including approved logos, color tokens, legal display name, and localized brand copy.
 
 All public-facing text and address values require Arabic-first content with English counterparts where applicable. Numbers, email addresses, URLs, and quotation-validity rules require normalized validation before publication.
@@ -36,6 +38,8 @@ All public-facing text and address values require Arabic-first content with Engl
 ## Current fallback
 
 `NEXT_PUBLIC_WHATSAPP_NUMBER` is the deployment-level fallback for the official WhatsApp recipient. The current approved value is `966547349947` and is normalized to the international digits-only form required by `wa.me`. The centralized brand configuration provides the same safe fallback when the environment value is missing or invalid. Published Business Settings must take precedence over both sources when that feature is implemented.
+
+`NEXT_PUBLIC_GOOGLE_REVIEW_URL` is the optional interim Google Review destination. It must be HTTPS, is hidden when absent, and is offered independently of the customer's score. Business Settings will ultimately own it; changing this value must never introduce review gating.
 
 ## Future implementation boundaries
 

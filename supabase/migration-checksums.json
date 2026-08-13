@@ -113,6 +113,13 @@
       "production_history_sha256": "8f35714a9af72e1b0b7b98a039f3d39cdcfe609fefa240d4de14c48e878e3751",
       "repository_sha256": "8f35714a9af72e1b0b7b98a039f3d39cdcfe609fefa240d4de14c48e878e3751",
       "version": "20260813211500"
+    },
+    {
+      "filename": "20260814090000_reviews_quality_management.sql",
+      "name": "reviews_quality_management",
+      "production_history_sha256": "a1e9b82717ad25dabbf0c4432fcc2c0ae9148b118e49810c330d3b406587daf3",
+      "repository_sha256": "a1e9b82717ad25dabbf0c4432fcc2c0ae9148b118e49810c330d3b406587daf3",
+      "version": "20260814090000"
     }
   ]
 }

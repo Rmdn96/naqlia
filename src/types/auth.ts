@@ -19,3 +19,6 @@ export type SalesWorkspacePermission = "sales.workspace.manage" | "sales.workspa
 
 export type OperationsWorkspacePermission =
   "operations.workspace.manage" | "operations.workspace.read";
+
+export type QualityWorkspacePermission =
+  "quality.alert.manage" | "quality.publication.manage" | "quality.workspace.read";

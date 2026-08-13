@@ -327,12 +327,25 @@ export type Database = {
       };
       customer_confirm_job_receipt: { Args: { p_token: string }; Returns: Json };
       customer_get_job_tracking: { Args: { p_token: string }; Returns: Json };
+      customer_get_job_review: { Args: { p_token: string }; Returns: Json };
       customer_recover_job_tracking: {
         Args: { p_mobile: string; p_reference: string };
         Returns: Json;
       };
       customer_request_job_cancellation: {
         Args: { p_reason?: string | null; p_token: string };
+        Returns: Json;
+      };
+      customer_upsert_job_review: {
+        Args: {
+          p_comment?: string | null;
+          p_driver_ratings?: Json;
+          p_handling_rating?: number | null;
+          p_overall_rating: number;
+          p_publication_consent?: boolean;
+          p_punctuality_rating?: number | null;
+          p_token: string;
+        };
         Returns: Json;
       };
       has_permission: {
@@ -376,6 +389,30 @@ export type Database = {
           p_reason?: string | null;
           p_status: string;
           p_trip: string;
+        };
+        Returns: Json;
+      };
+      quality_get_review: { Args: { p_review: string }; Returns: Json };
+      quality_list_reviews: {
+        Args: {
+          p_alert_status?: string | null;
+          p_page?: number;
+          p_page_size?: number;
+          p_publication_status?: string | null;
+          p_rating?: number | null;
+        };
+        Returns: Json;
+      };
+      quality_set_review_publication: {
+        Args: { p_action: string; p_review: string };
+        Returns: Json;
+      };
+      quality_update_alert: {
+        Args: {
+          p_alert: string;
+          p_note?: string | null;
+          p_resolution?: string | null;
+          p_status: string;
         };
         Returns: Json;
       };
