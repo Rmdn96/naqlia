@@ -1,0 +1,67 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { BRAND } from "@/config/brand";
+import { getWhatsAppHref } from "@/config/site";
+
+const officialNumber = "966547349947";
+
+describe("official Naqlk WhatsApp configuration", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("uses the configured international number without formatting characters", () => {
+    vi.stubEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", officialNumber);
+
+    const url = new URL(getWhatsAppHref("Hello Naqlk"));
+
+    expect(url.origin + url.pathname).toBe(`https://wa.me/${officialNumber}`);
+    expect(url.searchParams.get("text")).toBe("Hello Naqlk");
+  });
+
+  it("uses the centralized official fallback when deployment input is missing or invalid", () => {
+    expect(BRAND.support.whatsapp).toBe(officialNumber);
+    expect(new URL(getWhatsAppHref("نقلك")).pathname).toBe(`/${officialNumber}`);
+
+    vi.stubEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", "invalid");
+    expect(new URL(getWhatsAppHref("Naqlk")).pathname).toBe(`/${officialNumber}`);
+  });
+
+  it("routes every customer-facing WhatsApp CTA through the shared helper", () => {
+    const sources = [
+      "src/app/[locale]/page.tsx",
+      "src/app/[locale]/request/success/page.tsx",
+      "src/features/customer-quotation/components/customer-quotation-view.tsx",
+    ].map((file) => readFileSync(resolve(process.cwd(), file), "utf8"));
+
+    for (const source of sources) {
+      expect(source).toContain("getWhatsAppHref");
+      expect(source).not.toMatch(/wa\.me\//);
+      expect(source).not.toContain(officialNumber);
+    }
+  });
+
+  it("keeps localized messages branded and excludes capabilities and internal identifiers", () => {
+    const ar = JSON.parse(readFileSync(resolve(process.cwd(), "messages/ar.json"), "utf8"));
+    const en = JSON.parse(readFileSync(resolve(process.cwd(), "messages/en.json"), "utf8"));
+    const messages = [
+      ar.Home.whatsappCta,
+      en.Home.whatsappCta,
+      ar.Home.whatsappMessage,
+      en.Home.whatsappMessage,
+      ar.Success.whatsappMessage,
+      en.Success.whatsappMessage,
+      ar.CustomerQuotation.whatsappMessage,
+      en.CustomerQuotation.whatsappMessage,
+    ];
+
+    expect(ar.Home.whatsappCta).toContain("نقلك");
+    expect(en.Home.whatsappCta).toContain("Naqlk");
+    for (const message of messages) {
+      expect(message).not.toMatch(/[a-f0-9]{64}/i);
+      expect(message).not.toMatch(/[0-9a-f]{8}-[0-9a-f-]{27,}/i);
+      expect(message.toLowerCase()).not.toContain("internal");
+    }
+  });
+});

@@ -22,7 +22,7 @@ export type BrandConfiguration = Readonly<{
   support: Readonly<{
     email: null;
     phone: null;
-    whatsapp: null;
+    whatsapp: "966547349947";
   }>;
   taglines: LocalizedBrandValue;
 }>;
@@ -61,7 +61,7 @@ export const BRAND: BrandConfiguration = {
   support: {
     email: null,
     phone: null,
-    whatsapp: null,
+    whatsapp: "966547349947",
   },
   taglines: {
     ar: "نقلك... ننقل كل ما يهمك",

@@ -18,6 +18,7 @@ import {
   getLocaleAlternates,
   getOrganizationStructuredData,
 } from "@/config/brand";
+import { getWhatsAppHref } from "@/config/site";
 import { getPublicRequestCatalog } from "@/features/public-request/services/public-request.service";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -103,6 +104,15 @@ export default async function HomePage({ params }: LocalePageProps) {
                 href="#how-it-works"
               >
                 {t("secondaryCta")}
+              </a>
+              <a
+                className={buttonVariants({ size: "lg", variant: "outline" })}
+                href={getWhatsAppHref(t("whatsappMessage"))}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <MessageCircleMore aria-hidden="true" className="size-5" />
+                {t("whatsappCta")}
               </a>
             </div>
             <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold text-muted-foreground">

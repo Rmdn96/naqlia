@@ -130,7 +130,7 @@ The timeline exposes issued, viewed, accepted, rejected, Order-created, and revo
 
 ## 12. Notification boundary
 
-This sprint does not integrate SMS, email delivery, WhatsApp Business API, or an external notification provider. Sales manually copies the secure link and may use the configured WhatsApp fallback. Automated delivery is a future capability and must consume a newly issued link without persisting plaintext beyond the approved provider boundary.
+This sprint does not integrate SMS, email delivery, WhatsApp Business API, or an external notification provider. Customer contact actions resolve the centralized `NEXT_PUBLIC_WHATSAPP_NUMBER` deployment fallback (`966547349947`) and never include the secure quotation capability in the prefilled message. Business Settings will become the authoritative source without changing CTA consumers. Sales manually copies the secure link through the separate one-time delivery boundary. Automated delivery is a future capability and must consume a newly issued link without persisting plaintext beyond the approved provider boundary.
 
 ## 13. Migration and rollback
 
