@@ -27,6 +27,18 @@ describe("Operations Management database contract", () => {
     expect(migration).not.toContain("v_delivered>0 then 'awaiting_customer_confirmation'");
   });
 
+  it("keeps partially delivered multi-Trip Jobs in progress", () => {
+    const hardening = readFileSync(
+      resolve(
+        process.cwd(),
+        "supabase/migrations/20260813210500_operations_multitrip_aggregate_hardening.sql",
+      ),
+      "utf8",
+    );
+    expect(hardening).toContain("when v_active > 0 or v_delivered > 0 then 'in_progress'");
+    expect(hardening).toContain("when v_delivered = v_total then 'awaiting_customer_confirmation'");
+  });
+
   it("enforces valid Riyadh windows, workers, resources, and conflict warnings", () => {
     expect(migration).toContain("pickup_window_start < pickup_window_end");
     expect(migration).toContain("pickup_window_end <= delivery_window_start");

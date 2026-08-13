@@ -99,6 +99,13 @@
       "production_history_sha256": "196a799be9dc659ee418647c68b040f7e332ef1427467509cfe55cd8a342b9e7",
       "repository_sha256": "196a799be9dc659ee418647c68b040f7e332ef1427467509cfe55cd8a342b9e7",
       "version": "20260813203000"
+    },
+    {
+      "filename": "20260813210500_operations_multitrip_aggregate_hardening.sql",
+      "name": "operations_multitrip_aggregate_hardening",
+      "production_history_sha256": "7f23011e6c15a7764cbd48f9327e27a7fdb439f3e9e92937d25fcb925684e1bb",
+      "repository_sha256": "7f23011e6c15a7764cbd48f9327e27a7fdb439f3e9e92937d25fcb925684e1bb",
+      "version": "20260813210500"
     }
   ]
 }
