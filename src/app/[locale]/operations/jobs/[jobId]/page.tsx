@@ -1,0 +1,14 @@
+import { JobDetail } from "@/features/operations/components/job-detail";
+import { getOperationsJob } from "@/features/operations/services/operations.service";
+import type { AppLocale } from "@/i18n/routing";
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ jobId: string; locale: AppLocale }>;
+  searchParams: Promise<{ notice?: string }>;
+}) {
+  const { jobId, locale } = await params;
+  const { notice } = await searchParams;
+  return <JobDetail detail={await getOperationsJob(jobId)} locale={locale} notice={notice} />;
+}

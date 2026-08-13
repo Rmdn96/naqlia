@@ -79,7 +79,8 @@ npm run build
   - [Public Request Flow](docs/implementation/04-Public-Request-Flow.md)
   - [Sales Workspace](docs/implementation/05-Sales-Workspace.md)
   - [Production Lead Reference Reconciliation](docs/implementation/06-Production-Lead-Reference-Reconciliation.md)
-  - [Customer Quotation Response Flow](docs/implementation/07-Customer-Quotation-Response-Flow.md)
+- [Customer Quotation Response Flow](docs/implementation/07-Customer-Quotation-Response-Flow.md)
+- [Operations Management v1](docs/implementation/08-Operations-Management.md)
   - [Naqlk Brand Migration](docs/implementation/05-Naqlk-Brand-Migration.md)
 - Backlog
   - [Business Settings Management](docs/backlog/01-Business-Settings-Management.md)
