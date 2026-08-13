@@ -42,27 +42,74 @@ export function TrackingView({
         </div>
       </section>
       <section className="mt-5 space-y-3">
-        {data.trips.map((trip, index) => (
-          <article className="rounded-lg border bg-card p-5" key={index}>
-            <div className="flex justify-between">
-              <strong>
-                {ar ? "رحلة" : "Trip"} {String(trip.trip_number)}
-              </strong>
-              <span>{String(trip.status)}</span>
-            </div>
-            {trip.condition !== "normal" && (
-              <p className="mt-3 rounded-md bg-amber-50 p-3 text-sm text-amber-900">
-                {String(
-                  ar
-                    ? (trip.customer_message_ar ??
-                        "يوجد تحديث على تنفيذ طلبك، وفريق نقلك يتابع الأمر.")
-                    : (trip.customer_message_en ??
-                        "There is an update to your delivery. The Naqlk team is following up."),
-                )}
-              </p>
-            )}
-          </article>
-        ))}
+        {data.trips.map((trip, index) => {
+          const driver =
+            trip.driver && typeof trip.driver === "object" && !Array.isArray(trip.driver)
+              ? (trip.driver as { display_name?: string; mobile_number?: string })
+              : null;
+          const vehicle =
+            trip.vehicle && typeof trip.vehicle === "object" && !Array.isArray(trip.vehicle)
+              ? (trip.vehicle as { plate_number?: string; vehicle_type?: string })
+              : null;
+          const driverDigits = driver?.mobile_number?.replace(/\D/g, "");
+          return (
+            <article
+              className="rounded-lg border bg-card p-5"
+              key={String(trip.trip_number ?? index)}
+            >
+              <div className="flex justify-between">
+                <strong>
+                  {ar ? "رحلة" : "Trip"} {String(trip.trip_number)}
+                </strong>
+                <span>{String(trip.status)}</span>
+              </div>
+              {trip.condition !== "normal" && (
+                <p className="mt-3 rounded-md bg-amber-50 p-3 text-sm text-amber-900">
+                  {String(
+                    ar
+                      ? (trip.customer_message_ar ??
+                          "يوجد تحديث على تنفيذ طلبك، وفريق نقلك يتابع الأمر.")
+                      : (trip.customer_message_en ??
+                          "There is an update to your delivery. The Naqlk team is following up."),
+                  )}
+                </p>
+              )}
+              {(driver || vehicle) && (
+                <div className="mt-4 rounded-md bg-secondary p-4">
+                  <p className="font-bold">{ar ? "فريق الرحلة الحالي" : "Current Trip team"}</p>
+                  {driver?.display_name && (
+                    <p className="mt-2 text-sm">
+                      {ar ? "السائق" : "Driver"}: {driver.display_name}
+                    </p>
+                  )}
+                  {vehicle?.vehicle_type && (
+                    <p className="mt-1 text-sm">
+                      {ar ? "المركبة" : "Vehicle"}: {vehicle.vehicle_type}
+                      {vehicle.plate_number ? ` · ${vehicle.plate_number}` : ""}
+                    </p>
+                  )}
+                  {driverDigits && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <a
+                        className="rounded-md border px-3 py-2 text-sm font-bold"
+                        href={`tel:+${driverDigits}`}
+                      >
+                        {ar ? "اتصال بالسائق" : "Call Driver"}
+                      </a>
+                      <a
+                        className="rounded-md border px-3 py-2 text-sm font-bold"
+                        href={`https://wa.me/${driverDigits}`}
+                        rel="noreferrer"
+                      >
+                        {ar ? "واتساب السائق" : "WhatsApp Driver"}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+            </article>
+          );
+        })}
       </section>
       <a
         className="mt-7 inline-flex min-h-12 items-center rounded-md bg-emerald-600 px-5 font-bold text-white"

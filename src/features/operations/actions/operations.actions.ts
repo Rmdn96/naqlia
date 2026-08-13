@@ -10,6 +10,7 @@ import {
   createTrip,
   issueTracking,
   recoverTracking,
+  reviewCancellation,
   requestCancellation,
   saveTrip,
   setTripCondition,
@@ -37,8 +38,11 @@ export async function scheduleTripAction(
   locale: AppLocale,
   formData: FormData,
 ) {
-  const iso = (name: string) => new Date(String(formData.get(name))).toISOString();
-  await saveTrip(tripId, {
+  const iso = (name: string) => {
+    const riyadhLocal = String(formData.get(name));
+    return new Date(`${riyadhLocal}:00+03:00`).toISOString();
+  };
+  const result = await saveTrip(tripId, {
     pickupWindowStart: iso("pickupStart"),
     pickupWindowEnd: iso("pickupEnd"),
     deliveryWindowStart: iso("deliveryStart"),
@@ -49,6 +53,9 @@ export async function scheduleTripAction(
     overrideConflict: formData.get("override") === "on",
     reason: String(formData.get("reason") || ""),
   });
+  if (result.state === "conflict") {
+    redirect(`/${locale}/operations/jobs/${jobId}?notice=schedule-conflict` as Route);
+  }
   revalidatePath(`/${locale}/operations/jobs/${jobId}`);
 }
 export async function transitionTripAction(
@@ -57,7 +64,12 @@ export async function transitionTripAction(
   locale: AppLocale,
   formData: FormData,
 ) {
-  await transitionTrip(tripId, String(formData.get("status")));
+  await transitionTrip(
+    tripId,
+    String(formData.get("status")),
+    formData.get("override") === "on",
+    String(formData.get("reason") || ""),
+  );
   revalidatePath(`/${locale}/operations/jobs/${jobId}`);
 }
 export async function conditionTripAction(
@@ -78,7 +90,21 @@ export async function issueTrackingAction(jobId: string, locale: AppLocale) {
   redirect(`/${locale}/track/${token}` as Route);
 }
 export async function completeJobAction(jobId: string, locale: AppLocale, formData: FormData) {
+  if (formData.get("confirm") !== "on") throw new Error("MANUAL_COMPLETION_CONFIRMATION_REQUIRED");
   await completeJob(jobId, String(formData.get("reason") || ""));
+  revalidatePath(`/${locale}/operations/jobs/${jobId}`);
+}
+export async function reviewCancellationAction(
+  jobId: string,
+  requestId: string,
+  locale: AppLocale,
+  formData: FormData,
+) {
+  await reviewCancellation(
+    requestId,
+    String(formData.get("decision")),
+    String(formData.get("reason") || ""),
+  );
   revalidatePath(`/${locale}/operations/jobs/${jobId}`);
 }
 export async function confirmReceiptAction(token: string, locale: AppLocale) {

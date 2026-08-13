@@ -70,7 +70,10 @@ export async function createTrip(jobId: string): Promise<void> {
   if (error) throw new Error("TRIP_CREATE_FAILED", { cause: error });
 }
 
-export async function saveTrip(tripId: string, input: unknown): Promise<{ state: string }> {
+export async function saveTrip(
+  tripId: string,
+  input: unknown,
+): Promise<{ conflicts?: Array<{ trip_number?: number }>; state: "conflict" | "saved" }> {
   await requireOperationsWorkspacePermission("operations.workspace.manage");
   const value = tripScheduleSchema.parse(input);
   const supabase = await createServerSupabaseClient();
@@ -143,6 +146,17 @@ export async function completeJob(jobId: string, reason: string) {
     p_reason: reason.trim(),
   });
   if (error) throw new Error("JOB_COMPLETION_FAILED", { cause: error });
+}
+
+export async function reviewCancellation(requestId: string, decision: string, reason: string) {
+  await requireOperationsWorkspacePermission("operations.workspace.manage");
+  const supabase = await createServerSupabaseClient();
+  const { error } = await supabase.rpc("operations_review_cancellation", {
+    p_decision: decision,
+    p_reason: reason.trim(),
+    p_request: operationsUuidSchema.parse(requestId),
+  });
+  if (error) throw new Error("CANCELLATION_REVIEW_FAILED", { cause: error });
 }
 
 export async function getTracking(token: string): Promise<TrackingPayload | null> {

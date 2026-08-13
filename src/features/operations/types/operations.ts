@@ -54,7 +54,12 @@ export type OperationsJobDetail = {
     id: string;
     occurred_at: string;
   }>;
-  cancellation_requests: Array<{ id: string; requested_at: string; status: string }>;
+  cancellation_requests: Array<{
+    customer_reason: string | null;
+    id: string;
+    requested_at: string;
+    status: string;
+  }>;
   delivery: { city_ar: string; city_en: string; formatted_address: string };
   job: {
     attention_required: boolean;

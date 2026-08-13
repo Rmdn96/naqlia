@@ -92,6 +92,13 @@
       "production_history_sha256": "908efd86857f41a0ab3eb90db995753c3e0a30509ca3c86c4b9f0d665833a87d",
       "repository_sha256": "908efd86857f41a0ab3eb90db995753c3e0a30509ca3c86c4b9f0d665833a87d",
       "version": "20260813150000"
+    },
+    {
+      "filename": "20260813203000_operations_acceptance_hardening.sql",
+      "name": "operations_acceptance_hardening",
+      "production_history_sha256": "196a799be9dc659ee418647c68b040f7e332ef1427467509cfe55cd8a342b9e7",
+      "repository_sha256": "196a799be9dc659ee418647c68b040f7e332ef1427467509cfe55cd8a342b9e7",
+      "version": "20260813203000"
     }
   ]
 }

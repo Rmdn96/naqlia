@@ -3,9 +3,12 @@ import { getOperationsJob } from "@/features/operations/services/operations.serv
 import type { AppLocale } from "@/i18n/routing";
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ jobId: string; locale: AppLocale }>;
+  searchParams: Promise<{ notice?: string }>;
 }) {
   const { jobId, locale } = await params;
-  return <JobDetail detail={await getOperationsJob(jobId)} locale={locale} />;
+  const { notice } = await searchParams;
+  return <JobDetail detail={await getOperationsJob(jobId)} locale={locale} notice={notice} />;
 }
