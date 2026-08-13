@@ -183,15 +183,40 @@ export async function saveSalesQuotation(
   return { id: result.id };
 }
 
-export async function sendSalesQuotation(quotationId: string): Promise<void> {
+function parseAccessToken(value: Json | null, errorCode: string): string {
+  const result = parseRpcObject<{ customer_access_token?: string }>(value, errorCode);
+  if (!result.customer_access_token || !/^[a-f0-9]{64}$/.test(result.customer_access_token)) {
+    throw new Error(errorCode);
+  }
+  return result.customer_access_token;
+}
+
+export async function sendSalesQuotation(quotationId: string): Promise<string> {
   const parsedQuotationId = salesQuotationIdSchema.parse(quotationId);
   await requireSalesWorkspacePermission("sales.workspace.manage");
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.rpc("sales_send_quotation", {
+  const { data, error } = await supabase.rpc("sales_send_quotation", {
     p_quotation_id: parsedQuotationId,
   });
 
   if (error) {
     throw new Error("SALES_QUOTATION_SEND_FAILED", { cause: error });
   }
+
+  return parseAccessToken(data, "SALES_QUOTATION_SEND_INVALID_RESPONSE");
+}
+
+export async function reissueSalesQuotationAccess(quotationId: string): Promise<string> {
+  const parsedQuotationId = salesQuotationIdSchema.parse(quotationId);
+  await requireSalesWorkspacePermission("sales.workspace.manage");
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase.rpc("sales_reissue_quotation_access", {
+    p_quotation_id: parsedQuotationId,
+  });
+
+  if (error) {
+    throw new Error("SALES_QUOTATION_ACCESS_REISSUE_FAILED", { cause: error });
+  }
+
+  return parseAccessToken(data, "SALES_QUOTATION_ACCESS_REISSUE_INVALID_RESPONSE");
 }

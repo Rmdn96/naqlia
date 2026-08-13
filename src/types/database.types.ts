@@ -191,14 +191,36 @@ type QuotationRow = AuditFields & {
   lead_id: string;
   quotation_number: string;
   quoted_amount: number;
+  rejected_at: string | null;
+  rejection_reason_code:
+    "changed_requirements" | "no_longer_needed" | "other" | "price" | "timing" | null;
+  rejection_reason_text: string | null;
   revision_number: number;
   sent_at: string | null;
   status: "approved" | "cancelled" | "draft" | "expired" | "rejected" | "sent" | "superseded";
   subtotal_amount: number;
+  superseded_by_quotation_id: string | null;
   tax_amount: number;
   terms_ar: string;
   terms_en: string;
   vat_rate: number;
+};
+
+type QuotationCustomerAccessRow = {
+  created_at: string;
+  created_by_profile_id: string | null;
+  expires_at: string;
+  first_viewed_at: string | null;
+  id: string;
+  issued_at: string;
+  last_viewed_at: string | null;
+  quotation_id: string;
+  responded_at: string | null;
+  revocation_reason: "expired" | "manual" | "reissued" | "superseded" | null;
+  revoked_at: string | null;
+  status: "active" | "responded" | "revoked";
+  token_hash: string;
+  updated_at: string;
 };
 
 type QuotationLineItemRow = {
@@ -269,6 +291,19 @@ export type Database = {
         Args: Record<never, never>;
         Returns: string | null;
       };
+      customer_get_quotation: {
+        Args: { p_access_token: string };
+        Returns: Json;
+      };
+      customer_respond_to_quotation: {
+        Args: {
+          p_access_token: string;
+          p_reason_code?: string | null;
+          p_reason_text?: string | null;
+          p_response: string;
+        };
+        Returns: Json;
+      };
       has_permission: {
         Args: { requested_permission: string };
         Returns: boolean;
@@ -321,6 +356,10 @@ export type Database = {
           p_lead_id: string;
           p_quotation_id?: string | null;
         };
+        Returns: Json;
+      };
+      sales_reissue_quotation_access: {
+        Args: { p_quotation_id: string };
         Returns: Json;
       };
       sales_send_quotation: {
@@ -469,6 +508,15 @@ export type Database = {
         Relationships: [];
         Row: QuotationLineItemRow;
         Update: Partial<QuotationLineItemRow>;
+      };
+      quotation_customer_accesses: {
+        Insert: InsertWithRequired<
+          QuotationCustomerAccessRow,
+          "expires_at" | "quotation_id" | "token_hash"
+        >;
+        Relationships: [];
+        Row: QuotationCustomerAccessRow;
+        Update: Partial<QuotationCustomerAccessRow>;
       };
       role_permissions: {
         Insert: {

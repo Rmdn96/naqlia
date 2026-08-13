@@ -5,6 +5,7 @@ import { ZodError } from "zod";
 
 import { AuthorizationError } from "@/lib/auth/authorization";
 import {
+  reissueSalesQuotationAccess,
   saveSalesQuotation,
   sendSalesQuotation,
 } from "@/features/sales-workspace/services/sales-workspace.service";
@@ -54,12 +55,13 @@ export async function sendQuotationAction(
   leadId: string,
   quotationId: string,
   locale: AppLocale,
+  customerLocale: AppLocale,
 ): Promise<QuotationCommandResult> {
   try {
-    await sendSalesQuotation(quotationId);
+    const token = await sendSalesQuotation(quotationId);
     revalidateSalesLead(locale, leadId);
 
-    return { quotationId, status: "success" };
+    return { customerPath: `/${customerLocale}/quote/${token}`, quotationId, status: "success" };
   } catch (error) {
     if (error instanceof AuthorizationError) {
       return { message: "not_authorized", status: "error" };
@@ -69,5 +71,23 @@ export async function sendQuotationAction(
     }
 
     return { message: "send_failed", status: "error" };
+  }
+}
+
+export async function reissueQuotationAccessAction(
+  leadId: string,
+  quotationId: string,
+  locale: AppLocale,
+  customerLocale: AppLocale,
+): Promise<QuotationCommandResult> {
+  try {
+    const token = await reissueSalesQuotationAccess(quotationId);
+    revalidateSalesLead(locale, leadId);
+    return { customerPath: `/${customerLocale}/quote/${token}`, quotationId, status: "success" };
+  } catch (error) {
+    if (error instanceof AuthorizationError) {
+      return { message: "not_authorized", status: "error" };
+    }
+    return { message: "reissue_failed", status: "error" };
   }
 }

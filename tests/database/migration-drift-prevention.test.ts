@@ -23,7 +23,7 @@ const manifest = JSON.parse(
 
 describe("production migration drift prevention", () => {
   it("pins repository and production-history checksums for every migration", () => {
-    expect(manifest.migrations).toHaveLength(11);
+    expect(manifest.migrations).toHaveLength(12);
 
     for (const migration of manifest.migrations) {
       expect(migration.version).toMatch(/^\d{14}$/);

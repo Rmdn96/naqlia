@@ -78,6 +78,13 @@
       "production_history_sha256": "e8f566ed2ce4cc65b720b3c5d2e57c684cfc6f8956703468529b0fb61d01fa97",
       "repository_sha256": "e8f566ed2ce4cc65b720b3c5d2e57c684cfc6f8956703468529b0fb61d01fa97",
       "version": "20260804113000"
+    },
+    {
+      "filename": "20260812190000_customer_quotation_response.sql",
+      "name": "customer_quotation_response",
+      "production_history_sha256": "7d8fe6e66ee671d3aad9e6b77baecc4d0f8c7c564e35bdbfa9e52b37c51bda9d",
+      "repository_sha256": "7d8fe6e66ee671d3aad9e6b77baecc4d0f8c7c564e35bdbfa9e52b37c51bda9d",
+      "version": "20260812190000"
     }
   ]
 }
