@@ -35,7 +35,7 @@ All public-facing text and address values require Arabic-first content with Engl
 
 ## Current fallback
 
-`NEXT_PUBLIC_WHATSAPP_NUMBER` remains the public-request flow fallback for a direct WhatsApp recipient. When it is absent, the current flow opens WhatsApp with the prefilled message and lets the user choose a contact. This behavior remains until Business Settings is implemented.
+`NEXT_PUBLIC_WHATSAPP_NUMBER` is the deployment-level fallback for the official WhatsApp recipient. The current approved value is `966547349947` and is normalized to the international digits-only form required by `wa.me`. The centralized brand configuration provides the same safe fallback when the environment value is missing or invalid. Published Business Settings must take precedence over both sources when that feature is implemented.
 
 ## Future implementation boundaries
 

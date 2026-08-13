@@ -123,7 +123,7 @@ Business contact values remain environment-backed during MVP. The approved futur
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public      | Existing publishable client key.                                                                                   |
 | `SUPABASE_SECRET_KEY`                  | Server only | Required for signed uploads, verification, cleanup, and trusted RPC.                                               |
 | `NEXT_PUBLIC_APP_URL`                  | Public      | Active application/callback origin; `https://naqlk.vercel.app` in Vercel Production and Preview during pre-launch. |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER`          | Public      | Optional `9665XXXXXXXX`; without it WhatsApp opens contact choice.                                                 |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER`          | Public      | Required deployment fallback `966547349947`; Business Settings will supersede it when implemented.                 |
 
 ## 11. Deferred scope
 
