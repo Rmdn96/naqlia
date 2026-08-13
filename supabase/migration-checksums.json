@@ -106,6 +106,13 @@
       "production_history_sha256": "7f23011e6c15a7764cbd48f9327e27a7fdb439f3e9e92937d25fcb925684e1bb",
       "repository_sha256": "7f23011e6c15a7764cbd48f9327e27a7fdb439f3e9e92937d25fcb925684e1bb",
       "version": "20260813210500"
+    },
+    {
+      "filename": "20260813211500_operations_order_state_reconciliation.sql",
+      "name": "operations_order_state_reconciliation",
+      "production_history_sha256": "8f35714a9af72e1b0b7b98a039f3d39cdcfe609fefa240d4de14c48e878e3751",
+      "repository_sha256": "8f35714a9af72e1b0b7b98a039f3d39cdcfe609fefa240d4de14c48e878e3751",
+      "version": "20260813211500"
     }
   ]
 }

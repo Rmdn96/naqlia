@@ -39,6 +39,20 @@ describe("Operations Management database contract", () => {
     expect(hardening).toContain("when v_delivered = v_total then 'awaiting_customer_confirmation'");
   });
 
+  it("reconciles Job progress through valid commercial Order transitions", () => {
+    const reconciliation = readFileSync(
+      resolve(
+        process.cwd(),
+        "supabase/migrations/20260813211500_operations_order_state_reconciliation.sql",
+      ),
+      "utf8",
+    );
+    expect(reconciliation).toContain("execution_status = 'scheduled'");
+    expect(reconciliation).toContain("execution_status = 'in_progress'");
+    expect(reconciliation).toContain("execution_status = 'completed'");
+    expect(reconciliation).toContain("perform private.sync_order_execution(v_job.id, 'completed')");
+  });
+
   it("enforces valid Riyadh windows, workers, resources, and conflict warnings", () => {
     expect(migration).toContain("pickup_window_start < pickup_window_end");
     expect(migration).toContain("pickup_window_end <= delivery_window_start");
