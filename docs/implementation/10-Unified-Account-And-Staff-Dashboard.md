@@ -33,7 +33,7 @@ The localized entry point is `/ar/login` or `/en/login`. It never asks the user 
 
 1. Email magic link is always available.
 2. Google or Apple is rendered only when its corresponding approved provider flag is enabled.
-3. `/auth/callback` exchanges the PKCE code server-side.
+3. `/auth/callback` exchanges the PKCE code server-side. It also accepts allowlisted one-time `token_hash` callbacks for invite, magic-link, and recovery flows, verifies them server-side, and immediately redirects to a clean URL.
 4. `resolve_identity_context()` activates/loads the profile, creates the optional Customer Account context idempotently, updates last login, and reads active Staff role/permissions from PostgreSQL.
 5. Active Staff defaults to `/{locale}/dashboard`; a non-Staff identity defaults to `/{locale}/account`.
 6. A Staff identity with Customer context can explicitly switch between Work Dashboard and Personal Account.

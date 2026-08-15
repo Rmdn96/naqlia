@@ -37,6 +37,8 @@ describe("Unified Account and Staff Portal application contract", () => {
     const callback = source("src/app/auth/callback/route.ts");
     expect(callback).toContain('supabase.rpc("resolve_identity_context")');
     expect(callback).toContain("isStaffPath(requestedPath)");
+    expect(callback).toContain("supabase.auth.verifyOtp");
+    expect(callback).toContain('["invite", "magiclink", "recovery"]');
     expect(callback).not.toMatch(/user_metadata[^\n]*(role|permission)/i);
   });
 

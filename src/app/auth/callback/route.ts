@@ -19,16 +19,24 @@ function createRedirect(request: NextRequest, path: string, result?: "error") {
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
+  const tokenHash = request.nextUrl.searchParams.get("token_hash");
+  const tokenType = request.nextUrl.searchParams.get("type");
   const locale = request.nextUrl.searchParams.get("locale") === "en" ? "en" : "ar";
   const requestedPath = getSafeRedirectPath(request.nextUrl.searchParams.get("next"));
   const errorPath = `/${locale}/login`;
 
-  if (!code || request.nextUrl.searchParams.has("error")) {
+  if ((!code && !tokenHash) || request.nextUrl.searchParams.has("error")) {
     return createRedirect(request, errorPath, "error");
   }
 
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const allowedTokenTypes = ["invite", "magiclink", "recovery"] as const;
+  const verifiedType = allowedTokenTypes.find((value) => value === tokenType);
+  const { error } = code
+    ? await supabase.auth.exchangeCodeForSession(code)
+    : verifiedType && tokenHash
+      ? await supabase.auth.verifyOtp({ token_hash: tokenHash, type: verifiedType })
+      : { error: new Error("Unsupported authentication callback") };
 
   if (error) {
     return createRedirect(request, errorPath, "error");
