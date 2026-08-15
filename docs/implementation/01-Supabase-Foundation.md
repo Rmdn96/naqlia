@@ -72,9 +72,11 @@ Middleware refreshes sessions only. It does not authorize a business route, redi
 
 `src/app/auth/callback/route.ts` is infrastructure, not a business API. It exchanges the one-time PKCE code for a cookie session and redirects only to a validated same-origin path. Provider errors are not reflected to the user or logs; the callback emits only the stable `auth_result=error` outcome for a future UI.
 
-The callback URL for each environment is:
+The callback URL is resolved by the server from a closed environment allowlist:
 
-`{NEXT_PUBLIC_APP_URL}/auth/callback`
+- Production: `{NEXT_PUBLIC_APP_URL}/auth/callback`;
+- approved Vercel Preview: `{NAQLK_AUTH_PREVIEW_ORIGIN}/auth/callback`; and
+- local development: `{NAQLK_AUTH_LOCAL_ORIGIN}/auth/callback`.
 
 It MUST be present in the Supabase redirect allowlist. Google and Apple provider callback configuration also follows the provider-specific Supabase dashboard instructions.
 
@@ -117,6 +119,8 @@ Do not run `init` in production until the Platform owner confirms the target pro
 | Variable                               | Exposure           | Required            | Purpose                                                                                                                                                                                                                  |
 | -------------------------------------- | ------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `NEXT_PUBLIC_APP_URL`                  | Public             | Yes                 | Approved application origin used to construct OAuth callback URLs. Production and Preview use the stable active production origin; local development uses localhost. SEO canonicals come from the typed brand authority. |
+| `NAQLK_AUTH_PREVIEW_ORIGIN`            | Server only        | Preview only        | Exact, branch-scoped Vercel Preview origin used for inbox-backed Preview callbacks. Never set in Production.                                                                                                             |
+| `NAQLK_AUTH_LOCAL_ORIGIN`              | Server only        | Development only    | Explicit localhost callback origin. Defaults to `http://localhost:3000` in the environment example.                                                                                                                      |
 | `NEXT_PUBLIC_DEFAULT_LOCALE`           | Public             | Yes                 | Default locale; remains `ar`.                                                                                                                                                                                            |
 | `NEXT_PUBLIC_SUPPORTED_LOCALES`        | Public             | Yes                 | Comma-separated supported locales; remains `ar,en`.                                                                                                                                                                      |
 | `NEXT_PUBLIC_SUPABASE_URL`             | Public             | Yes                 | Supabase project URL from the Connect dialog.                                                                                                                                                                            |
@@ -130,7 +134,7 @@ Environment rules:
 1. Real values belong in `.env.local`, encrypted CI settings, Vercel environment variables, or another approved secret manager.
 2. `.env.example` contains names and non-secret examples only.
 3. No application client imports or reads `SUPABASE_SECRET_KEY`.
-4. Production and Preview use the stable approved production `NEXT_PUBLIC_APP_URL`; preview and localhost callback origins remain explicitly allowlisted for flows that derive the current browser origin.
+4. Production uses the stable approved `NEXT_PUBLIC_APP_URL`. Preview and localhost callbacks use server-only, environment-scoped origins that must also be exact Supabase allowlist entries. Request `Host`/`Origin` headers are accepted only when they match trusted Vercel system values or an explicit approved origin.
 5. A missing/invalid required public connection value fails when a Supabase client is created; it does not silently fall back to another project.
 
 ## 7. Implementation Decisions

@@ -2,10 +2,11 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { getSafeRedirectPath } from "@/lib/auth/redirects";
 import { isStaffPath } from "@/lib/auth/identity-context";
+import { resolveServerAuthRedirectOrigin } from "@/lib/auth/redirect-origin.server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 function createRedirect(request: NextRequest, path: string, result?: "error") {
-  const redirectUrl = new URL(path, request.nextUrl.origin);
+  const redirectUrl = new URL(path, resolveServerAuthRedirectOrigin(request.nextUrl.origin));
 
   if (result) {
     redirectUrl.searchParams.set("auth_result", result);

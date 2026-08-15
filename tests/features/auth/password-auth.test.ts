@@ -49,6 +49,23 @@ describe("customer password authentication", () => {
     expect(getSafeRedirectPath("/en/account")).toBe("/en/account");
   });
 
+  it("does not derive customer or Staff email callbacks from an unvalidated browser origin", () => {
+    for (const file of [
+      "src/features/unified-auth/components/sign-up-form.tsx",
+      "src/features/unified-auth/components/forgot-password-form.tsx",
+      "src/features/unified-auth/components/unified-login-form.tsx",
+      "src/features/staff-auth/components/staff-sign-in-form.tsx",
+      "src/features/staff-portal/actions/administration.actions.ts",
+    ]) {
+      expect(source(file)).not.toContain("window.location.origin");
+    }
+    expect(source("src/app/[locale]/signup/page.tsx")).toContain("getRequestAuthRedirectOrigin");
+    expect(source("src/app/[locale]/forgot-password/page.tsx")).toContain(
+      "getRequestAuthRedirectOrigin",
+    );
+    expect(source("src/app/[locale]/login/page.tsx")).toContain("getRequestAuthRedirectOrigin");
+  });
+
   it("never derives Staff authorization from customer metadata", () => {
     const migration = source(
       "supabase/migrations/20260815170000_auth_visual_public_projection.sql",

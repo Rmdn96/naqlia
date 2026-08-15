@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { getApplicationUrl } from "@/config/env";
 import {
   cancelInvitation,
   markInvitationResent,
@@ -17,6 +16,7 @@ import {
 } from "@/features/staff-portal/services/administration.service";
 import type { AppLocale } from "@/i18n/routing";
 import { getPortalContext } from "@/features/staff-portal/services/staff-portal.service";
+import { resolveAuthRedirectOriginFromHeaders } from "@/lib/auth/redirect-origin.server";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 
 const roles = z.enum(["super_admin", "sales", "operations", "finance", "customer_service"]);
@@ -77,7 +77,7 @@ export async function inviteStaffAction(locale: AppLocale, formData: FormData) {
     });
   if (!parsed.success) redirect(`/${locale}/admin/users?result=invalid` as never);
   const requestHeaders = await headers();
-  const origin = requestHeaders.get("origin") || getApplicationUrl();
+  const origin = resolveAuthRedirectOriginFromHeaders(requestHeaders);
   const redirectTo = new URL(`/${locale}/staff/accept-invite`, origin).toString();
   const admin = createAdminSupabaseClient();
   const { data: users, error: listError } = await admin.auth.admin.listUsers({
@@ -121,7 +121,7 @@ export async function resendInvitationAction(locale: AppLocale, formData: FormDa
     .maybeSingle();
   if (!data) redirect(`/${locale}/admin/users?result=invalid` as never);
   const requestHeaders = await headers();
-  const origin = requestHeaders.get("origin") || getApplicationUrl();
+  const origin = resolveAuthRedirectOriginFromHeaders(requestHeaders);
   const { error } = await admin.auth.signInWithOtp({
     email: data.email,
     options: {

@@ -28,11 +28,3 @@ export async function resolveAuthenticatedDestination(
   if (requested && (!staffPath || context.is_staff)) return requested;
   return context.is_staff ? `/${locale}/dashboard` : `/${locale}/account`;
 }
-
-export function createAuthCallbackUrl(locale: AppLocale, next?: string, recovery = false) {
-  const callback = new URL("/auth/callback", window.location.origin);
-  callback.searchParams.set("locale", locale);
-  if (next?.startsWith("/") && !next.startsWith("//")) callback.searchParams.set("next", next);
-  if (recovery) callback.searchParams.set("recovery", "true");
-  return callback.toString();
-}

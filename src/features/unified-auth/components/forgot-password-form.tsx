@@ -4,14 +4,20 @@ import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createAuthCallbackUrl } from "@/features/unified-auth/lib/client-routing";
 import { getUnifiedAuthCopy } from "@/features/unified-auth/lib/copy";
 import { emailSchema } from "@/features/unified-auth/lib/validation";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { createAuthCallbackUrl } from "@/lib/auth/redirect-origin";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
-export function ForgotPasswordForm({ locale }: { locale: AppLocale }) {
+export function ForgotPasswordForm({
+  authOrigin,
+  locale,
+}: {
+  authOrigin: string;
+  locale: AppLocale;
+}) {
   const t = getUnifiedAuthCopy(locale);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string>();
@@ -24,7 +30,7 @@ export function ForgotPasswordForm({ locale }: { locale: AppLocale }) {
     }
     setPending(true);
     await createBrowserSupabaseClient().auth.resetPasswordForEmail(email.data, {
-      redirectTo: createAuthCallbackUrl(locale, `/${locale}/reset-password`, true),
+      redirectTo: createAuthCallbackUrl(authOrigin, locale, `/${locale}/reset-password`, true),
     });
     setPending(false);
     setMessage(t.forgotSuccess);

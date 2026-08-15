@@ -5,19 +5,29 @@ import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  createAuthCallbackUrl,
-  resolveAuthenticatedDestination,
-} from "@/features/unified-auth/lib/client-routing";
+import { resolveAuthenticatedDestination } from "@/features/unified-auth/lib/client-routing";
 import { getUnifiedAuthCopy } from "@/features/unified-auth/lib/copy";
 import { emailSchema } from "@/features/unified-auth/lib/validation";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { createAuthCallbackUrl } from "@/lib/auth/redirect-origin";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
-type Props = { googleEnabled: boolean; initialError?: boolean; locale: AppLocale; next?: string };
+type Props = {
+  authOrigin: string;
+  googleEnabled: boolean;
+  initialError?: boolean;
+  locale: AppLocale;
+  next?: string;
+};
 
-export function UnifiedLoginForm({ googleEnabled, initialError = false, locale, next }: Props) {
+export function UnifiedLoginForm({
+  authOrigin,
+  googleEnabled,
+  initialError = false,
+  locale,
+  next,
+}: Props) {
   const t = getUnifiedAuthCopy(locale);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,7 +68,7 @@ export function UnifiedLoginForm({ googleEnabled, initialError = false, locale, 
     setPending(true);
     const supabase = createBrowserSupabaseClient();
     const { error } = await supabase.auth.signInWithOAuth({
-      options: { redirectTo: createAuthCallbackUrl(locale, next) },
+      options: { redirectTo: createAuthCallbackUrl(authOrigin, locale, next) },
       provider: "google",
     });
     if (error) {

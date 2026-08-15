@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { staffEmailSchema } from "@/features/staff-auth/lib/validation";
 import type { AppLocale } from "@/i18n/routing";
+import { createAuthCallbackUrl } from "@/lib/auth/redirect-origin";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 type StaffSignInFormProps = {
+  authOrigin: string;
   emailLabel: string;
   emailPlaceholder: string;
   errorInvalidEmail: string;
@@ -20,6 +22,7 @@ type StaffSignInFormProps = {
 };
 
 export function StaffSignInForm({
+  authOrigin,
   emailLabel,
   emailPlaceholder,
   errorInvalidEmail,
@@ -48,13 +51,12 @@ export function StaffSignInForm({
     setMessage(undefined);
 
     try {
-      const callbackUrl = new URL("/auth/callback", window.location.origin);
-      callbackUrl.searchParams.set("next", `/${locale}/sales/leads`);
+      const callbackUrl = createAuthCallbackUrl(authOrigin, locale, `/${locale}/sales/leads`);
       const supabase = createBrowserSupabaseClient();
       const { error } = await supabase.auth.signInWithOtp({
         email: parsedEmail.data,
         options: {
-          emailRedirectTo: callbackUrl.toString(),
+          emailRedirectTo: callbackUrl,
           shouldCreateUser: false,
         },
       });

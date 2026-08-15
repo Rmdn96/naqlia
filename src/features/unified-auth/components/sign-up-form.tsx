@@ -4,14 +4,14 @@ import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createAuthCallbackUrl } from "@/features/unified-auth/lib/client-routing";
 import { getUnifiedAuthCopy } from "@/features/unified-auth/lib/copy";
 import { signUpSchema } from "@/features/unified-auth/lib/validation";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { createAuthCallbackUrl } from "@/lib/auth/redirect-origin";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
-export function SignUpForm({ locale }: { locale: AppLocale }) {
+export function SignUpForm({ authOrigin, locale }: { authOrigin: string; locale: AppLocale }) {
   const t = getUnifiedAuthCopy(locale);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string>();
@@ -39,7 +39,11 @@ export function SignUpForm({ locale }: { locale: AppLocale }) {
       password: parsed.data.password,
       options: {
         data: { display_name: parsed.data.displayName, preferred_locale: locale },
-        emailRedirectTo: createAuthCallbackUrl(locale, `/${locale}/verify-email?verified=true`),
+        emailRedirectTo: createAuthCallbackUrl(
+          authOrigin,
+          locale,
+          `/${locale}/verify-email?verified=true`,
+        ),
       },
     });
     setPending(false);

@@ -36,6 +36,10 @@ Supabase email confirmation remains mandatory. Customer metadata is limited to a
 
 `/{locale}/verify-email` provides localized pending/verified states. Callback errors return a stable generic outcome without reflecting tokens or provider details.
 
+An inbox-backed Preview test exposed a redirect fallback: the browser supplied an immutable Vercel deployment origin that was not an exact Supabase allowlist entry, so Supabase correctly rejected it and used the production Site URL. The correction centralizes callback-origin selection in `src/lib/auth/redirect-origin.ts` and its server-only environment adapter. Production always resolves to `https://naqlk.vercel.app`; the approved PR Preview maps its immutable deployment hostname to the exact allowlisted branch Preview origin; local development accepts only configured localhost origins. Arbitrary `Origin`, `Host`, `next`, and user-supplied external URLs cannot select a callback origin.
+
+The same resolver supplies customer verification, recovery, future Google OAuth, legacy Staff passwordless compatibility, Staff invitation, invitation resend, and callback response redirects. `NAQLK_AUTH_PREVIEW_ORIGIN` is server-only and branch-scoped in Vercel Preview. It is intentionally absent from Production. Preview hosts remain unrelated to SEO metadata, which continues to use the stable production origin.
+
 ### 3.3 Password recovery
 
 `/{locale}/forgot-password` always returns the same success message for valid email-shaped input, whether or not an account exists. Recovery links return through the existing callback into `/{locale}/reset-password`. The new password is submitted directly to Supabase Auth with the active recovery session. Missing, invalid, expired, or reused recovery capabilities fail generically.
@@ -94,6 +98,7 @@ Google Auth remains hidden because the production provider is disabled. Enabling
 - Staff authorization remains database authoritative and is repeated by protected route/RPC boundaries.
 - Recovery responses resist account enumeration.
 - Callback and `next` validation prevents cross-origin redirect injection.
+- Email callbacks are selected from the production origin, exact deployment/branch Vercel system origins, or explicitly configured local origins; request headers alone are never authoritative.
 - No application logging of password, OTP, verification/recovery capability, OAuth secret, or session was added.
 - Guest request and all existing hashed quotation/Tracking/Review capabilities remain unchanged.
 - Business Settings and Review tables remain protected by their existing RLS/grant boundaries.
