@@ -127,6 +127,13 @@
       "production_history_sha256": "33e5d4c45f31ab16e9d917da0d907b2e91e690fcb734189e64b798dfdc0e1950",
       "repository_sha256": "33e5d4c45f31ab16e9d917da0d907b2e91e690fcb734189e64b798dfdc0e1950",
       "version": "20260815100000"
+    },
+    {
+      "filename": "20260815113000_customer_account_claim_ownership_fix.sql",
+      "name": "customer_account_claim_ownership_fix",
+      "production_history_sha256": "6e120193bf62ec7c578af9d9268bbdccd85349385b8cc9a66cf2f0ea8afd61b0",
+      "repository_sha256": "6e120193bf62ec7c578af9d9268bbdccd85349385b8cc9a66cf2f0ea8afd61b0",
+      "version": "20260815113000"
     }
   ]
 }

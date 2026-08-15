@@ -294,7 +294,10 @@
       "customer_accepted_quotation": "قبل العميل عرض السعر",
       "customer_rejected_quotation": "رفض العميل عرض السعر",
       "order_created_from_quotation": "تم إنشاء الطلب من عرض السعر",
-      "customer_access_revoked": "تم إلغاء وصول العميل"
+      "customer_access_revoked": "تم إلغاء وصول العميل",
+      "customer_account_linked": "تم ربط طلب الضيف بحساب العميل",
+      "job_created": "تم إنشاء مهمة العمليات",
+      "tracking_access_issued": "تم إصدار وصول آمن للتتبع"
     }
   },
   "CustomerQuotation": {

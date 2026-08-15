@@ -77,6 +77,13 @@ The customer supplies an existing secure quotation or Tracking URL. The account 
 - serializes competing claims with a transaction advisory lock; and
 - enforces a unique Lead ownership link.
 
+The ownership link is authoritative in `customer_account_leads`. A verified claim does not rewrite
+the Guest Lead or address profile fields: those fields are immutable submission provenance. Preview
+acceptance exposed that the initial implementation attempted that prohibited rewrite. The
+forward-only `20260815113000_customer_account_claim_ownership_fix.sql` migration removed the
+rewrite, retained the advisory lock and unique ownership rule, and made same-account retries return
+success without creating duplicate links or Activity events.
+
 An authenticated request submitted in the same session links through its random submission idempotency key. Guest submission behavior is unchanged if account linking fails.
 
 Threats mitigated include identifier substitution, contact-data collision, arbitrary NQ claiming, cross-account linking, duplicate claims, and simultaneous first claims. The generic invalid response intentionally avoids disclosing whether a capability or record exists.
@@ -187,9 +194,7 @@ Login, account, quotation, Tracking, and all Staff areas emit private/no-store, 
 
 Arabic is default and RTL; English is LTR. The Portal drawer preserves all actions on small screens, tables scroll safely, and account cards collapse responsively. Theme is a non-security local preference.
 
-## 16. Future boundaries
-
-### Performance review
+## 16. Performance review
 
 Indexes are present for Customer Account ownership traversal, per-profile notification reads, Activity Log area/actor/event filtering, settings category lookup, pending-invitation queues, invitation-by-Auth-user lookup, and role/status lookup. The Auth-user invitation index directly supports the user-management lateral lookup.
 

@@ -294,7 +294,10 @@
       "customer_accepted_quotation": "Customer accepted quotation",
       "customer_rejected_quotation": "Customer rejected quotation",
       "order_created_from_quotation": "Order created from quotation",
-      "customer_access_revoked": "Customer access revoked"
+      "customer_access_revoked": "Customer access revoked",
+      "customer_account_linked": "Guest request linked to Customer Account",
+      "job_created": "Operations job created",
+      "tracking_access_issued": "Secure tracking access issued"
     }
   },
   "CustomerQuotation": {

@@ -14,6 +14,13 @@ const rollback = readFileSync(
   ),
   "utf8",
 );
+const claimOwnershipFix = readFileSync(
+  resolve(
+    process.cwd(),
+    "supabase/migrations/20260815113000_customer_account_claim_ownership_fix.sql",
+  ),
+  "utf8",
+);
 
 function functionBody(name: string) {
   const start = migration.indexOf(`function public.${name}`);
@@ -63,6 +70,17 @@ describe("Unified Account and Staff Dashboard database contract", () => {
     expect(functionBody("account_link_submission")).toContain("submission_key=p_submission_key");
     expect(functionBody("account_link_submission")).toContain("source='web'");
     expect(migration).toContain("'authenticated_submission'");
+  });
+
+  it("links verified Guest ownership without mutating immutable Lead identity", () => {
+    expect(claimOwnershipFix).toContain("v_existing = p_account");
+    expect(claimOwnershipFix).toContain("return 'linked'");
+    expect(claimOwnershipFix).toContain("insert into public.customer_account_leads");
+    expect(claimOwnershipFix).not.toMatch(/update public\.(leads|addresses)/);
+    expect(claimOwnershipFix).toContain("set search_path = ''");
+    expect(claimOwnershipFix).toContain(
+      "revoke all on function private.link_customer_lead(uuid, uuid, text, uuid)",
+    );
   });
 
   it("issues tracking access only after Customer Account ownership validation", () => {
