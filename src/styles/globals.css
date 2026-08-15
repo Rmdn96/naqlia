@@ -5,24 +5,24 @@
 @layer base {
   :root {
     color-scheme: light;
-    --background: 42 29% 97%;
-    --foreground: 158 35% 12%;
+    --background: 210 40% 98%;
+    --foreground: 216 79% 20%;
     --card: 0 0% 100%;
-    --card-foreground: 158 35% 12%;
-    --primary: 159 62% 25%;
-    --primary-foreground: 45 33% 98%;
-    --secondary: 43 43% 91%;
-    --secondary-foreground: 158 35% 16%;
-    --muted: 42 25% 93%;
-    --muted-foreground: 158 10% 40%;
-    --accent: 39 67% 51%;
-    --accent-foreground: 158 35% 12%;
+    --card-foreground: 216 79% 20%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 95% 93%;
+    --secondary-foreground: 216 79% 20%;
+    --muted: 214 32% 94%;
+    --muted-foreground: 215 20% 40%;
+    --accent: 213 94% 58%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 67% 44%;
     --destructive-foreground: 0 0% 100%;
-    --border: 150 15% 85%;
-    --input: 150 15% 80%;
-    --ring: 159 62% 25%;
-    --radius: 1rem;
+    --border: 214 32% 87%;
+    --input: 214 28% 80%;
+    --ring: 221 83% 53%;
+    --radius: 0.9rem;
   }
 
   .dark {
@@ -59,6 +59,15 @@
     font-family: "Segoe UI", Tahoma, Arial, "Noto Sans Arabic", sans-serif;
   }
 
+  body::before {
+    background: radial-gradient(circle at 15% -10%, hsl(var(--accent) / 0.09), transparent 28rem);
+    content: "";
+    inset: 0;
+    pointer-events: none;
+    position: fixed;
+    z-index: -1;
+  }
+
   ::selection {
     @apply bg-primary/20 text-foreground;
   }
@@ -78,6 +87,30 @@
       linear-gradient(hsl(var(--border) / 0.24) 1px, transparent 1px),
       linear-gradient(90deg, hsl(var(--border) / 0.24) 1px, transparent 1px);
     background-size: 28px 28px;
+  }
+
+  .auth-surface {
+    background-image:
+      radial-gradient(circle at 75% 15%, hsl(var(--accent) / 0.18), transparent 24rem),
+      linear-gradient(145deg, hsl(var(--background)), hsl(var(--secondary) / 0.55));
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      90deg,
+      hsl(216 79% 16% / 0.94) 0%,
+      hsl(216 79% 16% / 0.78) 44%,
+      hsl(216 79% 16% / 0.12) 75%
+    );
+  }
+
+  [dir="rtl"] .hero-overlay {
+    background: linear-gradient(
+      270deg,
+      hsl(216 79% 16% / 0.94) 0%,
+      hsl(216 79% 16% / 0.78) 44%,
+      hsl(216 79% 16% / 0.12) 75%
+    );
   }
 }
 
