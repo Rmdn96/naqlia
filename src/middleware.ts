@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
 
   const refreshed = await refreshSupabaseSession(request, response);
   const privatePath =
-    /^\/(ar|en)\/(?:track|quote|account|login|staff|dashboard|sales|operations|quality|finance|settings|admin)(?:\/|$)/.test(
+    /^\/(ar|en)\/(?:track|quote|account|login|signup|forgot-password|reset-password|verify-email|staff|dashboard|sales|operations|quality|finance|settings|admin)(?:\/|$)/.test(
       request.nextUrl.pathname,
     );
 

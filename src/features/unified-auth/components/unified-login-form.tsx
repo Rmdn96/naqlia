@@ -1,73 +1,74 @@
 "use client";
 
+import { Eye, EyeOff } from "lucide-react";
 import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  createAuthCallbackUrl,
+  resolveAuthenticatedDestination,
+} from "@/features/unified-auth/lib/client-routing";
 import { getUnifiedAuthCopy } from "@/features/unified-auth/lib/copy";
+import { emailSchema } from "@/features/unified-auth/lib/validation";
 import type { AppLocale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
-type Props = {
-  appleEnabled: boolean;
-  googleEnabled: boolean;
-  intent?: "staff";
-  locale: AppLocale;
-  next?: string;
-};
+type Props = { googleEnabled: boolean; initialError?: boolean; locale: AppLocale; next?: string };
 
-function createCallbackUrl(locale: AppLocale, intent?: "staff", next?: string) {
-  const callback = new URL("/auth/callback", window.location.origin);
-  callback.searchParams.set("locale", locale);
-  if (intent) callback.searchParams.set("intent", intent);
-  if (next?.startsWith("/") && !next.startsWith("//")) callback.searchParams.set("next", next);
-  return callback.toString();
-}
-
-export function UnifiedLoginForm({ appleEnabled, googleEnabled, intent, locale, next }: Props) {
+export function UnifiedLoginForm({ googleEnabled, initialError = false, locale, next }: Props) {
   const t = getUnifiedAuthCopy(locale);
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState<string>();
-  const [error, setError] = useState(false);
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState<string | undefined>(
+    initialError ? t.genericError : undefined,
+  );
   const [pending, setPending] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) {
-      setError(true);
-      setMessage(t.invalid);
+    if (!emailSchema.safeParse(email).success || password.length < 1) {
+      setMessage(t.invalidCredentials);
       return;
     }
     setPending(true);
+    setMessage(undefined);
     const supabase = createBrowserSupabaseClient();
-    const { error: authError } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithPassword({
       email: email.trim().toLowerCase(),
-      options: {
-        emailRedirectTo: createCallbackUrl(locale, intent, next),
-        shouldCreateUser: true,
-      },
+      password,
     });
-    setPending(false);
-    setError(Boolean(authError));
-    setMessage(authError ? t.error : t.success);
+    if (error) {
+      setPending(false);
+      setMessage(t.invalidCredentials);
+      return;
+    }
+    try {
+      window.location.assign(await resolveAuthenticatedDestination(supabase, locale, next));
+    } catch {
+      await supabase.auth.signOut();
+      setPending(false);
+      setMessage(t.genericError);
+    }
   }
 
-  async function continueWithProvider(provider: "apple" | "google") {
+  async function continueWithGoogle() {
     setPending(true);
     const supabase = createBrowserSupabaseClient();
-    const { error: authError } = await supabase.auth.signInWithOAuth({
-      options: { redirectTo: createCallbackUrl(locale, intent, next) },
-      provider,
+    const { error } = await supabase.auth.signInWithOAuth({
+      options: { redirectTo: createAuthCallbackUrl(locale, next) },
+      provider: "google",
     });
-    if (authError) {
+    if (error) {
       setPending(false);
-      setError(true);
-      setMessage(t.error);
+      setMessage(t.genericError);
     }
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <form className="space-y-4" noValidate onSubmit={submit}>
         <label className="block space-y-2 text-sm font-bold" htmlFor="login-email">
           <span>{t.email}</span>
@@ -82,36 +83,58 @@ export function UnifiedLoginForm({ appleEnabled, googleEnabled, intent, locale, 
             value={email}
           />
         </label>
+        <label className="block space-y-2 text-sm font-bold" htmlFor="login-password">
+          <span>{t.password}</span>
+          <span className="relative block">
+            <Input
+              autoComplete="current-password"
+              className="pe-12"
+              id="login-password"
+              onChange={(event) => setPassword(event.target.value)}
+              required
+              type={showPassword ? "text" : "password"}
+              value={password}
+            />
+            <button
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute end-1 top-1 grid size-10 place-items-center rounded-md text-muted-foreground hover:bg-muted"
+              onClick={() => setShowPassword((value) => !value)}
+              type="button"
+            >
+              {showPassword ? (
+                <EyeOff aria-hidden="true" className="size-4" />
+              ) : (
+                <Eye aria-hidden="true" className="size-4" />
+              )}
+            </button>
+          </span>
+        </label>
+        <div className="flex justify-end">
+          <Link className="text-sm font-bold text-primary hover:underline" href="/forgot-password">
+            {t.forgotPassword}
+          </Link>
+        </div>
         <Button className="w-full" disabled={pending} type="submit">
-          {pending ? t.submitting : t.submit}
+          {pending ? t.submitting : t.signIn}
         </Button>
       </form>
       {googleEnabled ? (
         <Button
           className="w-full"
           disabled={pending}
-          onClick={() => continueWithProvider("google")}
+          onClick={continueWithGoogle}
           variant="outline"
         >
           {t.google}
         </Button>
       ) : null}
-      {appleEnabled ? (
-        <Button
-          className="w-full"
-          disabled={pending}
-          onClick={() => continueWithProvider("apple")}
-          variant="outline"
-        >
-          {t.apple}
-        </Button>
-      ) : null}
+      <div className="border-t border-border pt-5 text-center">
+        <Link className="text-sm font-bold text-primary hover:underline" href="/signup">
+          {t.createAccount}
+        </Link>
+      </div>
       {message ? (
-        <p
-          aria-live="polite"
-          className={error ? "text-sm text-destructive" : "text-sm text-foreground"}
-          role={error ? "alert" : "status"}
-        >
+        <p aria-live="polite" className="text-sm text-destructive" role="alert">
           {message}
         </p>
       ) : null}

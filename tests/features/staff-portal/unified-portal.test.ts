@@ -24,13 +24,14 @@ describe("Unified Account and Staff Portal application contract", () => {
     expect(isStaffPath("/ar/account")).toBe(false);
   });
 
-  it("shows OAuth buttons only from provider availability flags", () => {
+  it("uses password login and shows Google only from its availability flag", () => {
     const loginPage = source("src/app/[locale]/login/page.tsx");
     const form = source("src/features/unified-auth/components/unified-login-form.tsx");
     expect(loginPage).toContain('isOAuthProviderEnabled("google")');
-    expect(loginPage).toContain('isOAuthProviderEnabled("apple")');
     expect(form).toContain("googleEnabled ?");
-    expect(form).toContain("appleEnabled ?");
+    expect(form).toContain("signInWithPassword");
+    expect(form).not.toContain("appleEnabled");
+    expect(form).not.toContain("signInWithOtp");
   });
 
   it("routes authorization after authentication through the server-authoritative resolver", () => {
@@ -38,7 +39,7 @@ describe("Unified Account and Staff Portal application contract", () => {
     expect(callback).toContain('supabase.rpc("resolve_identity_context")');
     expect(callback).toContain("isStaffPath(requestedPath)");
     expect(callback).toContain("supabase.auth.verifyOtp");
-    expect(callback).toContain('["invite", "magiclink", "recovery"]');
+    expect(callback).toContain('["invite", "magiclink", "recovery", "signup"]');
     expect(callback).not.toMatch(/user_metadata[^\n]*(role|permission)/i);
   });
 
@@ -60,6 +61,10 @@ describe("Unified Account and Staff Portal application contract", () => {
     for (const area of [
       "account",
       "login",
+      "signup",
+      "forgot-password",
+      "reset-password",
+      "verify-email",
       "dashboard",
       "sales",
       "operations",
