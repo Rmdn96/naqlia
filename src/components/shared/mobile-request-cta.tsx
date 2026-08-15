@@ -14,7 +14,7 @@ export function MobileRequestCta({ label }: { label: string }) {
   )
     return null;
   return (
-    <div className="fixed inset-x-4 bottom-4 z-40 lg:hidden">
+    <div className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 lg:hidden">
       <Link
         className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-5 font-black text-primary-foreground shadow-2xl"
         href="/request"
