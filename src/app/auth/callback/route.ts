@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 import { getSafeRedirectPath } from "@/lib/auth/redirects";
+import { isStaffPath } from "@/lib/auth/identity-context";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 function createRedirect(request: NextRequest, path: string, result?: "error") {
@@ -18,18 +19,38 @@ function createRedirect(request: NextRequest, path: string, result?: "error") {
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
-  const nextPath = getSafeRedirectPath(request.nextUrl.searchParams.get("next"));
+  const tokenHash = request.nextUrl.searchParams.get("token_hash");
+  const tokenType = request.nextUrl.searchParams.get("type");
+  const locale = request.nextUrl.searchParams.get("locale") === "en" ? "en" : "ar";
+  const requestedPath = getSafeRedirectPath(request.nextUrl.searchParams.get("next"));
+  const errorPath = `/${locale}/login`;
 
-  if (!code || request.nextUrl.searchParams.has("error")) {
-    return createRedirect(request, nextPath, "error");
+  if ((!code && !tokenHash) || request.nextUrl.searchParams.has("error")) {
+    return createRedirect(request, errorPath, "error");
   }
 
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const allowedTokenTypes = ["invite", "magiclink", "recovery"] as const;
+  const verifiedType = allowedTokenTypes.find((value) => value === tokenType);
+  const { error } = code
+    ? await supabase.auth.exchangeCodeForSession(code)
+    : verifiedType && tokenHash
+      ? await supabase.auth.verifyOtp({ token_hash: tokenHash, type: verifiedType })
+      : { error: new Error("Unsupported authentication callback") };
 
   if (error) {
-    return createRedirect(request, nextPath, "error");
+    return createRedirect(request, errorPath, "error");
   }
-
-  return createRedirect(request, nextPath);
+  const { data, error: contextError } = await supabase.rpc("resolve_identity_context");
+  if (contextError || !data || typeof data !== "object" || Array.isArray(data)) {
+    return createRedirect(request, errorPath, "error");
+  }
+  const isStaff = (data as { is_staff?: boolean }).is_staff === true;
+  const destination =
+    requestedPath !== "/" && (!isStaffPath(requestedPath) || isStaff)
+      ? requestedPath
+      : isStaff
+        ? `/${locale}/dashboard`
+        : `/${locale}/account`;
+  return createRedirect(request, destination);
 }

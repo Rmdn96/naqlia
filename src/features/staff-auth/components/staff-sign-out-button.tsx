@@ -18,7 +18,7 @@ export function StaffSignOutButton({ label, locale }: StaffSignOutButtonProps) {
     setIsSigningOut(true);
     const supabase = createBrowserSupabaseClient();
     await supabase.auth.signOut();
-    window.location.assign(`/${locale}/staff/sign-in`);
+    window.location.assign(`/${locale}/login`);
   }
 
   return (

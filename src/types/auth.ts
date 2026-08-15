@@ -9,11 +9,20 @@ export type ProfileStatus = "active" | "closed" | "pending" | "suspended";
 export type StaffRole = "customer_service" | "finance" | "operations" | "sales" | "super_admin";
 
 export type IdentityPermission =
+  | "administration.audit.read"
+  | "administration.users.manage"
+  | "administration.users.read"
+  | "finance.dashboard.read"
   | "identity.assignment.manage"
   | "identity.permission.read"
   | "identity.profile.manage"
   | "identity.profile.read"
-  | "identity.role.read";
+  | "identity.role.read"
+  | "portal.dashboard.read"
+  | "portal.notifications.read"
+  | "portal.search.read"
+  | "settings.business.manage"
+  | "settings.business.read";
 
 export type SalesWorkspacePermission = "sales.workspace.manage" | "sales.workspace.read";
 

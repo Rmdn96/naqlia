@@ -14,6 +14,8 @@ This roadmap describes outcome-based evolution after the approved Product Docume
 
 The roadmap MUST NOT be interpreted as authorization to create features, schema, APIs, integrations, vendor commitments, or production access.
 
+Implementation status note: unified Guest/Customer/Staff identity, the optional Customer Account, the permission-aware Staff Portal, and the Business Settings v1 foundation are implemented in [Unified Authentication, Customer Account, and Staff Dashboard v1](../implementation/10-Unified-Account-And-Staff-Dashboard.md). Governed settings publishing, custom roles, accounting, advanced BI, and automated delivery remain future work.
+
 ## 2. Roadmap Principles
 
 - Complete and stabilize the approved end-to-end customer outcome before broadening geography or capability.

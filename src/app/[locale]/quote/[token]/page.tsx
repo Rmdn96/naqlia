@@ -7,6 +7,7 @@ import { ACTIVE_PRODUCTION_ORIGIN } from "@/config/brand";
 import { CustomerQuotationView } from "@/features/customer-quotation/components/customer-quotation-view";
 import { getCustomerQuotation } from "@/features/customer-quotation/services/customer-quotation.service";
 import type { AppLocale } from "@/i18n/routing";
+import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 
 type Props = { params: Promise<{ locale: AppLocale; token: string }> };
 
@@ -27,9 +28,10 @@ export default async function CustomerQuotationPage({ params }: Props) {
   noStore();
   const { locale, token } = await params;
   setRequestLocale(locale);
-  const [data, t] = await Promise.all([
+  const [data, t, business] = await Promise.all([
     getCustomerQuotation(token),
     getTranslations("CustomerQuotation"),
+    getPublicBusinessConfiguration(),
   ]);
 
   if (data.state === "invalid") {
@@ -45,5 +47,12 @@ export default async function CustomerQuotationPage({ params }: Props) {
     );
   }
 
-  return <CustomerQuotationView data={data} locale={locale} token={token} />;
+  return (
+    <CustomerQuotationView
+      data={data}
+      locale={locale}
+      token={token}
+      whatsappNumber={business.whatsappNumber}
+    />
+  );
 }

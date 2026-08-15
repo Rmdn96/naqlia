@@ -22,11 +22,12 @@ type Props = {
   data: CustomerQuotationPayload;
   locale: AppLocale;
   token: string;
+  whatsappNumber: string;
 };
 
 type RejectionCode = "changed_requirements" | "no_longer_needed" | "other" | "price" | "timing";
 
-export function CustomerQuotationView({ data, locale, token }: Props) {
+export function CustomerQuotationView({ data, locale, token, whatsappNumber }: Props) {
   const t = useTranslations("CustomerQuotation");
   const [state, setState] = useState<CustomerQuotationState>(data.state);
   const [orderNumber, setOrderNumber] = useState(data.order_number);
@@ -246,7 +247,7 @@ export function CustomerQuotationView({ data, locale, token }: Props) {
 
               <a
                 className={cn(buttonVariants({ size: "lg", variant: "secondary" }), "mt-3 w-full")}
-                href={getWhatsAppHref(whatsappMessage)}
+                href={getWhatsAppHref(whatsappMessage, whatsappNumber)}
                 rel="noreferrer"
                 target="_blank"
               >

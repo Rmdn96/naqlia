@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { QualityShell } from "@/features/reviews-quality/components/quality-shell";
+import { StaffPortalShell } from "@/features/staff-portal/components/staff-portal-shell";
+import { getPortalContext } from "@/features/staff-portal/services/staff-portal.service";
 import { routing, type AppLocale } from "@/i18n/routing";
-import { AuthorizationError } from "@/lib/auth/authorization";
-import { requireQualityWorkspacePermission } from "@/lib/auth/quality-workspace";
 
 export default async function Layout({
   children,
@@ -16,12 +15,13 @@ export default async function Layout({
   const locale = (
     routing.locales.includes(raw as AppLocale) ? raw : routing.defaultLocale
   ) as AppLocale;
-  try {
-    await requireQualityWorkspacePermission("quality.workspace.read");
-  } catch (error) {
-    if (error instanceof AuthorizationError)
-      redirect(`/${locale}/staff/sign-in?next=/${locale}/quality/reviews`);
-    throw error;
-  }
-  return <QualityShell locale={locale}>{children}</QualityShell>;
+  const context = await getPortalContext();
+  if (!context) redirect(`/${locale}/login?intent=staff&next=/${locale}/quality/reviews` as never);
+  if (!context.permissions.includes("quality.workspace.read" as never))
+    redirect(`/${locale}/dashboard` as never);
+  return (
+    <StaffPortalShell context={context} locale={locale}>
+      {children}
+    </StaffPortalShell>
+  );
 }

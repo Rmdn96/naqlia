@@ -6,6 +6,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getWhatsAppHref } from "@/config/site";
+import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/utils/cn";
@@ -27,7 +28,11 @@ export async function generateMetadata({ params }: SuccessPageProps): Promise<Me
 
 export default async function SuccessPage({ params, searchParams }: SuccessPageProps) {
   noStore();
-  const [{ locale }, { reference }] = await Promise.all([params, searchParams]);
+  const [{ locale }, { reference }, business] = await Promise.all([
+    params,
+    searchParams,
+    getPublicBusinessConfiguration(),
+  ]);
   setRequestLocale(locale);
   const t = await getTranslations("Success");
   const validReference = reference && /^NQ-[0-9]{6}-[0-9]{6}$/.test(reference) ? reference : null;
@@ -60,7 +65,10 @@ export default async function SuccessPage({ params, searchParams }: SuccessPageP
                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
                   <a
                     className={buttonVariants({ size: "lg" })}
-                    href={getWhatsAppHref(t("whatsappMessage", { reference: validReference }))}
+                    href={getWhatsAppHref(
+                      t("whatsappMessage", { reference: validReference }),
+                      business.whatsappNumber,
+                    )}
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -69,7 +77,10 @@ export default async function SuccessPage({ params, searchParams }: SuccessPageP
                   </a>
                   <a
                     className={buttonVariants({ size: "lg", variant: "outline" })}
-                    href={getWhatsAppHref(t("trackingMessage", { reference: validReference }))}
+                    href={getWhatsAppHref(
+                      t("trackingMessage", { reference: validReference }),
+                      business.whatsappNumber,
+                    )}
                     rel="noreferrer"
                     target="_blank"
                   >

@@ -7,13 +7,16 @@ import type { TrackingPayload } from "@/features/operations/types/operations";
 import { CustomerReviewForm } from "@/features/reviews-quality/components/customer-review-form";
 import type { CustomerReviewContext } from "@/features/reviews-quality/types/reviews-quality";
 import type { AppLocale } from "@/i18n/routing";
+import type { PublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 
 export function TrackingView({
+  business,
   data,
   locale,
   reviewContext,
   token,
 }: {
+  business: PublicBusinessConfiguration;
   data: TrackingPayload;
   locale: AppLocale;
   reviewContext: CustomerReviewContext | null;
@@ -121,6 +124,7 @@ export function TrackingView({
           ar
             ? `مرحباً نقلك، أحتاج مساعدة بخصوص الطلب ${data.lead.reference_number}`
             : `Hello Naqlk, I need help with request ${data.lead.reference_number}`,
+          business.whatsappNumber,
         )}
         rel="noreferrer"
       >
@@ -153,7 +157,12 @@ export function TrackingView({
           </form>
         )}
       {data.job.status === "completed" && reviewContext && (
-        <CustomerReviewForm context={reviewContext} locale={locale} token={token} />
+        <CustomerReviewForm
+          context={reviewContext}
+          googleReviewUrl={business.googleReviewUrl}
+          locale={locale}
+          token={token}
+        />
       )}
     </main>
   );
