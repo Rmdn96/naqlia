@@ -4,6 +4,7 @@ import { TrackingView } from "@/features/operations/components/tracking-view";
 import { getTracking } from "@/features/operations/services/operations.service";
 import { getCustomerReviewContext } from "@/features/reviews-quality/services/reviews-quality.service";
 import type { AppLocale } from "@/i18n/routing";
+import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   robots: { follow: false, index: false },
@@ -15,10 +16,19 @@ export default async function Page({
   params: Promise<{ locale: AppLocale; token: string }>;
 }) {
   const { locale, token } = await params;
-  const [data, reviewContext] = await Promise.all([
+  const [data, reviewContext, business] = await Promise.all([
     getTracking(token),
     getCustomerReviewContext(token),
+    getPublicBusinessConfiguration(),
   ]);
   if (!data) notFound();
-  return <TrackingView data={data} locale={locale} reviewContext={reviewContext} token={token} />;
+  return (
+    <TrackingView
+      business={business}
+      data={data}
+      locale={locale}
+      reviewContext={reviewContext}
+      token={token}
+    />
+  );
 }

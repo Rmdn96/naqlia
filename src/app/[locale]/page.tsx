@@ -19,6 +19,7 @@ import {
   getOrganizationStructuredData,
 } from "@/config/brand";
 import { getWhatsAppHref } from "@/config/site";
+import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 import { getPublicRequestCatalog } from "@/features/public-request/services/public-request.service";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -57,9 +58,10 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
 export default async function HomePage({ params }: LocalePageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, catalog] = await Promise.all([
+  const [t, catalog, business] = await Promise.all([
     getTranslations("Home"),
     getPublicRequestCatalog(locale),
+    getPublicBusinessConfiguration(),
   ]);
   const Arrow = locale === "ar" ? ArrowLeft : ArrowRight;
   const process = [
@@ -107,7 +109,7 @@ export default async function HomePage({ params }: LocalePageProps) {
               </a>
               <a
                 className={buttonVariants({ size: "lg", variant: "outline" })}
-                href={getWhatsAppHref(t("whatsappMessage"))}
+                href={getWhatsAppHref(t("whatsappMessage"), business.whatsappNumber)}
                 rel="noreferrer"
                 target="_blank"
               >

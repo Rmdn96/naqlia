@@ -260,6 +260,19 @@ export async function completePublicRequest(
     throw new Error("PUBLIC_REQUEST_DATABASE_WRITE_FAILED", { cause: error });
   }
 
+  try {
+    const accountClient = await createServerSupabaseClient();
+    const { data: claims } = await accountClient.auth.getClaims();
+    if (claims?.claims?.sub) {
+      await accountClient.rpc("resolve_identity_context");
+      await accountClient.rpc("account_link_submission", {
+        p_submission_key: payloadResult.data.submissionId,
+      });
+    }
+  } catch {
+    // Account convenience must never make the Guest-first submission fail.
+  }
+
   return { reference: data[0].reference_number, status: "complete" };
 }
 

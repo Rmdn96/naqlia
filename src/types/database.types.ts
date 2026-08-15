@@ -5,13 +5,63 @@ type ProfileRow = {
   created_at: string;
   display_name: string | null;
   id: string;
+  last_login_at: string | null;
   preferred_locale: "ar" | "en";
   profile_kind: "customer" | "staff";
   status: "active" | "closed" | "pending" | "suspended";
   status_changed_at: string;
   status_reason: string | null;
+  staff_access_status: "active" | "inactive" | "not_staff";
   updated_at: string;
   version: number;
+};
+
+type CustomerAccountRow = {
+  created_at: string;
+  id: string;
+  mobile_number: string | null;
+  mobile_verified_at: string | null;
+  preferred_locale: "ar" | "en";
+  profile_id: string;
+  updated_at: string;
+  version: number;
+};
+
+type CustomerAccountLeadRow = {
+  capability_source_id: string | null;
+  claim_method: "authenticated_submission" | "quotation_capability" | "tracking_capability";
+  claimed_at: string;
+  claimed_by_profile_id: string;
+  customer_account_id: string;
+  id: string;
+  lead_id: string;
+};
+
+type BusinessSettingRow = {
+  category: "contact" | "customer" | "identity" | "quotation" | "social";
+  is_public: boolean;
+  setting_key: string;
+  updated_at: string;
+  updated_by_profile_id: string | null;
+  value_text: string | null;
+  version: number;
+};
+
+type StaffInvitationRow = {
+  accepted_at: string | null;
+  auth_user_id: string;
+  cancellation_reason: string | null;
+  cancelled_at: string | null;
+  cancelled_by_profile_id: string | null;
+  display_name: string;
+  email: string;
+  id: string;
+  invited_at: string;
+  invited_by_profile_id: string;
+  last_sent_at: string;
+  resend_count: number;
+  role_id: string;
+  status: "accepted" | "cancelled" | "pending";
 };
 
 type RoleRow = {
@@ -240,11 +290,14 @@ type LeadActivityLogRow = {
   created_at: string;
   details: Json;
   event_key: string;
+  functional_area: "account" | "administration" | "operations" | "quality" | "sales" | "settings";
   id: string;
   lead_id: string;
   job_id: string | null;
   occurred_at: string;
   quotation_id: string | null;
+  subject_id: string | null;
+  subject_type: string | null;
   trip_id: string | null;
 };
 
@@ -300,6 +353,70 @@ export type Database = {
     CompositeTypes: Record<never, never>;
     Enums: Record<never, never>;
     Functions: {
+      account_claim_request: {
+        Args: { p_capability_type: string; p_token: string };
+        Returns: Json;
+      };
+      account_get_dashboard: { Args: Record<never, never>; Returns: Json };
+      account_get_job_tracking: { Args: { p_job: string }; Returns: Json };
+      account_issue_job_tracking_access: { Args: { p_job: string }; Returns: Json };
+      account_link_submission: { Args: { p_submission_key: string }; Returns: Json };
+      account_update_profile: {
+        Args: { p_display_name: string; p_locale: string; p_mobile: string };
+        Returns: Json;
+      };
+      admin_cancel_staff_invitation: {
+        Args: { p_invitation: string; p_reason: string };
+        Returns: Json;
+      };
+      admin_list_activity: {
+        Args: {
+          p_area?: string | null;
+          p_event?: string | null;
+          p_from?: string | null;
+          p_page?: number;
+          p_search?: string | null;
+          p_size?: number;
+          p_to?: string | null;
+        };
+        Returns: Json;
+      };
+      admin_list_business_settings: { Args: Record<never, never>; Returns: Json };
+      admin_list_roles_permissions: { Args: Record<never, never>; Returns: Json };
+      admin_list_users: {
+        Args: {
+          p_page?: number;
+          p_role?: string | null;
+          p_search?: string | null;
+          p_size?: number;
+          p_status?: string | null;
+        };
+        Returns: Json;
+      };
+      admin_mark_invitation_resent: {
+        Args: { p_invitation: string };
+        Returns: boolean;
+      };
+      admin_register_staff_invitation: {
+        Args: { p_auth_user: string; p_email: string; p_name: string; p_role: string };
+        Returns: string;
+      };
+      admin_set_staff_access: {
+        Args: { p_active: boolean; p_profile: string; p_reason: string };
+        Returns: Json;
+      };
+      admin_set_staff_role: {
+        Args: { p_profile: string; p_reason: string; p_role: string };
+        Returns: Json;
+      };
+      admin_update_business_setting: {
+        Args: { p_key: string; p_value: string };
+        Returns: Json;
+      };
+      admin_update_service_area: {
+        Args: { p_city: string; p_display_order: number; p_status: string };
+        Returns: Json;
+      };
       assign_staff_role: {
         Args: {
           change_reason: string;
@@ -352,6 +469,7 @@ export type Database = {
         Args: { requested_permission: string };
         Returns: boolean;
       };
+      get_public_business_settings: { Args: Record<never, never>; Returns: Json };
       operations_complete_job: {
         Args: { p_job: string; p_reason: string };
         Returns: Json;
@@ -425,6 +543,15 @@ export type Database = {
         };
         Returns: string;
       };
+      portal_get_context: { Args: Record<never, never>; Returns: Json };
+      portal_get_dashboard: { Args: Record<never, never>; Returns: Json };
+      portal_global_search: { Args: { p_query: string }; Returns: Json };
+      portal_list_notifications: { Args: { p_limit?: number }; Returns: Json };
+      portal_mark_notifications_read: {
+        Args: { p_activity?: string | null };
+        Returns: number;
+      };
+      resolve_identity_context: { Args: Record<never, never>; Returns: Json };
       revoke_staff_role: {
         Args: { change_reason: string; target_profile_id: string };
         Returns: boolean;
@@ -486,6 +613,28 @@ export type Database = {
       };
     };
     Tables: {
+      business_settings: {
+        Insert: Partial<BusinessSettingRow> & Pick<BusinessSettingRow, "category" | "setting_key">;
+        Relationships: [];
+        Row: BusinessSettingRow;
+        Update: Partial<BusinessSettingRow>;
+      };
+      customer_account_leads: {
+        Insert: Partial<CustomerAccountLeadRow> &
+          Pick<
+            CustomerAccountLeadRow,
+            "claim_method" | "claimed_by_profile_id" | "customer_account_id" | "lead_id"
+          >;
+        Relationships: [];
+        Row: CustomerAccountLeadRow;
+        Update: Partial<CustomerAccountLeadRow>;
+      };
+      customer_accounts: {
+        Insert: Partial<CustomerAccountRow> & Pick<CustomerAccountRow, "profile_id">;
+        Relationships: [];
+        Row: CustomerAccountRow;
+        Update: Partial<CustomerAccountRow>;
+      };
       drivers: {
         Insert: InsertWithRequired<
           DriverRow,
@@ -674,6 +823,16 @@ export type Database = {
         Relationships: [];
         Row: RoleRow;
         Update: Partial<RoleRow>;
+      };
+      staff_invitations: {
+        Insert: Partial<StaffInvitationRow> &
+          Pick<
+            StaffInvitationRow,
+            "auth_user_id" | "display_name" | "email" | "invited_by_profile_id" | "role_id"
+          >;
+        Relationships: [];
+        Row: StaffInvitationRow;
+        Update: Partial<StaffInvitationRow>;
       };
       service_options: {
         Insert: InsertWithRequired<

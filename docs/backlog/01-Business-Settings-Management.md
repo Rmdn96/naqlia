@@ -2,14 +2,14 @@
 
 | Field    | Value                                                                                       |
 | -------- | ------------------------------------------------------------------------------------------- |
-| Status   | Approved backlog item                                                                       |
-| Priority | Post-MVP foundation enhancement                                                             |
+| Status   | v1 foundation implemented; governed publishing remains backlog                              |
+| Priority | Incremental post-MVP governance enhancement                                                 |
 | Owner    | Product and Platform Engineering                                                            |
 | Scope    | Centralize business-operated public settings without changing the current public-request UI |
 
 ## Goal
 
-Introduce one authorized, audited **Business Settings** source for customer-facing operational details. Future application code must resolve these values from Business Settings rather than embedding them in components or relying solely on environment variables.
+Operate one authorized, audited **Business Settings** source for customer-facing operational details. The v1 database, Super Admin UI, runtime resolver, service-area controls, and audit events are implemented by `20260815100000_unified_account_dashboard.sql`. Environment values remain availability fallbacks.
 
 ## Settings in scope
 
@@ -29,7 +29,7 @@ All public-facing text and address values require Arabic-first content with Engl
 
 1. Authorized staff manage settings through a future Admin experience; public callers never receive management access.
 2. Values are validated, localized where relevant, auditable, versioned, and publishable independently from deployment.
-3. Runtime consumers read the currently published Business Settings value first.
+3. Runtime consumers read the current allowlisted Business Settings value first.
 4. Environment variables remain an interim fallback only when no published setting exists. They are not the long-term system of record.
 5. Sensitive values are excluded from the public settings surface and remain in encrypted environment or secret-management systems.
 6. Public pages receive only the minimum approved data needed to render contact and branding information.
@@ -37,15 +37,23 @@ All public-facing text and address values require Arabic-first content with Engl
 
 ## Current fallback
 
-`NEXT_PUBLIC_WHATSAPP_NUMBER` is the deployment-level fallback for the official WhatsApp recipient. The current approved value is `966547349947` and is normalized to the international digits-only form required by `wa.me`. The centralized brand configuration provides the same safe fallback when the environment value is missing or invalid. Published Business Settings must take precedence over both sources when that feature is implemented.
+`NEXT_PUBLIC_WHATSAPP_NUMBER` is the deployment-level fallback for the official WhatsApp recipient. The current approved value is `966547349947` and is normalized to the international digits-only form required by `wa.me`. The centralized brand configuration provides the same safe fallback when the database setting is unavailable or invalid. The current Business Setting takes precedence.
 
-`NEXT_PUBLIC_GOOGLE_REVIEW_URL` is the optional interim Google Review destination. It must be HTTPS, is hidden when absent, and is offered independently of the customer's score. Business Settings will ultimately own it; changing this value must never introduce review gating.
+`NEXT_PUBLIC_GOOGLE_REVIEW_URL` is the optional fallback Google Review destination. It must be HTTPS, is hidden when absent, and is offered independently of the customer's score. Business Settings now owns the primary value; changing either source must never introduce review gating.
 
-## Future implementation boundaries
+## Implemented v1
 
-- Define a controlled settings persistence model and access policy in a dedicated sprint; do not add business-settings tables as part of this backlog item.
-- Add staff permissions and an Admin management interface only in that dedicated sprint.
-- Resolve public values through a server-side settings service with cache invalidation on publish.
+- Allowlisted, versioned non-secret settings persistence and Super Admin mutation permission.
+- Contact, social, customer, quotation, and localized business-identity groups.
+- Public projection of only explicitly public rows.
+- Database-first runtime resolver with environment/product fallback.
+- Existing Cities used as ordered active/inactive Service Areas.
+- Safe Activity Log events that record configuration presence/state rather than secret values.
+
+## Remaining future boundaries
+
+- Add draft/review/publish/rollback states and governed localized completeness checks.
+- Add explicit cache invalidation and observability for fallback selection.
 - Add audit events for draft, review, publish, rollback, and emergency override actions.
 - Treat configurable branding as a governed asset and content workflow, not arbitrary CSS or customer-supplied markup.
 

@@ -37,6 +37,15 @@ export async function SiteHeader() {
         <div className="flex items-center gap-2">
           <LocaleSwitch />
           <Link
+            className={cn(
+              buttonVariants({ size: "sm", variant: "ghost" }),
+              "hidden sm:inline-flex",
+            )}
+            href="/login"
+          >
+            {t("login")}
+          </Link>
+          <Link
             className={cn(buttonVariants({ size: "sm" }), "hidden sm:inline-flex")}
             href="/request"
           >

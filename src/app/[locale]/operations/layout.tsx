@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { OperationsShell } from "@/features/operations/components/operations-shell";
+import { StaffPortalShell } from "@/features/staff-portal/components/staff-portal-shell";
+import { getPortalContext } from "@/features/staff-portal/services/staff-portal.service";
 import { routing, type AppLocale } from "@/i18n/routing";
-import { AuthorizationError } from "@/lib/auth/authorization";
-import { requireOperationsWorkspacePermission } from "@/lib/auth/operations-workspace";
 
 export default async function Layout({
   children,
@@ -16,12 +15,13 @@ export default async function Layout({
   const locale = (
     routing.locales.includes(raw as AppLocale) ? raw : routing.defaultLocale
   ) as AppLocale;
-  try {
-    await requireOperationsWorkspacePermission("operations.workspace.read");
-  } catch (error) {
-    if (error instanceof AuthorizationError)
-      redirect(`/${locale}/staff/sign-in?next=/${locale}/operations/jobs`);
-    throw error;
-  }
-  return <OperationsShell locale={locale}>{children}</OperationsShell>;
+  const context = await getPortalContext();
+  if (!context) redirect(`/${locale}/login?intent=staff&next=/${locale}/operations/jobs` as never);
+  if (!context.permissions.includes("operations.workspace.read" as never))
+    redirect(`/${locale}/dashboard` as never);
+  return (
+    <StaffPortalShell context={context} locale={locale}>
+      {children}
+    </StaffPortalShell>
+  );
 }

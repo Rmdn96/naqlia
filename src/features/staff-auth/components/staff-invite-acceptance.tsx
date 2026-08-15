@@ -44,7 +44,7 @@ export function StaffInviteAcceptance({
         return;
       }
 
-      window.location.replace(`/${locale}/sales/leads`);
+      window.location.replace(`/${locale}/dashboard`);
     }
 
     void acceptInvitation();

@@ -16,6 +16,8 @@ Launch the smallest safe, maintainable Naqlk product that allows a real customer
 
 The four-week target is achievable only through strict scope control, early vertical integration, daily acceptance, and no speculative enterprise infrastructure. This roadmap authorizes planning; it does not create SQL, migrations, Supabase resources, APIs, pages, components, or backend code.
 
+Implementation status note: the optional Customer Account, unified Staff Portal, fixed-role dashboards, event-derived notifications, and Business Settings v1 foundation are now implemented as documented in [Unified Authentication, Customer Account, and Staff Dashboard v1](../implementation/10-Unified-Account-And-Staff-Dashboard.md). This note does not expand the remaining roadmap scope.
+
 ## 2. Launch Scope Contract
 
 The release includes:

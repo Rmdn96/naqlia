@@ -14,7 +14,12 @@ export async function middleware(request: NextRequest) {
   }
 
   const refreshed = await refreshSupabaseSession(request, response);
-  if (/^\/(ar|en)\/track(?:\/|$)/.test(request.nextUrl.pathname)) {
+  const privatePath =
+    /^\/(ar|en)\/(?:track|quote|account|login|staff|dashboard|sales|operations|quality|finance|settings|admin)(?:\/|$)/.test(
+      request.nextUrl.pathname,
+    );
+
+  if (privatePath) {
     refreshed.headers.set("Cache-Control", "private, no-store, max-age=0");
     refreshed.headers.set("Referrer-Policy", "no-referrer");
     refreshed.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");

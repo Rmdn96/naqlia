@@ -1,4 +1,3 @@
-import { getGoogleReviewUrl } from "@/config/site";
 import { saveCustomerReviewAction } from "@/features/reviews-quality/actions/reviews-quality.actions";
 import { StarRating } from "@/features/reviews-quality/components/star-rating";
 import type { CustomerReviewContext } from "@/features/reviews-quality/types/reviews-quality";
@@ -6,16 +5,17 @@ import type { AppLocale } from "@/i18n/routing";
 
 export function CustomerReviewForm({
   context,
+  googleReviewUrl,
   locale,
   token,
 }: {
   context: CustomerReviewContext;
+  googleReviewUrl: string | null;
   locale: AppLocale;
   token: string;
 }) {
   const ar = locale === "ar";
   const review = context.review;
-  const googleReviewUrl = getGoogleReviewUrl();
   const action = saveCustomerReviewAction.bind(
     null,
     token,

@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/shared/site-header";
+import { PublicChrome } from "@/components/shared/public-chrome";
 import { BRAND } from "@/config/brand";
 import { getMetadataBase } from "@/config/site";
 import { routing } from "@/i18n/routing";
@@ -50,9 +51,13 @@ export default async function LocaleLayout({
               ? (messages.Common as { skipToContent?: string }).skipToContent
               : "Skip to content"}
           </a>
-          <SiteHeader />
+          <PublicChrome>
+            <SiteHeader />
+          </PublicChrome>
           {children}
-          <SiteFooter />
+          <PublicChrome>
+            <SiteFooter />
+          </PublicChrome>
         </NextIntlClientProvider>
       </body>
     </html>

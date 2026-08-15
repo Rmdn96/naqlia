@@ -4,7 +4,7 @@ Naqlk (`نقلك`) is an Arabic-first logistics platform for Saudi Arabia: **ن�
 
 ## Foundation status
 
-This repository contains the approved MVP foundation through Sprint 4: guest service-request submission, private attachment intake, staff identity/RBAC, the core business database, and a Sales-only workspace for reviewing Leads and preparing quotations. Authentication remains optional for customers and required only for internal staff; no customer login UI, Operations workspace, Finance workspace, payment, dispatch, or order-creation feature is included.
+This repository contains the implemented MVP platform through unified Guest/Customer/Staff identity, customer quotation response, Operations/Tracking, Reviews & Quality, an optional Customer Account, and the permission-aware Staff Portal. Guest journeys remain available without authentication. Accounting, payments, GPS, Driver App, and advanced BI remain out of scope.
 
 ## Stack
 
@@ -79,9 +79,10 @@ npm run build
   - [Public Request Flow](docs/implementation/04-Public-Request-Flow.md)
   - [Sales Workspace](docs/implementation/05-Sales-Workspace.md)
   - [Production Lead Reference Reconciliation](docs/implementation/06-Production-Lead-Reference-Reconciliation.md)
-- [Customer Quotation Response Flow](docs/implementation/07-Customer-Quotation-Response-Flow.md)
-- [Operations Management v1](docs/implementation/08-Operations-Management.md)
+  - [Customer Quotation Response Flow](docs/implementation/07-Customer-Quotation-Response-Flow.md)
+  - [Operations Management v1](docs/implementation/08-Operations-Management.md)
   - [Reviews & Quality Management v1](docs/implementation/09-Reviews-Quality-Management.md)
+  - [Unified Authentication, Customer Account, and Staff Dashboard v1](docs/implementation/10-Unified-Account-And-Staff-Dashboard.md)
   - [Naqlk Brand Migration](docs/implementation/05-Naqlk-Brand-Migration.md)
 - Backlog
   - [Business Settings Management](docs/backlog/01-Business-Settings-Management.md)

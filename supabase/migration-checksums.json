@@ -120,6 +120,13 @@
       "production_history_sha256": "a1e9b82717ad25dabbf0c4432fcc2c0ae9148b118e49810c330d3b406587daf3",
       "repository_sha256": "a1e9b82717ad25dabbf0c4432fcc2c0ae9148b118e49810c330d3b406587daf3",
       "version": "20260814090000"
+    },
+    {
+      "filename": "20260815100000_unified_account_dashboard.sql",
+      "name": "unified_account_dashboard",
+      "production_history_sha256": "33e5d4c45f31ab16e9d917da0d907b2e91e690fcb734189e64b798dfdc0e1950",
+      "repository_sha256": "33e5d4c45f31ab16e9d917da0d907b2e91e690fcb734189e64b798dfdc0e1950",
+      "version": "20260815100000"
     }
   ]
 }
