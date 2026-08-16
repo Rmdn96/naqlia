@@ -3,6 +3,7 @@ import { getLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 
 import { Brand } from "@/components/shared/brand";
+import { AccountMenu } from "@/components/shared/account-menu";
 import { LocaleSwitch } from "@/components/shared/locale-switch";
 import { MobileNavigation } from "@/components/shared/mobile-navigation";
 import { buttonVariants } from "@/components/ui/button";
@@ -93,16 +94,28 @@ export async function SiteHeader() {
             <MessageCircleMore aria-hidden="true" className="size-5 text-emerald-600" />
           </a>
           <LocaleSwitch />
-          <Link
-            className={cn(
-              buttonVariants({ size: "sm", variant: "ghost" }),
-              "hidden sm:inline-flex",
-            )}
-            href={accountHref}
-          >
-            <UserRound aria-hidden="true" className="size-4" />
-            {accountLabel}
-          </Link>
+          {identity ? (
+            <AccountMenu
+              accountLabel={t("account")}
+              dashboardLabel={t("dashboard")}
+              hasCustomerContext={Boolean(identity.customer_account_id)}
+              isStaff={identity.is_staff}
+              label={accountLabel}
+              locale={locale}
+              signOutLabel={t("signOut")}
+            />
+          ) : (
+            <Link
+              className={cn(
+                buttonVariants({ size: "sm", variant: "ghost" }),
+                "hidden sm:inline-flex",
+              )}
+              href="/login"
+            >
+              <UserRound aria-hidden="true" className="size-4" />
+              {accountLabel}
+            </Link>
+          )}
           <Link
             className={cn(buttonVariants({ size: "sm" }), "hidden sm:inline-flex")}
             href="/request"
