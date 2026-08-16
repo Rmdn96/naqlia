@@ -19,6 +19,10 @@ export function getRequestOrigin(requestHeaders: HeaderReader): string | null {
   const explicitOrigin = firstHeaderValue(requestHeaders.get("origin"));
   if (explicitOrigin) return explicitOrigin;
 
+  return getForwardedRequestOrigin(requestHeaders);
+}
+
+export function getForwardedRequestOrigin(requestHeaders: HeaderReader): string | null {
   const host =
     firstHeaderValue(requestHeaders.get("x-forwarded-host")) ??
     firstHeaderValue(requestHeaders.get("host"));

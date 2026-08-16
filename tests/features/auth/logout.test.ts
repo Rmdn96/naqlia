@@ -31,6 +31,8 @@ describe("server-authoritative logout", () => {
     expect(route).toContain("303");
     expect(route).toContain("resolveServerAuthRedirectOrigin(requestOrigin)");
     expect(route).not.toContain("request.nextUrl.origin");
+    expect(route).toContain('request.headers.get("sec-fetch-site") === "same-origin"');
+    expect(route).toContain("getForwardedRequestOrigin(request.headers)");
     expect(route).toContain('"Cache-Control", "private, no-store, max-age=0"');
     expect(route).toContain('"Clear-Site-Data", \'"cache"\'');
   });
