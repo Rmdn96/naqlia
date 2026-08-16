@@ -33,7 +33,7 @@ function signOutRequest(
   if (secFetchSite) headers["sec-fetch-site"] = secFetchSite;
   if (intent) headers["x-naqlk-logout"] = "same-origin";
   return new NextRequest("https://internal-deployment.vercel.app/auth/sign-out", {
-    body: new URLSearchParams({ locale }),
+    body: new URLSearchParams({ locale }).toString(),
     headers,
     method: "POST",
   });
