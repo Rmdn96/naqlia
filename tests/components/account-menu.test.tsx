@@ -1,14 +1,8 @@
 import React from "react";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { AccountMenu, signOutAccount } from "@/components/shared/account-menu";
-
-const mocks = vi.hoisted(() => ({ signOut: vi.fn() }));
-
-vi.mock("@/lib/supabase/client", () => ({
-  createBrowserSupabaseClient: () => ({ auth: { signOut: mocks.signOut } }),
-}));
+import { AccountMenu } from "@/components/shared/account-menu";
 
 vi.mock("@/i18n/navigation", () => ({
   Link: React.forwardRef<HTMLAnchorElement, React.AnchorHTMLAttributes<HTMLAnchorElement>>(
@@ -24,11 +18,6 @@ vi.mock("@/i18n/navigation", () => ({
 
 describe("authenticated Header account menu", () => {
   afterEach(cleanup);
-
-  beforeEach(() => {
-    mocks.signOut.mockReset();
-    mocks.signOut.mockResolvedValue({ error: null });
-  });
 
   it("shows the localized Customer account and Sign Out actions", () => {
     render(
@@ -49,7 +38,11 @@ describe("authenticated Header account menu", () => {
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
     expect(screen.getByRole("menu")).toBeTruthy();
     expect(screen.getByRole("menuitem", { name: "حسابي" }).getAttribute("href")).toBe("/account");
-    expect(screen.getByRole("menuitem", { name: "تسجيل الخروج" })).toBeTruthy();
+    const signOut = screen.getByRole("menuitem", { name: "تسجيل الخروج" });
+    const signOutForm = signOut.closest("form");
+    expect(signOutForm?.getAttribute("action")).toBe("/auth/sign-out");
+    expect(signOutForm?.getAttribute("method")).toBe("post");
+    expect(signOutForm?.querySelector('input[name="locale"]')?.getAttribute("value")).toBe("ar");
     expect(screen.queryByRole("menuitem", { name: "لوحة التحكم" })).toBeNull();
   });
 
@@ -105,23 +98,5 @@ describe("authenticated Header account menu", () => {
     fireEvent.keyDown(accountItem, { key: "Escape" });
     await waitFor(() => expect(document.activeElement).toBe(trigger));
     expect(screen.queryByRole("menu")).toBeNull();
-  });
-
-  it("ends the Supabase session before replacing the localized public route", async () => {
-    const navigate = vi.fn();
-
-    await expect(signOutAccount("ar", navigate)).resolves.toBe(true);
-
-    expect(mocks.signOut).toHaveBeenCalledOnce();
-    expect(navigate).toHaveBeenCalledWith("/ar");
-  });
-
-  it("does not navigate if Supabase cannot end the session", async () => {
-    const navigate = vi.fn();
-    mocks.signOut.mockResolvedValueOnce({ error: new Error("unavailable") });
-
-    await expect(signOutAccount("en", navigate)).resolves.toBe(false);
-
-    expect(navigate).not.toHaveBeenCalled();
   });
 });

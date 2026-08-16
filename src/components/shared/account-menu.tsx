@@ -6,7 +6,6 @@ import { useEffect, useId, useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
-import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { cn } from "@/utils/cn";
 
 type AccountMenuProps = {
@@ -19,17 +18,6 @@ type AccountMenuProps = {
   signOutLabel: string;
 };
 
-export async function signOutAccount(
-  locale: AppLocale,
-  navigate: (href: string) => void = (href) => window.location.replace(href),
-) {
-  const supabase = createBrowserSupabaseClient();
-  const { error } = await supabase.auth.signOut();
-  if (error) return false;
-  navigate(`/${locale}`);
-  return true;
-}
-
 export function AccountMenu({
   accountLabel,
   dashboardLabel,
@@ -41,7 +29,6 @@ export function AccountMenu({
 }: AccountMenuProps) {
   const [open, setOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
-  const [signOutFailed, setSignOutFailed] = useState(false);
   const menuId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -87,15 +74,6 @@ export function AccountMenu({
             ? (currentIndex + 1 + items.length) % items.length
             : (currentIndex - 1 + items.length) % items.length;
     items[nextIndex]?.focus();
-  }
-
-  async function handleSignOut() {
-    setIsSigningOut(true);
-    setSignOutFailed(false);
-    if (!(await signOutAccount(locale))) {
-      setIsSigningOut(false);
-      setSignOutFailed(true);
-    }
   }
 
   return (
@@ -150,23 +128,18 @@ export function AccountMenu({
               {accountLabel}
             </Link>
           ) : null}
-          <button
-            className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-start text-sm font-bold text-destructive hover:bg-secondary focus:bg-secondary focus:outline-none disabled:opacity-60"
-            disabled={isSigningOut}
-            onClick={handleSignOut}
-            role="menuitem"
-            type="button"
-          >
-            <LogOut aria-hidden="true" className="size-4" />
-            {signOutLabel}
-          </button>
-          {signOutFailed ? (
-            <p aria-live="polite" className="px-3 py-2 text-xs text-destructive" role="alert">
-              {locale === "ar"
-                ? "تعذر تسجيل الخروج. حاول مرة أخرى."
-                : "Sign out failed. Please try again."}
-            </p>
-          ) : null}
+          <form action="/auth/sign-out" method="post" onSubmit={() => setIsSigningOut(true)}>
+            <input name="locale" type="hidden" value={locale} />
+            <button
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-start text-sm font-bold text-destructive hover:bg-secondary focus:bg-secondary focus:outline-none disabled:opacity-60"
+              disabled={isSigningOut}
+              role="menuitem"
+              type="submit"
+            >
+              <LogOut aria-hidden="true" className="size-4" />
+              {signOutLabel}
+            </button>
+          </form>
         </div>
       ) : null}
     </div>

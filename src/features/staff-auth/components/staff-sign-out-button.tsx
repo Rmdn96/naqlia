@@ -1,10 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import type { AppLocale } from "@/i18n/routing";
-import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 type StaffSignOutButtonProps = {
   label: string;
@@ -12,18 +9,12 @@ type StaffSignOutButtonProps = {
 };
 
 export function StaffSignOutButton({ label, locale }: StaffSignOutButtonProps) {
-  const [isSigningOut, setIsSigningOut] = useState(false);
-
-  async function handleSignOut() {
-    setIsSigningOut(true);
-    const supabase = createBrowserSupabaseClient();
-    await supabase.auth.signOut();
-    window.location.assign(`/${locale}/login`);
-  }
-
   return (
-    <Button disabled={isSigningOut} onClick={handleSignOut} size="sm" variant="outline">
-      {label}
-    </Button>
+    <form action="/auth/sign-out" method="post">
+      <input name="locale" type="hidden" value={locale} />
+      <Button size="sm" type="submit" variant="outline">
+        {label}
+      </Button>
+    </form>
   );
 }
