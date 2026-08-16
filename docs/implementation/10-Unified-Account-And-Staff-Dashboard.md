@@ -155,6 +155,8 @@ Super Admin can search/filter users, invite Staff, resend/cancel pending invitat
 - Role assignment and lifecycle changes are completed by permission-checked database functions.
 - Deactivation is preferred to deletion.
 
+The current Supabase built-in email sender is limited to two messages per hour for the project. Auth returns `over_email_send_rate_limit` when that allowance is exhausted. Administration translates that condition into localized retry guidance and does not register or activate Staff access. Operators must wait for the rolling allowance to recover before retrying. Production launch requires approved custom SMTP if invitation and recovery volume will exceed this temporary provider limit.
+
 Last-Super-Admin safety is enforced by an advisory transaction lock, function checks, and a table trigger. Concurrent role changes or deactivations cannot remove the final active Super Admin.
 
 The Roles & Permissions page is read-only. Custom roles and arbitrary permission editing remain out of scope.

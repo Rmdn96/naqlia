@@ -11,6 +11,7 @@ import {
   setStaffAccessAction,
 } from "@/features/staff-portal/actions/administration.actions";
 import type { UserListPayload } from "@/features/staff-portal/types/administration";
+import { getAdministrationResultMessage } from "@/features/staff-portal/lib/invitation-status";
 import type { AppLocale } from "@/i18n/routing";
 
 const roles = ["super_admin", "sales", "operations", "finance", "customer_service"];
@@ -27,15 +28,16 @@ export function UserManagementView({
   result?: string;
 }) {
   const ar = locale === "ar";
+  const resultMessage = getAdministrationResultMessage(locale, result);
   return (
     <div>
       <h1 className="flex items-center gap-2 text-3xl font-black">
         <Users className="size-7" />
         {ar ? "إدارة المستخدمين" : "User Management"}
       </h1>
-      {result ? (
+      {resultMessage ? (
         <p className="mt-4 rounded-md border bg-card p-3 text-sm" role="status">
-          {result}
+          {resultMessage}
         </p>
       ) : null}
       <Card className="mt-6 p-5">

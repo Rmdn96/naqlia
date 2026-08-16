@@ -15,6 +15,7 @@ import {
   updateServiceArea,
 } from "@/features/staff-portal/services/administration.service";
 import type { AppLocale } from "@/i18n/routing";
+import { classifyStaffInvitationFailure } from "@/features/staff-portal/lib/invitation-status";
 import { getPortalContext } from "@/features/staff-portal/services/staff-portal.service";
 import { resolveAuthRedirectOriginFromHeaders } from "@/lib/auth/redirect-origin.server";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
@@ -62,6 +63,16 @@ async function requireUserAdministrator() {
   return context;
 }
 
+function redirectInvitationFailure(locale: AppLocale, error: unknown): never {
+  const result = classifyStaffInvitationFailure(error);
+  console.warn(
+    result === "invite_rate_limited"
+      ? "staff_invitation_email_rate_limited"
+      : "staff_invitation_auth_delivery_failed",
+  );
+  redirect(`/${locale}/admin/users?result=${result}` as never);
+}
+
 export async function inviteStaffAction(locale: AppLocale, formData: FormData) {
   await requireUserAdministrator();
   const parsed = z
@@ -84,7 +95,7 @@ export async function inviteStaffAction(locale: AppLocale, formData: FormData) {
     page: 1,
     perPage: 1000,
   });
-  if (listError) redirect(`/${locale}/admin/users?result=invite_failed` as never);
+  if (listError) redirectInvitationFailure(locale, listError);
   const existing = users.users.find((user) => user.email?.toLowerCase() === parsed.data.email);
   let authUserId = existing?.id;
 
@@ -93,17 +104,18 @@ export async function inviteStaffAction(locale: AppLocale, formData: FormData) {
       email: parsed.data.email,
       options: { emailRedirectTo: redirectTo, shouldCreateUser: false },
     });
-    if (error) redirect(`/${locale}/admin/users?result=invite_failed` as never);
+    if (error) redirectInvitationFailure(locale, error);
   } else {
     const { data, error } = await admin.auth.admin.inviteUserByEmail(parsed.data.email, {
       data: { display_name: parsed.data.name, preferred_locale: locale },
       redirectTo,
     });
-    if (error || !data.user) redirect(`/${locale}/admin/users?result=invite_failed` as never);
+    if (error) redirectInvitationFailure(locale, error);
+    if (!data.user) redirectInvitationFailure(locale, null);
     authUserId = data.user.id;
   }
 
-  if (!authUserId) redirect(`/${locale}/admin/users?result=invite_failed` as never);
+  if (!authUserId) redirectInvitationFailure(locale, null);
   await registerInvitation(authUserId, parsed.data.email, parsed.data.name, parsed.data.role);
   revalidatePath(`/${locale}/admin/users`);
   redirect(`/${locale}/admin/users?result=invited` as never);
@@ -129,7 +141,7 @@ export async function resendInvitationAction(locale: AppLocale, formData: FormDa
       shouldCreateUser: false,
     },
   });
-  if (error) redirect(`/${locale}/admin/users?result=invite_failed` as never);
+  if (error) redirectInvitationFailure(locale, error);
   await markInvitationResent(id);
   revalidatePath(`/${locale}/admin/users`);
   redirect(`/${locale}/admin/users?result=resent` as never);
