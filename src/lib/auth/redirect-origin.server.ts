@@ -3,7 +3,11 @@ import "server-only";
 import { headers } from "next/headers";
 
 import { getApplicationUrl } from "@/config/env";
-import { resolveAuthRedirectOrigin } from "@/lib/auth/redirect-origin";
+import {
+  isApprovedAuthRedirectOrigin,
+  resolveAuthRedirectOrigin,
+  type AuthRedirectEnvironment,
+} from "@/lib/auth/redirect-origin";
 
 type HeaderReader = { get(name: string): string | null };
 
@@ -25,8 +29,8 @@ export function getRequestOrigin(requestHeaders: HeaderReader): string | null {
   return `${protocol}://${host}`;
 }
 
-export function resolveServerAuthRedirectOrigin(requestedOrigin?: string | null): string {
-  return resolveAuthRedirectOrigin(requestedOrigin, {
+function getServerAuthRedirectEnvironment(): AuthRedirectEnvironment {
+  return {
     applicationUrl: getApplicationUrl(),
     approvedLocalOrigin: process.env.NAQLK_AUTH_LOCAL_ORIGIN,
     approvedPreviewOrigin: process.env.NAQLK_AUTH_PREVIEW_ORIGIN,
@@ -34,7 +38,15 @@ export function resolveServerAuthRedirectOrigin(requestedOrigin?: string | null)
     vercelBranchUrl: process.env.VERCEL_BRANCH_URL,
     vercelEnvironment: process.env.VERCEL_ENV,
     vercelUrl: process.env.VERCEL_URL,
-  });
+  };
+}
+
+export function isApprovedServerAuthOrigin(requestedOrigin: string | null): boolean {
+  return isApprovedAuthRedirectOrigin(requestedOrigin, getServerAuthRedirectEnvironment());
+}
+
+export function resolveServerAuthRedirectOrigin(requestedOrigin?: string | null): string {
+  return resolveAuthRedirectOrigin(requestedOrigin, getServerAuthRedirectEnvironment());
 }
 
 export function resolveAuthRedirectOriginFromHeaders(requestHeaders: HeaderReader): string {

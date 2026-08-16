@@ -30,6 +30,38 @@ function vercelOrigin(hostname: string | undefined): string | null {
   return normalizeOrigin(`https://${hostname.trim()}`);
 }
 
+export function isApprovedAuthRedirectOrigin(
+  requestedOrigin: string | null | undefined,
+  environment: AuthRedirectEnvironment,
+): boolean {
+  const requested = normalizeOrigin(requestedOrigin);
+  const applicationOrigin = normalizeOrigin(environment.applicationUrl);
+  if (!requested || !applicationOrigin) return false;
+
+  if (environment.vercelEnvironment === "preview") {
+    return new Set(
+      [
+        normalizeOrigin(environment.approvedPreviewOrigin),
+        vercelOrigin(environment.vercelBranchUrl),
+        vercelOrigin(environment.vercelUrl),
+      ].filter((origin): origin is string => origin !== null),
+    ).has(requested);
+  }
+
+  if (environment.nodeEnvironment === "development") {
+    return new Set(
+      [
+        applicationOrigin,
+        normalizeOrigin(environment.approvedLocalOrigin),
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+      ].filter((origin): origin is string => origin !== null),
+    ).has(requested);
+  }
+
+  return requested === applicationOrigin;
+}
+
 export function resolveAuthRedirectOrigin(
   requestedOrigin: string | null | undefined,
   environment: AuthRedirectEnvironment,
@@ -43,13 +75,7 @@ export function resolveAuthRedirectOrigin(
     const approvedPreview = normalizeOrigin(environment.approvedPreviewOrigin);
     const branchPreview = vercelOrigin(environment.vercelBranchUrl);
     const deploymentPreview = vercelOrigin(environment.vercelUrl);
-    const allowedRequests = new Set(
-      [approvedPreview, branchPreview, deploymentPreview].filter(
-        (origin): origin is string => origin !== null,
-      ),
-    );
-
-    if (requested && allowedRequests.has(requested)) {
+    if (isApprovedAuthRedirectOrigin(requested, environment)) {
       return approvedPreview ?? branchPreview ?? deploymentPreview ?? applicationOrigin;
     }
 

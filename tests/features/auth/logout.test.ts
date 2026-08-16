@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { isApprovedSignOutOrigin, resolveSignOutLocale } from "@/lib/auth/sign-out";
+import { resolveSignOutLocale } from "@/lib/auth/sign-out";
 
 const source = (path: string) => readFileSync(resolve(process.cwd(), path), "utf8");
 
@@ -13,14 +13,6 @@ describe("server-authoritative logout", () => {
     expect(resolveSignOutLocale("en")).toBe("en");
     expect(resolveSignOutLocale("https://attacker.example")).toBe("ar");
     expect(resolveSignOutLocale(null)).toBe("ar");
-  });
-
-  it("rejects cross-origin and malformed logout submissions", () => {
-    const preview = "https://naqlk-git-feature-auth-visual-upgrade-mohamed-ramadan.vercel.app";
-    expect(isApprovedSignOutOrigin(preview, preview)).toBe(true);
-    expect(isApprovedSignOutOrigin(null, preview)).toBe(true);
-    expect(isApprovedSignOutOrigin("https://attacker.example", preview)).toBe(false);
-    expect(isApprovedSignOutOrigin("not-a-url", preview)).toBe(false);
   });
 
   it("terminates the SSR session and expires server-managed auth cookie chunks", () => {
@@ -37,6 +29,8 @@ describe("server-authoritative logout", () => {
     expect(route).toContain("terminateRouteSupabaseSession(request, response)");
     expect(route).toContain("NextResponse.redirect");
     expect(route).toContain("303");
+    expect(route).toContain("resolveServerAuthRedirectOrigin(requestOrigin)");
+    expect(route).not.toContain("request.nextUrl.origin");
     expect(route).toContain('"Cache-Control", "private, no-store, max-age=0"');
     expect(route).toContain('"Clear-Site-Data", \'"cache"\'');
   });

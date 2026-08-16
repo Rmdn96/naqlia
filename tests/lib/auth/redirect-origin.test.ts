@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   createAuthCallbackUrl,
+  isApprovedAuthRedirectOrigin,
   resolveAuthRedirectOrigin,
   type AuthRedirectEnvironment,
 } from "@/lib/auth/redirect-origin";
@@ -31,6 +32,20 @@ describe("authentication redirect origin", () => {
 
   it("keeps an approved branch Preview request on that Preview", () => {
     expect(resolveAuthRedirectOrigin(branchPreview, previewEnvironment())).toBe(branchPreview);
+  });
+
+  it("accepts only explicit Preview aliases for state-changing Auth requests", () => {
+    expect(isApprovedAuthRedirectOrigin(branchPreview, previewEnvironment())).toBe(true);
+    expect(isApprovedAuthRedirectOrigin(deploymentPreview, previewEnvironment())).toBe(true);
+    expect(isApprovedAuthRedirectOrigin("https://attacker.example", previewEnvironment())).toBe(
+      false,
+    );
+    expect(
+      isApprovedAuthRedirectOrigin(
+        "https://naqlk-example-mohamed-ramadan.vercel.app.attacker.example",
+        previewEnvironment(),
+      ),
+    ).toBe(false);
   });
 
   it.each([
