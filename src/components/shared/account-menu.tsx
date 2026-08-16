@@ -6,6 +6,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { signOutFromBrowser } from "@/lib/auth/sign-out.client";
 import { cn } from "@/utils/cn";
 
 type AccountMenuProps = {
@@ -76,6 +77,16 @@ export function AccountMenu({
     items[nextIndex]?.focus();
   }
 
+  async function handleSignOut(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsSigningOut(true);
+    try {
+      await signOutFromBrowser(locale);
+    } catch {
+      setIsSigningOut(false);
+    }
+  }
+
   return (
     <div className="relative" ref={containerRef}>
       <button
@@ -128,7 +139,7 @@ export function AccountMenu({
               {accountLabel}
             </Link>
           ) : null}
-          <form action="/auth/sign-out" method="post" onSubmit={() => setIsSigningOut(true)}>
+          <form action="/auth/sign-out" method="post" onSubmit={handleSignOut}>
             <input name="locale" type="hidden" value={locale} />
             <button
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-start text-sm font-bold text-destructive hover:bg-secondary focus:bg-secondary focus:outline-none disabled:opacity-60"

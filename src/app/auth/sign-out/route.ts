@@ -1,10 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { resolveSignOutLocale } from "@/lib/auth/sign-out";
+import {
+  resolveSignOutLocale,
+  SIGN_OUT_INTENT_HEADER,
+  SIGN_OUT_INTENT_VALUE,
+} from "@/lib/auth/sign-out";
 import {
   getForwardedRequestOrigin,
   isApprovedServerAuthOrigin,
-  resolveServerAuthRedirectOrigin,
 } from "@/lib/auth/redirect-origin.server";
 import { terminateRouteSupabaseSession } from "@/lib/supabase/server";
 
@@ -18,7 +21,10 @@ function getApprovedSignOutOrigin(request: NextRequest): string | null {
 
   const forwardedOrigin = getForwardedRequestOrigin(request.headers);
   const sameOriginNavigation = request.headers.get("sec-fetch-site") === "same-origin";
-  return sameOriginNavigation && isApprovedServerAuthOrigin(forwardedOrigin)
+  const sameOriginFetch =
+    request.headers.get(SIGN_OUT_INTENT_HEADER) === SIGN_OUT_INTENT_VALUE &&
+    request.headers.get("sec-fetch-site") !== "cross-site";
+  return (sameOriginNavigation || sameOriginFetch) && isApprovedServerAuthOrigin(forwardedOrigin)
     ? forwardedOrigin
     : null;
 }
@@ -34,8 +40,7 @@ export async function POST(request: NextRequest) {
 
   const formData = await request.formData();
   const locale = resolveSignOutLocale(formData.get("locale"));
-  const publicOrigin = resolveServerAuthRedirectOrigin(requestOrigin);
-  const response = NextResponse.redirect(new URL(`/${locale}`, publicOrigin), 303);
+  const response = NextResponse.redirect(new URL(`/${locale}`, requestOrigin), 303);
   response.headers.set("Cache-Control", "private, no-store, max-age=0");
   response.headers.set("Clear-Site-Data", '"cache"');
   response.headers.set("Referrer-Policy", "no-referrer");

@@ -29,10 +29,12 @@ describe("server-authoritative logout", () => {
     expect(route).toContain("terminateRouteSupabaseSession(request, response)");
     expect(route).toContain("NextResponse.redirect");
     expect(route).toContain("303");
-    expect(route).toContain("resolveServerAuthRedirectOrigin(requestOrigin)");
+    expect(route).toContain("new URL(`/${locale}`, requestOrigin)");
     expect(route).not.toContain("request.nextUrl.origin");
     expect(route).toContain('request.headers.get("sec-fetch-site") === "same-origin"');
     expect(route).toContain("getForwardedRequestOrigin(request.headers)");
+    expect(route).toContain("SIGN_OUT_INTENT_HEADER");
+    expect(route).toContain('request.headers.get("sec-fetch-site") !== "cross-site"');
     expect(route).toContain('"Cache-Control", "private, no-store, max-age=0"');
     expect(route).toContain('"Clear-Site-Data", \'"cache"\'');
   });
@@ -45,6 +47,7 @@ describe("server-authoritative logout", () => {
       const contents = source(file);
       expect(contents).toContain('action="/auth/sign-out"');
       expect(contents).toContain('method="post"');
+      expect(contents).toContain("signOutFromBrowser(locale)");
       expect(contents).not.toContain("createBrowserSupabaseClient");
     }
   });
