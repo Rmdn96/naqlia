@@ -3,8 +3,46 @@ import { resolve } from "node:path";
 
 import { describe, expect, it, vi } from "vitest";
 
+const { citySlugs } = vi.hoisted(() => ({
+  citySlugs: [
+    "riyadh",
+    "jeddah",
+    "makkah",
+    "madinah",
+    "dammam",
+    "al-khobar",
+    "dhahran",
+    "al-ahsa",
+    "jubail",
+    "taif",
+    "tabuk",
+    "abha",
+    "khamis-mushait",
+    "buraidah",
+    "hail",
+    "yanbu",
+    "jazan",
+    "najran",
+    "al-kharj",
+    "arar",
+    "sakaka",
+    "al-bahah",
+  ],
+}));
+
 vi.mock("@/features/seo/services/seo.service", () => ({
-  getIndexableCitySeoIndex: vi.fn().mockResolvedValue([]),
+  getIndexableCitySeoIndex: vi.fn().mockResolvedValue(
+    citySlugs.flatMap((slug, cityIndex) =>
+      ["ar", "en"].map((locale) => ({
+        cityId: `city-${cityIndex}`,
+        cityName: slug,
+        locale,
+        regionName: "Saudi Arabia",
+        slug,
+        updatedAt: "2026-08-22T18:00:00.000Z",
+      })),
+    ),
+  ),
 }));
 
 import robots from "@/app/robots";
@@ -21,10 +59,18 @@ function sourceFiles(path: string): string[] {
 describe("Naqlk SEO identity", () => {
   it("uses the canonical origin for every sitemap entry", async () => {
     const entries = await sitemap();
-    expect(entries.length).toBeGreaterThanOrEqual(14);
+    expect(entries).toHaveLength(58);
     expect(
       entries.every(({ url }) => url.startsWith(`${BRAND.domains.activeProductionOrigin}/`)),
     ).toBe(true);
+  });
+
+  it("includes a reciprocal locale pair for every published city at editorial scale", async () => {
+    const urls = new Set((await sitemap()).map(({ url }) => url));
+    for (const slug of citySlugs) {
+      expect(urls.has(`https://naqlk.vercel.app/ar/${slug}`)).toBe(true);
+      expect(urls.has(`https://naqlk.vercel.app/en/${slug}`)).toBe(true);
+    }
   });
 
   it("publishes the canonical sitemap and host through robots", () => {
