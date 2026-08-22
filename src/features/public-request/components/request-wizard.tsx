@@ -2,7 +2,7 @@
 
 import { ArrowLeft, ArrowRight, Check, LoaderCircle, Save } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { type ChangeEvent, type FormEvent, useMemo, useRef, useState } from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -56,9 +56,11 @@ async function hashFile(file: File): Promise<string> {
 
 type RequestWizardProps = {
   catalog: PublicRequestCatalog;
+  initialCityId?: string;
+  initialServiceId?: string;
 };
 
-export function RequestWizard({ catalog }: RequestWizardProps) {
+export function RequestWizard({ catalog, initialCityId, initialServiceId }: RequestWizardProps) {
   const locale = useLocale() as "ar" | "en";
   const t = useTranslations("Request");
   const router = useRouter();
@@ -70,12 +72,27 @@ export function RequestWizard({ catalog }: RequestWizardProps) {
   const [submissionError, setSubmissionError] = useState<string>();
   const [submitting, setSubmitting] = useState(false);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
+  const prefillApplied = useRef(false);
   const BackIcon = locale === "ar" ? ArrowRight : ArrowLeft;
   const NextIcon = locale === "ar" ? ArrowLeft : ArrowRight;
   const stepNames = useMemo(
     () => [t("step1"), t("step2"), t("step3"), t("step4"), t("step5")],
     [t],
   );
+
+  useEffect(() => {
+    if (!hydrated || prefillApplied.current) return;
+    prefillApplied.current = true;
+    setDraft((current) => {
+      if (current.serviceId || current.pickup.cityId || current.delivery.cityId) return current;
+      return {
+        ...current,
+        delivery: { ...current.delivery, cityId: initialCityId ?? "" },
+        pickup: { ...current.pickup, cityId: initialCityId ?? "" },
+        serviceId: initialServiceId ?? "",
+      };
+    });
+  }, [hydrated, initialCityId, initialServiceId, setDraft]);
 
   const translatedErrors = useMemo(
     () =>

@@ -9,8 +9,13 @@ import type { PublicRequestCatalog } from "@/features/public-request/types/publi
 
 const catalog: PublicRequestCatalog = {
   cities: [
-    { id: "be0e668d-75fe-4249-8f09-dd9910f91bd0", name: "الرياض", region: "الرياض" },
-    { id: "b8b8d8d6-9ec4-4c15-b45c-825fa895ab21", name: "جدة", region: "مكة" },
+    {
+      id: "be0e668d-75fe-4249-8f09-dd9910f91bd0",
+      name: "الرياض",
+      region: "الرياض",
+      slug: "riyadh",
+    },
+    { id: "b8b8d8d6-9ec4-4c15-b45c-825fa895ab21", name: "جدة", region: "مكة", slug: "jeddah" },
   ],
   options: [],
   services: [

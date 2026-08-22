@@ -4,6 +4,7 @@ export type PublicCatalogCity = {
   id: string;
   name: string;
   region: string;
+  slug: string;
 };
 
 export type PublicCatalogServiceOption = {

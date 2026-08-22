@@ -141,6 +141,20 @@
       "production_history_sha256": "8e8a7fe8afbdfd56806168db44830492e5c2c4a69d0c3f987201ef68cd9454c4",
       "repository_sha256": "8e8a7fe8afbdfd56806168db44830492e5c2c4a69d0c3f987201ef68cd9454c4",
       "version": "20260815170000"
+    },
+    {
+      "filename": "20260822090000_seo_local_seo_v1.sql",
+      "name": "seo_local_seo_v1",
+      "production_history_sha256": "c14d8a2733ea7525788352489cc2e12cc1febee8c6a4f464c60e846eda6cca0a",
+      "repository_sha256": "c14d8a2733ea7525788352489cc2e12cc1febee8c6a4f464c60e846eda6cca0a",
+      "version": "20260822090000"
+    },
+    {
+      "filename": "20260822100000_seo_registry_audit_index.sql",
+      "name": "seo_registry_audit_index",
+      "production_history_sha256": "6b90799376e47a7f7c30dd4992b33c1f7f6b65fe4213e1bf70d3caec4ac875dd",
+      "repository_sha256": "6b90799376e47a7f7c30dd4992b33c1f7f6b65fe4213e1bf70d3caec4ac875dd",
+      "version": "20260822100000"
     }
   ]
 }

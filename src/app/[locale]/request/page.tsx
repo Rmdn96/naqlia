@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 
 type RequestPageProps = {
   params: Promise<{ locale: AppLocale }>;
+  searchParams: Promise<{ city?: string; service?: string }>;
 };
 
 export async function generateMetadata({ params }: RequestPageProps): Promise<Metadata> {
@@ -36,13 +37,15 @@ export async function generateMetadata({ params }: RequestPageProps): Promise<Me
   };
 }
 
-export default async function RequestPage({ params }: RequestPageProps) {
-  const { locale } = await params;
+export default async function RequestPage({ params, searchParams }: RequestPageProps) {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
   setRequestLocale(locale);
   const [t, catalog] = await Promise.all([
     getTranslations("Request"),
     getPublicRequestCatalog(locale),
   ]);
+  const initialCityId = catalog.cities.find((city) => city.slug === query.city)?.id;
+  const initialServiceId = catalog.services.find((service) => service.key === query.service)?.id;
 
   return (
     <main className="surface-grid min-h-screen py-12 sm:py-16" id="main-content">
@@ -57,7 +60,11 @@ export default async function RequestPage({ params }: RequestPageProps) {
           </p>
         </div>
         <div className="mx-auto max-w-5xl">
-          <RequestWizard catalog={catalog} />
+          <RequestWizard
+            catalog={catalog}
+            initialCityId={initialCityId}
+            initialServiceId={initialServiceId}
+          />
         </div>
       </div>
     </main>

@@ -8,6 +8,7 @@ import {
   Gauge,
   Menu,
   Settings,
+  SearchCheck,
   Shield,
   Star,
   Truck,
@@ -70,6 +71,12 @@ export function StaffPortalShell({
       icon: Settings,
       label: t.businessSettings,
       show: permission("settings.business.read"),
+    },
+    {
+      href: "/settings/seo",
+      icon: SearchCheck,
+      label: t.seo,
+      show: permission("settings.seo.read"),
     },
     {
       href: "/admin/users",

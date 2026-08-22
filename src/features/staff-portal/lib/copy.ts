@@ -16,6 +16,7 @@ export function getPortalCopy(locale: AppLocale) {
     roles: ar ? "الأدوار والصلاحيات" : "Roles & Permissions",
     sales: ar ? "المبيعات" : "Sales",
     search: ar ? "البحث برقم NQ" : "Search NQ reference",
+    seo: ar ? "إدارة SEO المحلي" : "Local SEO",
     settings: ar ? "إدارة الموقع" : "Site Management",
     signOut: ar ? "تسجيل الخروج" : "Sign out",
     users: ar ? "المستخدمون" : "Users",

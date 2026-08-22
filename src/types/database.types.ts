@@ -141,6 +141,43 @@ type CityRow = AuditFields &
     status: "active" | "inactive";
   };
 
+type CitySeoContentRow = AuditFields & {
+  city_id: string;
+  content_status: "draft" | "published" | "ready";
+  id: string;
+  introduction: string | null;
+  is_indexable: boolean;
+  locale: "ar" | "en";
+  meta_description: string | null;
+  neighborhood_coverage_text: string | null;
+  page_heading: string | null;
+  published_at: string | null;
+  seo_title: string | null;
+  service_area_content: string | null;
+  slug: string;
+  version: number;
+};
+
+type CitySeoFaqRow = {
+  answer: string;
+  city_seo_content_id: string;
+  created_at: string;
+  display_order: number;
+  id: string;
+  question: string;
+  updated_at: string;
+};
+
+type CitySeoRouteRow = {
+  city_seo_content_id: string;
+  created_at: string;
+  display_order: number;
+  id: string;
+  route_description: string;
+  route_label: string;
+  updated_at: string;
+};
+
 type ServiceRow = AuditFields &
   SoftDeleteFields & {
     description_ar: string;
@@ -417,6 +454,27 @@ export type Database = {
         Args: { p_city: string; p_display_order: number; p_status: string };
         Returns: Json;
       };
+      admin_list_city_seo_contents: { Args: Record<never, never>; Returns: Json };
+      admin_set_city_seo_state: {
+        Args: { p_content: string; p_indexable: boolean; p_status: string };
+        Returns: Json;
+      };
+      admin_upsert_city_seo_content: {
+        Args: {
+          p_content: string;
+          p_expected_version: number;
+          p_faqs: Json;
+          p_introduction: string;
+          p_meta_description: string;
+          p_neighborhood_coverage_text: string;
+          p_page_heading: string;
+          p_routes: Json;
+          p_seo_title: string;
+          p_service_area_content: string;
+          p_slug: string;
+        };
+        Returns: Json;
+      };
       assign_staff_role: {
         Args: {
           change_reason: string;
@@ -467,6 +525,15 @@ export type Database = {
       };
       get_public_homepage_content: {
         Args: { p_locale?: string };
+        Returns: Json;
+      };
+      get_city_seo_readiness: { Args: { p_content: string }; Returns: Json };
+      get_indexable_city_seo_index: {
+        Args: { p_locale?: string | null };
+        Returns: Json;
+      };
+      get_public_city_seo_content: {
+        Args: { p_locale: string; p_slug: string };
         Returns: Json;
       };
       has_permission: {
@@ -617,6 +684,27 @@ export type Database = {
       };
     };
     Tables: {
+      city_seo_contents: {
+        Insert: InsertWithRequired<CitySeoContentRow, "city_id" | "locale" | "slug">;
+        Relationships: [];
+        Row: CitySeoContentRow;
+        Update: Partial<CitySeoContentRow>;
+      };
+      city_seo_faqs: {
+        Insert: InsertWithRequired<CitySeoFaqRow, "answer" | "city_seo_content_id" | "question">;
+        Relationships: [];
+        Row: CitySeoFaqRow;
+        Update: Partial<CitySeoFaqRow>;
+      };
+      city_seo_routes: {
+        Insert: InsertWithRequired<
+          CitySeoRouteRow,
+          "city_seo_content_id" | "route_description" | "route_label"
+        >;
+        Relationships: [];
+        Row: CitySeoRouteRow;
+        Update: Partial<CitySeoRouteRow>;
+      };
       business_settings: {
         Insert: Partial<BusinessSettingRow> & Pick<BusinessSettingRow, "category" | "setting_key">;
         Relationships: [];

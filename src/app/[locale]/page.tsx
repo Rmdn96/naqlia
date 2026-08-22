@@ -30,6 +30,8 @@ import {
 import { getWhatsAppHref } from "@/config/site";
 import { getPublicHomeContent } from "@/features/public-home/services/public-home.service";
 import { getPublicRequestCatalog } from "@/features/public-request/services/public-request.service";
+import { getServicePageSlugForKey } from "@/features/seo/content/service-pages";
+import { getIndexableCitySeoIndex } from "@/features/seo/services/seo.service";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
@@ -64,11 +66,12 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
 export default async function HomePage({ params }: LocalePageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, catalog, business, publicContent] = await Promise.all([
+  const [t, catalog, business, publicContent, seoCities] = await Promise.all([
     getTranslations("Home"),
     getPublicRequestCatalog(locale),
     getPublicBusinessConfiguration(),
     getPublicHomeContent(locale),
+    getIndexableCitySeoIndex(locale),
   ]);
   const Arrow = locale === "ar" ? ArrowLeft : ArrowRight;
   const process = [
@@ -172,6 +175,7 @@ export default async function HomePage({ params }: LocalePageProps) {
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {catalog.services.map((service, index) => {
             const Icon = serviceIcons[index % serviceIcons.length];
+            const serviceSlug = getServicePageSlugForKey(service.key);
             return (
               <Card
                 className="group relative overflow-hidden p-6 transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl"
@@ -186,7 +190,7 @@ export default async function HomePage({ params }: LocalePageProps) {
                 </p>
                 <Link
                   className="mt-6 inline-flex items-center gap-2 text-sm font-black text-primary"
-                  href="/request"
+                  href={(serviceSlug ? `/services/${serviceSlug}` : "/request") as never}
                 >
                   {t("primaryCta")}
                   <Arrow aria-hidden="true" className="size-4" />
@@ -246,14 +250,24 @@ export default async function HomePage({ params }: LocalePageProps) {
             description={t("areasDescription")}
           />
           <div className="flex flex-wrap gap-3">
-            {publicContent.cities.map((city) => (
-              <span
-                className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold"
-                key={`${city.region}-${city.name}`}
-              >
-                {city.name}
-              </span>
-            ))}
+            {publicContent.cities.map((city) => {
+              const seoCity = seoCities.find((item) => item.cityName === city.name);
+              const className =
+                "rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold";
+              return seoCity ? (
+                <Link
+                  className={`${className} hover:bg-white/20`}
+                  href={`/${seoCity.slug}` as never}
+                  key={`${city.region}-${city.name}`}
+                >
+                  {city.name}
+                </Link>
+              ) : (
+                <span className={className} key={`${city.region}-${city.name}`}>
+                  {city.name}
+                </span>
+              );
+            })}
           </div>
         </div>
       </section>

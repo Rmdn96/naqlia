@@ -22,7 +22,9 @@ export type IdentityPermission =
   | "portal.notifications.read"
   | "portal.search.read"
   | "settings.business.manage"
-  | "settings.business.read";
+  | "settings.business.read"
+  | "settings.seo.manage"
+  | "settings.seo.read";
 
 export type SalesWorkspacePermission = "sales.workspace.manage" | "sales.workspace.read";
 
