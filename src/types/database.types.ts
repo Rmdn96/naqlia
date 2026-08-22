@@ -465,6 +465,10 @@ export type Database = {
         };
         Returns: Json;
       };
+      get_public_homepage_content: {
+        Args: { p_locale?: string };
+        Returns: Json;
+      };
       has_permission: {
         Args: { requested_permission: string };
         Returns: boolean;

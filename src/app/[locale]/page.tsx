@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   ArrowLeft,
   ArrowRight,
+  Boxes,
   CheckCircle2,
   ClipboardList,
+  Clock3,
+  Headphones,
+  MapPinned,
   MessageCircleMore,
-  PackageSearch,
+  PackageCheck,
+  Quote,
   ShieldCheck,
+  Sofa,
+  Star,
+  Truck,
 } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -19,22 +28,19 @@ import {
   getOrganizationStructuredData,
 } from "@/config/brand";
 import { getWhatsAppHref } from "@/config/site";
-import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
+import { getPublicHomeContent } from "@/features/public-home/services/public-home.service";
 import { getPublicRequestCatalog } from "@/features/public-request/services/public-request.service";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 import { cn } from "@/utils/cn";
 
 export const dynamic = "force-dynamic";
-
-type LocalePageProps = {
-  params: Promise<{ locale: AppLocale }>;
-};
+type LocalePageProps = { params: Promise<{ locale: AppLocale }> };
 
 export async function generateMetadata({ params }: LocalePageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Home" });
-
   return {
     alternates: getLocaleAlternates(locale),
     description: t("metaDescription"),
@@ -48,7 +54,7 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
     },
     title: t("metaTitle"),
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       description: t("metaDescription"),
       title: t("metaTitle"),
     },
@@ -58,166 +64,156 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
 export default async function HomePage({ params }: LocalePageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, catalog, business] = await Promise.all([
+  const [t, catalog, business, publicContent] = await Promise.all([
     getTranslations("Home"),
     getPublicRequestCatalog(locale),
     getPublicBusinessConfiguration(),
+    getPublicHomeContent(locale),
   ]);
   const Arrow = locale === "ar" ? ArrowLeft : ArrowRight;
   const process = [
     { description: t("process1Description"), icon: ClipboardList, title: t("process1Title") },
-    { description: t("process2Description"), icon: PackageSearch, title: t("process2Title") },
+    { description: t("process2Description"), icon: MapPinned, title: t("process2Title") },
     { description: t("process3Description"), icon: MessageCircleMore, title: t("process3Title") },
+    { description: t("process4Description"), icon: PackageCheck, title: t("process4Title") },
   ];
-  const organizationJsonLd = getOrganizationStructuredData(locale);
+  const reasons = [
+    { description: t("why1Description"), icon: Headphones, title: t("why1Title") },
+    { description: t("why2Description"), icon: Truck, title: t("why2Title") },
+    { description: t("why3Description"), icon: MapPinned, title: t("why3Title") },
+    { description: t("why4Description"), icon: ShieldCheck, title: t("why4Title") },
+  ];
+  const serviceIcons = [Sofa, Boxes, Truck, MapPinned];
 
   return (
     <main id="main-content">
       <script
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(getOrganizationStructuredData(locale)).replace(/</g, "\\u003c"),
         }}
         type="application/ld+json"
       />
-      <section className="surface-grid relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/75 to-background" />
-        <div className="container relative grid min-h-[calc(100vh-5rem)] items-center gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
-          <div className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card px-4 py-2 text-sm font-black text-primary shadow-sm">
-              <span aria-hidden="true" className="size-2 rounded-full bg-accent" />
+
+      <section className="relative min-h-[680px] overflow-hidden bg-[#081f42] lg:min-h-[760px]">
+        <Image
+          alt={
+            locale === "ar"
+              ? "فريق نقل يحمّل الأثاث في شاحنة داخل الرياض"
+              : "A moving team loading furniture into a truck in Riyadh"
+          }
+          className="object-cover object-[62%_center]"
+          fill
+          priority
+          sizes="100vw"
+          src="/images/naqlk-moving-hero.avif"
+        />
+        <div className="hero-overlay absolute inset-0" />
+        <div className="container relative flex min-h-[680px] items-center py-20 text-white lg:min-h-[760px]">
+          <div className="max-w-2xl">
+            <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-black backdrop-blur">
+              <span className="size-2 rounded-full bg-sky-400" />
               {t("eyebrow")}
             </p>
-            <h1 className="mt-7 text-balance text-4xl font-black leading-[1.16] tracking-tight sm:text-5xl lg:text-7xl">
+            <h1 className="mt-7 text-balance text-4xl font-black leading-[1.18] tracking-tight sm:text-6xl lg:text-7xl">
               {t("title")}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
+            <p className="text-white/82 mt-6 max-w-xl text-lg leading-8 sm:text-xl sm:leading-9">
               {t("subtitle")}
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link className={cn(buttonVariants({ size: "lg" }), "group")} href="/request">
+              <Link
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "group bg-blue-600 hover:bg-blue-500",
+                )}
+                href="/request"
+              >
                 {t("primaryCta")}
                 <Arrow
                   aria-hidden="true"
                   className="size-5 transition-transform group-hover:-translate-x-1 rtl:group-hover:translate-x-1"
                 />
               </Link>
-              <a
-                className={buttonVariants({ size: "lg", variant: "outline" })}
-                href="#how-it-works"
+              <Link
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-6 font-bold text-white backdrop-blur hover:bg-white/20"
+                href="/track"
               >
                 {t("secondaryCta")}
-              </a>
+              </Link>
               <a
-                className={buttonVariants({ size: "lg", variant: "outline" })}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-6 font-bold text-white backdrop-blur hover:bg-white/20"
                 href={getWhatsAppHref(t("whatsappMessage"), business.whatsappNumber)}
                 rel="noreferrer"
                 target="_blank"
               >
-                <MessageCircleMore aria-hidden="true" className="size-5" />
+                <MessageCircleMore aria-hidden="true" className="size-5 text-emerald-400" />
                 {t("whatsappCta")}
               </a>
             </div>
-            <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold text-muted-foreground">
+            <ul className="mt-10 grid max-w-2xl gap-3 text-sm font-bold sm:grid-cols-3">
               {[t("guestNote"), t("reviewNote"), t("arabicNote")].map((item) => (
-                <li className="flex items-center gap-2" key={item}>
-                  <CheckCircle2 aria-hidden="true" className="size-4 text-primary" />
+                <li className="flex items-center gap-2 text-white/85" key={item}>
+                  <CheckCircle2 aria-hidden="true" className="size-4 text-sky-400" />
                   {item}
                 </li>
               ))}
             </ul>
           </div>
-
-          <div aria-hidden="true" className="relative hidden min-h-[32rem] lg:block">
-            <div className="absolute inset-x-12 top-8 h-80 rounded-[3rem] bg-primary shadow-soft" />
-            <div className="absolute inset-x-0 top-24 rounded-[2rem] border border-primary-foreground/15 bg-primary/95 p-8 text-primary-foreground shadow-2xl">
-              <div className="flex items-center justify-between">
-                <span className="grid size-14 place-items-center rounded-lg bg-primary-foreground/10">
-                  <PackageSearch className="size-7" />
-                </span>
-                <span className="rounded-full bg-accent px-4 py-2 text-xs font-black text-accent-foreground">
-                  01 → 05
-                </span>
-              </div>
-              <div className="mt-9 space-y-4">
-                {[78, 92, 66].map((width, index) => (
-                  <div className="rounded-lg bg-primary-foreground/[0.07] p-4" key={width}>
-                    <div className="flex items-center gap-3">
-                      <span className="grid size-8 place-items-center rounded-full bg-primary-foreground text-xs font-black text-primary">
-                        {index + 1}
-                      </span>
-                      <div
-                        className="h-2.5 rounded-full bg-primary-foreground/55"
-                        style={{ width: `${width}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-7 h-12 rounded-md bg-primary-foreground" />
-            </div>
-            <div className="absolute bottom-3 end-0 rounded-lg border border-border bg-card p-5 text-foreground shadow-soft">
-              <ShieldCheck className="size-8 text-primary" />
-            </div>
-          </div>
         </div>
+        <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background to-transparent" />
       </section>
 
       <section className="container py-20 sm:py-28" id="services">
-        <div className="max-w-2xl">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-accent">
-            {t("servicesEyebrow")}
-          </p>
-          <h2 className="mt-4 text-balance text-3xl font-black sm:text-5xl">
-            {t("servicesTitle")}
-          </h2>
-          <p className="mt-5 text-lg leading-8 text-muted-foreground">{t("servicesDescription")}</p>
-        </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
-          {catalog.services.map((service, index) => (
-            <Card
-              className="group relative overflow-hidden p-6 transition hover:-translate-y-1 hover:border-primary/35"
-              key={service.id}
-            >
-              <span className="text-xs font-black text-accent">0{index + 1}</span>
-              <h3 className="mt-4 text-xl font-black">{service.name}</h3>
-              <p className="mt-3 leading-7 text-muted-foreground">{service.description}</p>
-              <Link
-                className="mt-6 inline-flex items-center gap-2 text-sm font-black text-primary"
-                href="/request"
+        <SectionHeading
+          eyebrow={t("servicesEyebrow")}
+          title={t("servicesTitle")}
+          description={t("servicesDescription")}
+        />
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {catalog.services.map((service, index) => {
+            const Icon = serviceIcons[index % serviceIcons.length];
+            return (
+              <Card
+                className="group relative overflow-hidden p-6 transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl"
+                key={service.id}
               >
-                {t("primaryCta")}
-                <Arrow aria-hidden="true" className="size-4" />
-              </Link>
-              <span className="absolute -bottom-12 -end-12 size-32 rounded-full bg-secondary transition-transform group-hover:scale-125" />
-            </Card>
-          ))}
+                <span className="grid size-12 place-items-center rounded-xl bg-secondary text-primary">
+                  <Icon aria-hidden="true" className="size-6" />
+                </span>
+                <h3 className="mt-5 text-xl font-black">{service.name}</h3>
+                <p className="mt-3 min-h-20 text-sm leading-7 text-muted-foreground">
+                  {service.description}
+                </p>
+                <Link
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-black text-primary"
+                  href="/request"
+                >
+                  {t("primaryCta")}
+                  <Arrow aria-hidden="true" className="size-4" />
+                </Link>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
-      <section className="border-y border-border bg-secondary/55 py-20 sm:py-28" id="how-it-works">
+      <section className="border-y border-border bg-[#eef5ff] py-20 sm:py-28" id="how-it-works">
         <div className="container">
-          <div className="max-w-2xl">
-            <p className="text-sm font-black uppercase tracking-[0.2em] text-accent">
-              {t("processEyebrow")}
-            </p>
-            <h2 className="mt-4 text-balance text-3xl font-black sm:text-5xl">
-              {t("processTitle")}
-            </h2>
-          </div>
-          <ol className="mt-12 grid gap-6 lg:grid-cols-3">
+          <SectionHeading eyebrow={t("processEyebrow")} title={t("processTitle")} />
+          <ol className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {process.map(({ description, icon: Icon, title }, index) => (
               <li
-                className="relative rounded-lg border border-border bg-card p-6 shadow-soft"
+                className="relative rounded-2xl border border-blue-100 bg-white p-6 shadow-sm"
                 key={title}
               >
                 <div className="flex items-center justify-between">
-                  <span className="grid size-12 place-items-center rounded-md bg-primary text-primary-foreground">
+                  <span className="grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground">
                     <Icon aria-hidden="true" className="size-5" />
                   </span>
-                  <span className="text-3xl font-black text-border">0{index + 1}</span>
+                  <span className="text-4xl font-black text-blue-100">0{index + 1}</span>
                 </div>
-                <h3 className="mt-6 text-xl font-black">{title}</h3>
-                <p className="mt-3 leading-7 text-muted-foreground">{description}</p>
+                <h3 className="mt-6 text-lg font-black">{title}</h3>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">{description}</p>
               </li>
             ))}
           </ol>
@@ -225,29 +221,143 @@ export default async function HomePage({ params }: LocalePageProps) {
       </section>
 
       <section className="container py-20 sm:py-28">
-        <div className="relative overflow-hidden rounded-[2rem] bg-primary px-6 py-12 text-primary-foreground shadow-soft sm:px-12 lg:flex lg:items-center lg:justify-between lg:gap-10">
-          <div className="relative max-w-2xl">
+        <SectionHeading eyebrow={t("whyEyebrow")} title={t("whyTitle")} />
+        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {reasons.map(({ description, icon: Icon, title }) => (
+            <div className="flex gap-4" key={title}>
+              <span className="grid size-12 shrink-0 place-items-center rounded-full bg-secondary text-primary">
+                <Icon aria-hidden="true" className="size-6" />
+              </span>
+              <div>
+                <h3 className="font-black">{title}</h3>
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">{description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-[#0b2b5b] py-20 text-white sm:py-24" id="service-areas">
+        <div className="container grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
+          <SectionHeading
+            dark
+            eyebrow={t("areasEyebrow")}
+            title={t("areasTitle")}
+            description={t("areasDescription")}
+          />
+          <div className="flex flex-wrap gap-3">
+            {publicContent.cities.map((city) => (
+              <span
+                className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold"
+                key={`${city.region}-${city.name}`}
+              >
+                {city.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {publicContent.reviews.length ? (
+        <section className="container py-20 sm:py-28">
+          <SectionHeading eyebrow={t("reviewsEyebrow")} title={t("reviewsTitle")} />
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {publicContent.reviews.map((review, index) => (
+              <Card className="p-6" key={`${review.city}-${index}`}>
+                <Quote aria-hidden="true" className="size-8 text-primary/25" />
+                <div aria-label={`${review.rating} / 5`} className="mt-4 flex gap-1">
+                  {Array.from({ length: 5 }, (_, star) => (
+                    <Star
+                      aria-hidden="true"
+                      className={cn(
+                        "size-4",
+                        star < review.rating ? "fill-amber-400 text-amber-400" : "text-border",
+                      )}
+                      key={star}
+                    />
+                  ))}
+                </div>
+                <blockquote className="mt-4 leading-8">“{review.comment}”</blockquote>
+                <p className="mt-5 text-sm font-black">
+                  {review.displayName} — {review.city}
+                </p>
+              </Card>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className="container pb-24">
+        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-600 to-[#0b2b5b] px-6 py-12 text-white shadow-2xl sm:px-12 lg:flex lg:items-center lg:justify-between lg:gap-10">
+          <div>
             <h2 className="text-balance text-3xl font-black sm:text-4xl">{t("finalTitle")}</h2>
-            <p className="mt-4 text-lg leading-8 text-primary-foreground/75">
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-white/75">
               {t("finalDescription")}
             </p>
           </div>
           <Link
             className={cn(
               buttonVariants({ size: "lg", variant: "secondary" }),
-              "relative mt-8 shrink-0 lg:mt-0",
+              "mt-8 shrink-0 bg-white text-[#0b2b5b] lg:mt-0",
             )}
             href="/request"
           >
             {t("primaryCta")}
             <Arrow aria-hidden="true" className="size-5" />
           </Link>
-          <span
+          <a
+            className={cn(
+              buttonVariants({ size: "lg", variant: "outline" }),
+              "relative mt-3 shrink-0 border-white/35 bg-transparent text-white hover:bg-white/10 lg:mt-0",
+            )}
+            href={getWhatsAppHref(t("whatsappMessage"), business.whatsappNumber)}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <MessageCircleMore aria-hidden="true" className="size-5" />
+            {t("whatsappCta")}
+          </a>
+          <Clock3
             aria-hidden="true"
-            className="absolute -bottom-24 -start-20 size-64 rounded-full border-[40px] border-primary-foreground/5"
+            className="absolute -bottom-14 -start-10 size-44 text-white/5"
           />
         </div>
       </section>
     </main>
+  );
+}
+
+function SectionHeading({
+  dark = false,
+  description,
+  eyebrow,
+  title,
+}: {
+  dark?: boolean;
+  description?: string;
+  eyebrow: string;
+  title: string;
+}) {
+  return (
+    <div className="max-w-2xl">
+      <p
+        className={cn(
+          "text-sm font-black uppercase tracking-[0.18em]",
+          dark ? "text-sky-300" : "text-primary",
+        )}
+      >
+        {eyebrow}
+      </p>
+      <h2 className={cn("mt-4 text-balance text-3xl font-black sm:text-5xl", dark && "text-white")}>
+        {title}
+      </h2>
+      {description ? (
+        <p
+          className={cn("mt-5 text-lg leading-8", dark ? "text-white/70" : "text-muted-foreground")}
+        >
+          {description}
+        </p>
+      ) : null}
+    </div>
   );
 }

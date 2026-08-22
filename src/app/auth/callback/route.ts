@@ -2,10 +2,11 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { getSafeRedirectPath } from "@/lib/auth/redirects";
 import { isStaffPath } from "@/lib/auth/identity-context";
+import { resolveServerAuthRedirectOrigin } from "@/lib/auth/redirect-origin.server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 function createRedirect(request: NextRequest, path: string, result?: "error") {
-  const redirectUrl = new URL(path, request.nextUrl.origin);
+  const redirectUrl = new URL(path, resolveServerAuthRedirectOrigin(request.nextUrl.origin));
 
   if (result) {
     redirectUrl.searchParams.set("auth_result", result);
@@ -22,7 +23,10 @@ export async function GET(request: NextRequest) {
   const tokenHash = request.nextUrl.searchParams.get("token_hash");
   const tokenType = request.nextUrl.searchParams.get("type");
   const locale = request.nextUrl.searchParams.get("locale") === "en" ? "en" : "ar";
-  const requestedPath = getSafeRedirectPath(request.nextUrl.searchParams.get("next"));
+  const recovery = request.nextUrl.searchParams.get("recovery") === "true";
+  const requestedPath = recovery
+    ? `/${locale}/reset-password`
+    : getSafeRedirectPath(request.nextUrl.searchParams.get("next"));
   const errorPath = `/${locale}/login`;
 
   if ((!code && !tokenHash) || request.nextUrl.searchParams.has("error")) {
@@ -30,7 +34,7 @@ export async function GET(request: NextRequest) {
   }
 
   const supabase = await createServerSupabaseClient();
-  const allowedTokenTypes = ["invite", "magiclink", "recovery"] as const;
+  const allowedTokenTypes = ["invite", "magiclink", "recovery", "signup"] as const;
   const verifiedType = allowedTokenTypes.find((value) => value === tokenType);
   const { error } = code
     ? await supabase.auth.exchangeCodeForSession(code)

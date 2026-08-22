@@ -134,6 +134,13 @@
       "production_history_sha256": "6e120193bf62ec7c578af9d9268bbdccd85349385b8cc9a66cf2f0ea8afd61b0",
       "repository_sha256": "6e120193bf62ec7c578af9d9268bbdccd85349385b8cc9a66cf2f0ea8afd61b0",
       "version": "20260815113000"
+    },
+    {
+      "filename": "20260815170000_auth_visual_public_projection.sql",
+      "name": "auth_visual_public_projection",
+      "production_history_sha256": "8e8a7fe8afbdfd56806168db44830492e5c2c4a69d0c3f987201ef68cd9454c4",
+      "repository_sha256": "8e8a7fe8afbdfd56806168db44830492e5c2c4a69d0c3f987201ef68cd9454c4",
+      "version": "20260815170000"
     }
   ]
 }

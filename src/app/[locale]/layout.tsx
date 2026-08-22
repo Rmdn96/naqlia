@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { SiteHeader } from "@/components/shared/site-header";
 import { PublicChrome } from "@/components/shared/public-chrome";
+import { MobileRequestCta } from "@/components/shared/mobile-request-cta";
 import { BRAND } from "@/config/brand";
 import { getMetadataBase } from "@/config/site";
 import { routing } from "@/i18n/routing";
@@ -57,6 +58,16 @@ export default async function LocaleLayout({
           {children}
           <PublicChrome>
             <SiteFooter />
+            <MobileRequestCta
+              label={
+                messages.Common && typeof messages.Common === "object"
+                  ? String(
+                      (messages.Common as { startRequest?: string }).startRequest ??
+                        "Start request",
+                    )
+                  : "Start request"
+              }
+            />
           </PublicChrome>
         </NextIntlClientProvider>
       </body>

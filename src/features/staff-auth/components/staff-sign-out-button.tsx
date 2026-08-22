@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import type { AppLocale } from "@/i18n/routing";
-import { createBrowserSupabaseClient } from "@/lib/supabase/client";
+import { signOutFromBrowser } from "@/lib/auth/sign-out.client";
 
 type StaffSignOutButtonProps = {
   label: string;
@@ -14,16 +14,22 @@ type StaffSignOutButtonProps = {
 export function StaffSignOutButton({ label, locale }: StaffSignOutButtonProps) {
   const [isSigningOut, setIsSigningOut] = useState(false);
 
-  async function handleSignOut() {
+  async function handleSignOut(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setIsSigningOut(true);
-    const supabase = createBrowserSupabaseClient();
-    await supabase.auth.signOut();
-    window.location.assign(`/${locale}/login`);
+    try {
+      await signOutFromBrowser(locale);
+    } catch {
+      setIsSigningOut(false);
+    }
   }
 
   return (
-    <Button disabled={isSigningOut} onClick={handleSignOut} size="sm" variant="outline">
-      {label}
-    </Button>
+    <form action="/auth/sign-out" method="post" onSubmit={handleSignOut}>
+      <input name="locale" type="hidden" value={locale} />
+      <Button disabled={isSigningOut} size="sm" type="submit" variant="outline">
+        {label}
+      </Button>
+    </form>
   );
 }

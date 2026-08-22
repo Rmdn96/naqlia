@@ -15,7 +15,7 @@ An identity may hold both contexts. Guest use remains fully supported.
 
 The pre-implementation audit found:
 
-- Supabase Auth already provided email magic-link authentication, PKCE callback exchange, and optional Google/Apple provider flags.
+- Supabase Auth originally provided email magic-link authentication, PKCE callback exchange, and optional Google/Apple provider flags. The later Authentication Correction v1 makes email/password the ordinary primary experience while retaining compatible invite/recovery callbacks.
 - `profiles`, `roles`, `permissions`, `profile_roles`, and `role_permissions` formed a database-authoritative RBAC model. Active staff had one active role.
 - Staff provisioning was service-role-only. The accepted workspaces performed server-side permission checks and their RPCs repeated authorization internally.
 - Sales, Operations, and Quality used separate route shells but reusable feature services and components.
@@ -31,9 +31,9 @@ The principal mismatch was the prior exclusive customer/staff profile classifica
 
 The localized entry point is `/ar/login` or `/en/login`. It never asks the user to choose a role.
 
-1. Email magic link is always available.
-2. Google or Apple is rendered only when its corresponding approved provider flag is enabled.
-3. `/auth/callback` exchanges the PKCE code server-side. It also accepts allowlisted one-time `token_hash` callbacks for invite, magic-link, and recovery flows, verifies them server-side, and immediately redirects to a clean URL.
+1. Email/password is the primary ordinary Customer and Staff login method; Customer self-registration requires email verification.
+2. Google is rendered only when its approved provider flag and external configuration are enabled. Apple remains disabled and is not rendered in the ordinary public experience.
+3. `/auth/callback` exchanges the PKCE code server-side. It also accepts allowlisted one-time `token_hash` callbacks for invite, signup, legacy magic-link compatibility, and recovery flows, verifies them server-side, and immediately redirects to a clean URL.
 4. `resolve_identity_context()` activates/loads the profile, creates the optional Customer Account context idempotently, updates last login, and reads active Staff role/permissions from PostgreSQL.
 5. Active Staff defaults to `/{locale}/dashboard`; a non-Staff identity defaults to `/{locale}/account`.
 6. A Staff identity with Customer context can explicitly switch between Work Dashboard and Personal Account.
@@ -154,6 +154,8 @@ Super Admin can search/filter users, invite Staff, resend/cancel pending invitat
 - No plaintext magic link is generated, displayed, logged, or persisted by application code.
 - Role assignment and lifecycle changes are completed by permission-checked database functions.
 - Deactivation is preferred to deletion.
+
+The current Supabase built-in email sender is limited to two messages per hour for the project. Auth returns `over_email_send_rate_limit` when that allowance is exhausted. Administration translates that condition into localized retry guidance and does not register or activate Staff access. Operators must wait for the rolling allowance to recover before retrying. Production launch requires approved custom SMTP if invitation and recovery volume will exceed this temporary provider limit.
 
 Last-Super-Admin safety is enforced by an advisory transaction lock, function checks, and a table trigger. Concurrent role changes or deactivations cannot remove the final active Super Admin.
 
