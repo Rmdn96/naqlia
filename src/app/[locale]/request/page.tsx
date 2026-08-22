@@ -10,7 +10,12 @@ export const dynamic = "force-dynamic";
 
 type RequestPageProps = {
   params: Promise<{ locale: AppLocale }>;
-  searchParams: Promise<{ city?: string; service?: string }>;
+  searchParams: Promise<{
+    city?: string;
+    deliveryCity?: string;
+    pickupCity?: string;
+    service?: string;
+  }>;
 };
 
 export async function generateMetadata({ params }: RequestPageProps): Promise<Metadata> {
@@ -45,6 +50,8 @@ export default async function RequestPage({ params, searchParams }: RequestPageP
     getPublicRequestCatalog(locale),
   ]);
   const initialCityId = catalog.cities.find((city) => city.slug === query.city)?.id;
+  const initialDeliveryCityId = catalog.cities.find((city) => city.slug === query.deliveryCity)?.id;
+  const initialPickupCityId = catalog.cities.find((city) => city.slug === query.pickupCity)?.id;
   const initialServiceId = catalog.services.find((service) => service.key === query.service)?.id;
 
   return (
@@ -63,6 +70,8 @@ export default async function RequestPage({ params, searchParams }: RequestPageP
           <RequestWizard
             catalog={catalog}
             initialCityId={initialCityId}
+            initialDeliveryCityId={initialDeliveryCityId}
+            initialPickupCityId={initialPickupCityId}
             initialServiceId={initialServiceId}
           />
         </div>

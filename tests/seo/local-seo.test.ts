@@ -54,7 +54,20 @@ describe("SEO and Local SEO runtime", () => {
     const request = read("src/app/[locale]/request/page.tsx");
     expect(action).toContain('permissions.includes("settings.seo.manage")');
     expect(action).toContain("^[a-z0-9]+(?:-[a-z0-9]+)*$");
-    expect(request).toContain("initialCityId");
+    expect(request).toContain("initialPickupCityId");
+    expect(request).toContain("initialDeliveryCityId");
     expect(request).toContain("initialServiceId");
+  });
+
+  it("prefills destination pages from Riyadh without advertising destination-city local service", () => {
+    const city = read("src/app/[locale]/[citySlug]/page.tsx");
+    const ctas = read("src/features/seo/components/seo-page-sections.tsx");
+    const wizard = read("src/features/public-request/components/request-wizard.tsx");
+    expect(city).toContain('slug !== "within-city-transport"');
+    expect(city).toContain('cityRole={isRiyadh ? "local" : "destination"}');
+    expect(ctas).toContain('query.set("pickupCity", "riyadh")');
+    expect(ctas).toContain('query.set("deliveryCity", citySlug)');
+    expect(wizard).toContain("initialPickupCityId ?? initialCityId");
+    expect(wizard).toContain("initialDeliveryCityId ?? initialCityId");
   });
 });

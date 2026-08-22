@@ -54,6 +54,8 @@ Because the initial rollout migration had already been applied, it was not edite
 
 The corrective migration refuses to modify records that no longer have the exact migration-owned version/state and operator attribution boundary. Its rollback does not restore misleading copy; it safely moves the corrected records to Draft/noindex while retaining their content.
 
+The same acceptance pass identified two cache/request-prefill defects that were invisible while Riyadh was the only public City Page. The City SEO cache keys were advanced so the forward-only content migration is visible immediately on the new deployment. Destination City CTAs now prefill Riyadh as pickup and the selected City as delivery; they no longer prefill both endpoints with the destination. Destination pages omit the Within-City card and label the remaining links as route-relevant services. Riyadh keeps its original local prefill and four-service presentation.
+
 ## Editorial and duplication validation
 
 `npm run seo:editorial:check` validates:

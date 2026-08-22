@@ -57,10 +57,18 @@ async function hashFile(file: File): Promise<string> {
 type RequestWizardProps = {
   catalog: PublicRequestCatalog;
   initialCityId?: string;
+  initialDeliveryCityId?: string;
+  initialPickupCityId?: string;
   initialServiceId?: string;
 };
 
-export function RequestWizard({ catalog, initialCityId, initialServiceId }: RequestWizardProps) {
+export function RequestWizard({
+  catalog,
+  initialCityId,
+  initialDeliveryCityId,
+  initialPickupCityId,
+  initialServiceId,
+}: RequestWizardProps) {
   const locale = useLocale() as "ar" | "en";
   const t = useTranslations("Request");
   const router = useRouter();
@@ -87,12 +95,25 @@ export function RequestWizard({ catalog, initialCityId, initialServiceId }: Requ
       if (current.serviceId || current.pickup.cityId || current.delivery.cityId) return current;
       return {
         ...current,
-        delivery: { ...current.delivery, cityId: initialCityId ?? "" },
-        pickup: { ...current.pickup, cityId: initialCityId ?? "" },
+        delivery: {
+          ...current.delivery,
+          cityId: initialDeliveryCityId ?? initialCityId ?? "",
+        },
+        pickup: {
+          ...current.pickup,
+          cityId: initialPickupCityId ?? initialCityId ?? "",
+        },
         serviceId: initialServiceId ?? "",
       };
     });
-  }, [hydrated, initialCityId, initialServiceId, setDraft]);
+  }, [
+    hydrated,
+    initialCityId,
+    initialDeliveryCityId,
+    initialPickupCityId,
+    initialServiceId,
+    setDraft,
+  ]);
 
   const translatedErrors = useMemo(
     () =>
