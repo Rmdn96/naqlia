@@ -70,4 +70,19 @@ describe("SEO and Local SEO runtime", () => {
     expect(wizard).toContain("initialPickupCityId ?? initialCityId");
     expect(wizard).toContain("initialDeliveryCityId ?? initialCityId");
   });
+
+  it("keeps the global local-service page scoped to Riyadh", () => {
+    const route = read("src/app/[locale]/services/[serviceSlug]/page.tsx");
+    const arabic = getServiceSeoPage("ar", "within-city-transport");
+    const english = getServiceSeoPage("en", "within-city-transport");
+
+    expect(arabic?.title).toContain("داخل الرياض");
+    expect(arabic?.introduction).toContain("داخل الرياض");
+    expect(english?.title).toContain("Within-Riyadh");
+    expect(english?.introduction).toContain("both in Riyadh");
+    expect(route).toContain('cities.filter((city) => city.slug === "riyadh")');
+    expect(route).toContain("The current local scope applies only");
+    expect(route).toContain("Route from Riyadh to");
+    expect(route).toContain('citySlug={isWithinCity ? "riyadh" : undefined}');
+  });
 });
