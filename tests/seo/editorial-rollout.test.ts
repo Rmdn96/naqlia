@@ -8,6 +8,13 @@ const migration = readFileSync(
   resolve(process.cwd(), "supabase/migrations/20260822210000_seo_editorial_rollout_v1.sql"),
   "utf8",
 );
+const scopeCorrection = readFileSync(
+  resolve(
+    process.cwd(),
+    "supabase/migrations/20260822213000_seo_editorial_scope_correction_v1.sql",
+  ),
+  "utf8",
+);
 
 describe("SEO Editorial Rollout v1", () => {
   it("keeps the generated migration synchronized with 42 validated locale records", () => {
@@ -47,5 +54,24 @@ describe("SEO Editorial Rollout v1", () => {
   it("requires all active localized records to remain readiness-valid after rollout", () => {
     expect(migration).toContain("<> 44");
     expect(migration).toContain("44 readiness-valid published locale records");
+  });
+
+  it("preserves the approved Riyadh-local and Riyadh-origin intercity scope", () => {
+    const output = execFileSync(
+      process.execPath,
+      ["scripts/seo/generate-editorial-scope-correction-v1.mjs", "--check"],
+      { cwd: process.cwd(), encoding: "utf8" },
+    );
+    expect(output).toContain("42 corrected records valid");
+    expect(scopeCorrection).toContain("Riyadh-local and Riyadh-origin intercity only");
+    expect(scopeCorrection).toContain("not in the currently published launch scope");
+    expect(scopeCorrection).toContain("ليس ضمن نطاق الإطلاق المعلن حالياً");
+    expect(scopeCorrection).not.toMatch(/grant\s+.*\s+to\s+(anon|authenticated)/iu);
+  });
+
+  it("applies the scope correction only to untouched migration-owned records", () => {
+    expect(scopeCorrection).toContain("s.version<>2");
+    expect(scopeCorrection).toContain("s.updated_by_profile_id is not null");
+    expect(scopeCorrection).toContain("refuses records changed after initial rollout");
   });
 });

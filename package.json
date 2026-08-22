@@ -16,7 +16,7 @@
     "test:watch": "vitest",
     "security:audit": "npm audit --audit-level=high",
     "brand:scan": "node scripts/verify-brand-remnants.mjs",
-    "seo:editorial:check": "node scripts/seo/generate-editorial-rollout-v1.mjs --check",
+    "seo:editorial:check": "node scripts/seo/generate-editorial-rollout-v1.mjs --check && node scripts/seo/generate-editorial-scope-correction-v1.mjs --check",
     "docs:links:check": "node scripts/validate-internal-links.mjs",
     "supabase:migrations:verify": "node scripts/supabase/verify-migration-drift.mjs",
     "supabase:staff:provision": "node --env-file-if-exists=.env.local scripts/supabase/provision-staff.mjs",

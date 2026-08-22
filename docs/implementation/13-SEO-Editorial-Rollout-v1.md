@@ -43,6 +43,17 @@ After insertion, each locale is evaluated by the existing `private.city_seo_read
 
 The migration deliberately inserts no common-route records because no route list was needed to provide useful content and unsupported route claims are prohibited. Content remains editable through the existing Super Admin workspace. A subsequent operator edit continues to return that record to Draft/noindex under the existing lifecycle.
 
+### Preview factual-scope correction
+
+Initial Preview inspection revealed that the shared City Page shell presents the global Intercity Service card, whose approved wording correctly says journeys originate in Riyadh, while the first editorial dataset could be read as offering local or city-origin service in the destination cities. The authoritative MVP scope remains:
+
+- local transport only when both endpoints are in approved Riyadh coverage; and
+- intercity transport only when pickup is in approved Riyadh coverage and the destination City is enabled.
+
+Because the initial rollout migration had already been applied, it was not edited. The forward-only migration `20260822213000_seo_editorial_scope_correction_v1.sql` replaces the 42 destination-locale records with explicit Riyadh-origin copy and explicitly explains that local transport wholly inside each destination city is outside the current published launch scope. It also replaces the FAQs so visible content and FAQ structured data share the same factual boundary.
+
+The corrective migration refuses to modify records that no longer have the exact migration-owned version/state and operator attribution boundary. Its rollback does not restore misleading copy; it safely moves the corrected records to Draft/noindex while retaining their content.
+
 ## Editorial and duplication validation
 
 `npm run seo:editorial:check` validates:
@@ -54,7 +65,7 @@ The migration deliberately inserts no common-route records because no route list
 - at least 500 characters of substantive editorial copy per locale;
 - maximum same-locale token-set similarity below `0.58`.
 
-The accepted source measured a maximum same-locale Jaccard similarity of `0.374`, between the English Abha and Al Bahah records. The overlap reflects the shared need to discuss access conditions in elevated settings; each page retains distinct copy and no paragraph is identical.
+The initial accepted source measured a maximum same-locale Jaccard similarity of `0.374`, between the English Abha and Al Bahah records. After the factual-scope correction, the differentiated introductions and coverage passages measure `0.361` maximum similarity, between English Jazan and Arar. The governed service-scope paragraph is intentionally excluded from that second comparison because the same Riyadh-origin commercial rule must be stated consistently; titles, descriptions, headings, introductions, and coverage copy remain unique.
 
 ## Public behavior
 
@@ -70,7 +81,7 @@ Once the migration is applied and cache tags/revalidation have elapsed:
 
 ## Rollback and operator safety
 
-The conservative rollback at `supabase/rollbacks/20260822210000_seo_editorial_rollout_v1.rollback.sql` is not a routine publishing tool. It refuses to run if any target record has operator attribution or an unexpected version. This prevents a rollback from destroying legitimate post-rollout edits. Normal editorial changes, unpublishing, and indexability changes must use the Super Admin SEO workspace.
+The conservative rollbacks at `supabase/rollbacks/20260822210000_seo_editorial_rollout_v1.rollback.sql` and `supabase/rollbacks/20260822213000_seo_editorial_scope_correction_v1.rollback.sql` are not routine publishing tools. They refuse to run if any target record has operator attribution or an unexpected version. This prevents a rollback from destroying legitimate post-rollout edits. Normal editorial changes, unpublishing, and indexability changes must use the Super Admin SEO workspace.
 
 ## Performance and security
 
