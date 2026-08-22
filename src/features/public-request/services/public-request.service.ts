@@ -60,7 +60,7 @@ export async function getPublicRequestCatalog(locale: AppLocale): Promise<Public
   const [citiesResult, servicesResult, optionsResult] = await Promise.all([
     supabase
       .from("cities")
-      .select("id, name_ar, name_en, region_ar, region_en")
+      .select("id, name_ar, name_en, region_ar, region_en, slug")
       .eq("status", "active")
       .is("deleted_at", null)
       .order("display_order")
@@ -88,6 +88,7 @@ export async function getPublicRequestCatalog(locale: AppLocale): Promise<Public
       id: city.id,
       name: locale === "ar" ? city.name_ar : city.name_en,
       region: locale === "ar" ? city.region_ar : city.region_en,
+      slug: city.slug,
     })),
     options: optionsResult.data.map((option) => ({
       id: option.id,

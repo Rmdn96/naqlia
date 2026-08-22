@@ -1,7 +1,11 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("@/features/seo/services/seo.service", () => ({
+  getIndexableCitySeoIndex: vi.fn().mockResolvedValue([]),
+}));
 
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
@@ -15,9 +19,9 @@ function sourceFiles(path: string): string[] {
 }
 
 describe("Naqlk SEO identity", () => {
-  it("uses the canonical origin for every sitemap entry", () => {
-    const entries = sitemap();
-    expect(entries).toHaveLength(6);
+  it("uses the canonical origin for every sitemap entry", async () => {
+    const entries = await sitemap();
+    expect(entries.length).toBeGreaterThanOrEqual(14);
     expect(
       entries.every(({ url }) => url.startsWith(`${BRAND.domains.activeProductionOrigin}/`)),
     ).toBe(true);
@@ -30,12 +34,12 @@ describe("Naqlk SEO identity", () => {
     });
   });
 
-  it("does not promote the future or preview domain into active SEO output", () => {
+  it("does not promote the future or preview domain into active SEO output", async () => {
     expect(BRAND.domains.activeProductionOrigin).toBe("https://naqlk.vercel.app");
     expect(BRAND.domains.futureCustomDomain).toBe("https://naqlk.com");
-    expect(sitemap().some(({ url }) => url.startsWith(BRAND.domains.futureCustomDomain))).toBe(
-      false,
-    );
+    expect(
+      (await sitemap()).some(({ url }) => url.startsWith(BRAND.domains.futureCustomDomain)),
+    ).toBe(false);
   });
 
   it("uses Naqlk in both WhatsApp templates", () => {

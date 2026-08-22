@@ -25,16 +25,16 @@ export async function SiteFooter() {
         </div>
         <div className="flex flex-col gap-3 text-sm text-primary-foreground/75">
           <strong className="text-primary-foreground">{t("services")}</strong>
-          <Link className="hover:underline" href="/#services">
+          <Link className="hover:underline" href="/services/furniture-moving">
             {t("serviceFurniture")}
           </Link>
-          <Link className="hover:underline" href="/#services">
+          <Link className="hover:underline" href="/services/goods-transport">
             {t("serviceCargo")}
           </Link>
-          <Link className="hover:underline" href="/#services">
+          <Link className="hover:underline" href="/services/within-city-transport">
             {t("serviceLocal")}
           </Link>
-          <Link className="hover:underline" href="/#services">
+          <Link className="hover:underline" href="/services/intercity-transport">
             {t("serviceIntercity")}
           </Link>
         </div>

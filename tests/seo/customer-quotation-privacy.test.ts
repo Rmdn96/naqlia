@@ -1,13 +1,17 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("@/features/seo/services/seo.service", () => ({
+  getIndexableCitySeoIndex: vi.fn().mockResolvedValue([]),
+}));
 
 import sitemap from "@/app/sitemap";
 
 describe("customer quotation route privacy", () => {
-  it("never includes private quotation routes in the sitemap", () => {
-    expect(sitemap().some(({ url }) => url.includes("/quote/"))).toBe(false);
+  it("never includes private quotation routes in the sitemap", async () => {
+    expect((await sitemap()).some(({ url }) => url.includes("/quote/"))).toBe(false);
   });
 
   it("sets route-level noindex, nofollow, no-referrer and no-store controls", () => {
