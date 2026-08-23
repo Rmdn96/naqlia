@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   createAuthCallbackUrl,
+  createPasswordRecoveryCallbackUrl,
   isApprovedAuthRedirectOrigin,
   resolveAuthRedirectOrigin,
   type AuthRedirectEnvironment,
@@ -89,5 +90,23 @@ describe("authentication redirect origin", () => {
     expect(callback.searchParams.get("locale")).toBe("ar");
     expect(callback.searchParams.get("next")).toBe("/");
     expect(callback.searchParams.get("recovery")).toBe("true");
+  });
+
+  it.each(["ar", "en"] as const)(
+    "builds a dedicated %s recovery callback on the approved Preview origin",
+    (locale) => {
+      const callback = new URL(createPasswordRecoveryCallbackUrl(branchPreview, locale));
+      expect(callback.origin).toBe(branchPreview);
+      expect(callback.pathname).toBe("/auth/callback");
+      expect(callback.searchParams.get("locale")).toBe(locale);
+      expect(callback.searchParams.get("next")).toBe(`/${locale}/reset-password`);
+      expect(callback.searchParams.get("recovery")).toBe("true");
+    },
+  );
+
+  it("builds Production recovery callbacks without depending on a Preview hostname", () => {
+    const callback = new URL(createPasswordRecoveryCallbackUrl(production, "ar"));
+    expect(callback.origin).toBe(production);
+    expect(callback.pathname).toBe("/auth/callback");
   });
 });

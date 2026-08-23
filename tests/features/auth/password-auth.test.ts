@@ -16,8 +16,9 @@ describe("customer password authentication", () => {
       "supabase.auth.signUp",
     );
     expect(source("src/features/unified-auth/components/reset-password-form.tsx")).toContain(
-      "supabase.auth.updateUser",
+      'fetch("/auth/recovery/reset"',
     );
+    expect(source("src/app/auth/recovery/reset/route.ts")).toContain("supabase.auth.updateUser");
   });
 
   it("validates customer signup and explicit privacy acknowledgement", () => {
@@ -39,6 +40,7 @@ describe("customer password authentication", () => {
     expect(emailSchema.parse(" Customer@Example.com ")).toBe("customer@example.com");
     const form = source("src/features/unified-auth/components/forgot-password-form.tsx");
     expect(form).toContain("resetPasswordForEmail");
+    expect(form).toContain("createPasswordRecoveryCallbackUrl");
     expect(form).toContain("t.forgotSuccess");
     expect(form).not.toContain("user exists");
   });
@@ -91,5 +93,16 @@ describe("customer password authentication", () => {
         /console\.(log|error)|service.role|access_token|refresh_token/i,
       );
     }
+  });
+
+  it("requires a verified recovery context before rendering or mutating a password", () => {
+    const page = source("src/app/[locale]/reset-password/page.tsx");
+    const route = source("src/app/auth/recovery/reset/route.ts");
+    expect(page).toContain("PASSWORD_RECOVERY_CONTEXT_COOKIE");
+    expect(page).toContain("supabase.auth.getUser");
+    expect(route).toContain("PASSWORD_RECOVERY_CONTEXT_VALUE");
+    expect(route).toContain("isApprovedServerAuthOrigin");
+    expect(route).toContain('signOut({ scope: "local" })');
+    expect(route).not.toMatch(/console\.(log|error)|access_token|refresh_token/i);
   });
 });

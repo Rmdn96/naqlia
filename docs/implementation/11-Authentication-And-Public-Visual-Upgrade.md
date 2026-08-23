@@ -42,7 +42,11 @@ The same resolver supplies customer verification, recovery, future Google OAuth,
 
 ### 3.3 Password recovery
 
-`/{locale}/forgot-password` always returns the same success message for valid email-shaped input, whether or not an account exists. Recovery links return through the existing callback into `/{locale}/reset-password`. The new password is submitted directly to Supabase Auth with the active recovery session. Missing, invalid, expired, or reused recovery capabilities fail generically.
+`/{locale}/forgot-password` always returns the same success message for valid email-shaped input, whether or not an account exists. Recovery links return through the existing callback into `/{locale}/reset-password`. The new password is submitted through the same-origin server boundary to Supabase Auth with the active recovery session. Missing, invalid, expired, or reused recovery capabilities fail generically.
+
+The recovery callback origin must also be present in the Supabase Auth Redirect URLs allowlist. If Supabase rejects a requested Preview callback, it falls back to the configured Site URL; locale middleware can then turn that fallback into `/{locale}?code=...`, which is not a reset flow. Every acceptance Preview therefore requires its exact approved `/auth/callback` origin to be allowlisted before requesting a recovery email. Production continues to use `https://naqlk.vercel.app/auth/callback`, and the email template must use Supabase's `{{ .ConfirmationURL }}` rather than a hardcoded application path.
+
+After PKCE exchange, the callback verifies that Supabase classified the exchange as password recovery, removes the code through an immediate clean redirect, and issues a short-lived HttpOnly recovery-context cookie. The localized reset page requires both that context and the authenticated recovery identity. Password mutation occurs through a same-origin server route, consumes the context, and ends the local recovery session before redirecting to localized login. Refresh remains available before submission; missing, expired, malformed, or replayed recovery state fails closed without exposing account existence or provider details.
 
 Auth pages receive `private, no-store`, `no-referrer`, and `noindex, nofollow, noarchive` headers. Redirect targets remain restricted to local paths.
 
