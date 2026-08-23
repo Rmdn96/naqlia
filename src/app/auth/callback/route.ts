@@ -31,7 +31,10 @@ function createRedirect(
       httpOnly: true,
       maxAge: PASSWORD_RECOVERY_CONTEXT_MAX_AGE_SECONDS,
       path: "/",
-      sameSite: "strict",
+      // Recovery begins from a cross-site email link. Lax allows this short-lived,
+      // HttpOnly context cookie to survive the top-level callback redirect while
+      // the reset mutation remains protected by its same-origin intent checks.
+      sameSite: "lax",
       secure: redirectUrl.protocol === "https:",
     });
   }

@@ -106,7 +106,12 @@ describe("password recovery callback and reset route", () => {
       expect(response.headers.get("location")).toBe(`${previewOrigin}/${locale}/reset-password`);
       expect(response.headers.get("location")).not.toContain("code=");
       expect(response.headers.get("referrer-policy")).toBe("no-referrer");
-      expect(response.headers.get("set-cookie")).toContain(PASSWORD_RECOVERY_CONTEXT_COOKIE);
+      const recoveryCookie = response.headers.get("set-cookie");
+      expect(recoveryCookie).toContain(PASSWORD_RECOVERY_CONTEXT_COOKIE);
+      expect(recoveryCookie).toMatch(/HttpOnly/i);
+      expect(recoveryCookie).toMatch(/Secure/i);
+      expect(recoveryCookie).toMatch(/SameSite=Lax/i);
+      expect(recoveryCookie).not.toMatch(/SameSite=Strict/i);
     },
   );
 
