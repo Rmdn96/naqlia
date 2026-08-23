@@ -22,6 +22,21 @@ import type {
 
 const ATTACHMENTS_BUCKET = "attachments";
 
+const LAUNCH_SCOPE_SERVICE_DESCRIPTIONS: Record<AppLocale, Record<string, string>> = {
+  ar: {
+    furniture_moving:
+      "نقل الأثاث داخل الرياض، أو من الرياض إلى المدن المتاحة، بعد مراجعة تفاصيل الطلب.",
+    general_cargo_transport:
+      "نقل البضائع العامة المؤهلة داخل الرياض، أو من الرياض إلى المدن المتاحة، بعد مراجعة تفاصيل الطلب.",
+  },
+  en: {
+    furniture_moving:
+      "Furniture transport within Riyadh, or from Riyadh to supported cities, after the request details are reviewed.",
+    general_cargo_transport:
+      "Eligible general-goods transport within Riyadh, or from Riyadh to supported cities, after the request details are reviewed.",
+  },
+};
+
 const FILE_EXTENSIONS = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -96,7 +111,9 @@ export async function getPublicRequestCatalog(locale: AppLocale): Promise<Public
       serviceId: option.service_id,
     })),
     services: servicesResult.data.map((service) => ({
-      description: locale === "ar" ? service.description_ar : service.description_en,
+      description:
+        LAUNCH_SCOPE_SERVICE_DESCRIPTIONS[locale][service.service_key] ??
+        (locale === "ar" ? service.description_ar : service.description_en),
       id: service.id,
       key: service.service_key,
       name: locale === "ar" ? service.name_ar : service.name_en,
