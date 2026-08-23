@@ -4,6 +4,8 @@
 
 SEO v1 adds truthful, bilingual service discovery without creating doorway pages. The canonical production origin remains `https://naqlk.vercel.app`; Vercel Preview hostnames are never used for canonical, sitemap, Open Graph, or structured-data URLs.
 
+The controlled completion of the remaining City content is documented separately in [SEO Editorial Rollout v1](13-SEO-Editorial-Rollout-v1.md). That rollout preserves this registry, lifecycle, authorization, and routing architecture.
+
 ## Repository audit
 
 The implementation extends the existing Next.js locale routes, fixed brand-origin configuration, public request catalog, Super Admin portal, permission/RPC model, RLS posture, and platform Activity Log. Authentication, customer, Sales, Operations, Reviews, tracking, quotation capabilities, and public-request persistence are unchanged. Applied migrations remain immutable.

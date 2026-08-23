@@ -93,24 +93,31 @@ export function FaqSection({ faqs, locale }: { faqs: SeoFaq[]; locale: AppLocale
 export function SeoCtas({
   city,
   citySlug,
+  cityRole = "local",
   locale,
   service,
   whatsappNumber,
 }: {
   city?: string;
   citySlug?: string;
+  cityRole?: "destination" | "local";
   locale: AppLocale;
   service?: string;
   whatsappNumber?: string | null;
 }) {
   const query = new URLSearchParams();
-  if (citySlug) query.set("city", citySlug);
+  if (citySlug && cityRole === "destination") {
+    query.set("pickupCity", "riyadh");
+    query.set("deliveryCity", citySlug);
+  } else if (citySlug) {
+    query.set("city", citySlug);
+  }
   if (service) query.set("service", service);
   const requestHref = `/request${query.size ? `?${query.toString()}` : ""}`;
   const message =
     locale === "ar"
-      ? `مرحباً نقلك، أود الاستفسار عن خدمة نقل${city ? ` في ${city}` : ""}.`
-      : `Hello Naqlk, I would like to ask about a transport service${city ? ` in ${city}` : ""}.`;
+      ? `مرحباً نقلك، أود الاستفسار عن خدمة نقل${city ? ` ${cityRole === "destination" ? "إلى" : "في"} ${city}` : ""}.`
+      : `Hello Naqlk, I would like to ask about a transport service${city ? ` ${cityRole === "destination" ? "to" : "in"} ${city}` : ""}.`;
   return (
     <section className="container pb-20 pt-8">
       <div className="rounded-[2rem] bg-[#0b2b5b] p-7 text-white sm:p-10">

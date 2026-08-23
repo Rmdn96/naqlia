@@ -54,7 +54,35 @@ describe("SEO and Local SEO runtime", () => {
     const request = read("src/app/[locale]/request/page.tsx");
     expect(action).toContain('permissions.includes("settings.seo.manage")');
     expect(action).toContain("^[a-z0-9]+(?:-[a-z0-9]+)*$");
-    expect(request).toContain("initialCityId");
+    expect(request).toContain("initialPickupCityId");
+    expect(request).toContain("initialDeliveryCityId");
     expect(request).toContain("initialServiceId");
+  });
+
+  it("prefills destination pages from Riyadh without advertising destination-city local service", () => {
+    const city = read("src/app/[locale]/[citySlug]/page.tsx");
+    const ctas = read("src/features/seo/components/seo-page-sections.tsx");
+    const wizard = read("src/features/public-request/components/request-wizard.tsx");
+    expect(city).toContain('slug !== "within-city-transport"');
+    expect(city).toContain('cityRole={isRiyadh ? "local" : "destination"}');
+    expect(ctas).toContain('query.set("pickupCity", "riyadh")');
+    expect(ctas).toContain('query.set("deliveryCity", citySlug)');
+    expect(wizard).toContain("initialPickupCityId ?? initialCityId");
+    expect(wizard).toContain("initialDeliveryCityId ?? initialCityId");
+  });
+
+  it("keeps the global local-service page scoped to Riyadh", () => {
+    const route = read("src/app/[locale]/services/[serviceSlug]/page.tsx");
+    const arabic = getServiceSeoPage("ar", "within-city-transport");
+    const english = getServiceSeoPage("en", "within-city-transport");
+
+    expect(arabic?.title).toContain("داخل الرياض");
+    expect(arabic?.introduction).toContain("داخل الرياض");
+    expect(english?.title).toContain("Within-Riyadh");
+    expect(english?.introduction).toContain("both in Riyadh");
+    expect(route).toContain('cities.filter((city) => city.slug === "riyadh")');
+    expect(route).toContain("The current local scope applies only");
+    expect(route).toContain("Route from Riyadh to");
+    expect(route).toContain('citySlug={isWithinCity ? "riyadh" : undefined}');
   });
 });

@@ -58,9 +58,10 @@ export default async function CitySeoPageRoute({ params }: Props) {
   if (!page) notFound();
   setRequestLocale(locale);
   const business = await getPublicBusinessConfiguration();
-  const services = SERVICE_PAGE_SLUGS.map((slug) => getServiceSeoPage(locale, slug)).filter(
-    (service) => service !== null,
-  );
+  const isRiyadh = page.slug === "riyadh";
+  const services = SERVICE_PAGE_SLUGS.filter((slug) => isRiyadh || slug !== "within-city-transport")
+    .map((slug) => getServiceSeoPage(locale, slug))
+    .filter((service) => service !== null);
   const url = `${ACTIVE_PRODUCTION_ORIGIN}/${locale}/${page.slug}`;
   const breadcrumb = {
     "@context": "https://schema.org",
@@ -147,7 +148,13 @@ export default async function CitySeoPageRoute({ params }: Props) {
         </div>
         <div>
           <h2 className="text-3xl font-black">
-            {locale === "ar" ? "الخدمات المتاحة للطلب" : "Services available to request"}
+            {isRiyadh
+              ? locale === "ar"
+                ? "الخدمات المتاحة للطلب"
+                : "Services available to request"
+              : locale === "ar"
+                ? "الخدمات المرتبطة بهذا المسار"
+                : "Services relevant to this route"}
           </h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {services.map((service) => (
@@ -186,6 +193,7 @@ export default async function CitySeoPageRoute({ params }: Props) {
       <SeoCtas
         city={page.cityName}
         citySlug={page.slug}
+        cityRole={isRiyadh ? "local" : "destination"}
         locale={locale}
         whatsappNumber={business.whatsappNumber}
       />

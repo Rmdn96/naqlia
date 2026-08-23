@@ -155,6 +155,20 @@
       "production_history_sha256": "6b90799376e47a7f7c30dd4992b33c1f7f6b65fe4213e1bf70d3caec4ac875dd",
       "repository_sha256": "6b90799376e47a7f7c30dd4992b33c1f7f6b65fe4213e1bf70d3caec4ac875dd",
       "version": "20260822100000"
+    },
+    {
+      "filename": "20260822210000_seo_editorial_rollout_v1.sql",
+      "name": "seo_editorial_rollout_v1",
+      "production_history_sha256": "045c4b37cdc0c50bc8ffe0a2ac863337abf79a5422dc0b8ff672fff4fb7ab3a3",
+      "repository_sha256": "045c4b37cdc0c50bc8ffe0a2ac863337abf79a5422dc0b8ff672fff4fb7ab3a3",
+      "version": "20260822210000"
+    },
+    {
+      "filename": "20260822213000_seo_editorial_scope_correction_v1.sql",
+      "name": "seo_editorial_scope_correction_v1",
+      "production_history_sha256": "3536a8d4553b044e0e99e55f0c1dc97c47f15050f445a18fd1272cbdbeafa9ce",
+      "repository_sha256": "3536a8d4553b044e0e99e55f0c1dc97c47f15050f445a18fd1272cbdbeafa9ce",
+      "version": "20260822213000"
     }
   ]
 }

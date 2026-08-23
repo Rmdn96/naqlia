@@ -94,7 +94,7 @@ async function fetchPublicCityPage(locale: AppLocale, slug: string): Promise<Cit
   };
 }
 
-export const getPublicCitySeoPage = unstable_cache(fetchPublicCityPage, ["city-seo-page-v1"], {
+export const getPublicCitySeoPage = unstable_cache(fetchPublicCityPage, ["city-seo-page-v2"], {
   revalidate: 3600,
   tags: ["city-seo"],
 });
@@ -124,7 +124,7 @@ async function fetchCityIndex(locale?: AppLocale): Promise<CitySeoIndexItem[]> {
   });
 }
 
-export const getIndexableCitySeoIndex = unstable_cache(fetchCityIndex, ["city-seo-index-v1"], {
+export const getIndexableCitySeoIndex = unstable_cache(fetchCityIndex, ["city-seo-index-v2"], {
   revalidate: 3600,
   tags: ["city-seo"],
 });

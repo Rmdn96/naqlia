@@ -85,6 +85,7 @@ npm run build
   - [Unified Authentication, Customer Account, and Staff Dashboard v1](docs/implementation/10-Unified-Account-And-Staff-Dashboard.md)
   - [Authentication Correction and Public Visual Upgrade v1](docs/implementation/11-Authentication-And-Public-Visual-Upgrade.md)
   - [SEO and Local SEO v1](docs/implementation/12-SEO-And-Local-SEO.md)
+  - [SEO Editorial Rollout v1](docs/implementation/13-SEO-Editorial-Rollout-v1.md)
   - [Naqlk Brand Migration](docs/implementation/05-Naqlk-Brand-Migration.md)
 - Backlog
   - [Business Settings Management](docs/backlog/01-Business-Settings-Management.md)

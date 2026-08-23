@@ -78,16 +78,16 @@ const pages: Record<AppLocale, Record<ServicePageSlug, Omit<ServiceSeoPage, "loc
     },
     "within-city-transport": {
       key: "local_transport",
-      title: "خدمة النقل داخل المدينة | نقلك",
+      title: "خدمة النقل داخل الرياض | نقلك",
       metaDescription:
-        "أرسل طلب نقل محلي بين عنواني استلام وتسليم داخل مدينة مفعلة، مع حفظ الإحداثيات ومراجعة التفاصيل قبل التأكيد.",
-      heading: "نقل محلي بين نقاط مؤهلة داخل المدينة",
+        "أرسل طلب نقل محلي بين عنواني استلام وتسليم مؤهلين داخل الرياض، مع حفظ الإحداثيات ومراجعة التفاصيل قبل التأكيد.",
+      heading: "نقل محلي بين نقاط مؤهلة داخل الرياض",
       introduction:
-        "خدمة النقل داخل المدينة مخصصة للطلبات التي تقع نقاط الاستلام والتسليم فيها ضمن مدينة مفعلة ونطاق تشغيلي متاح. يسمح النموذج بإضافة العناوين والإحداثيات لتجهيز الطلب للمراجعة والمسارات المستقبلية.",
+        "خدمة النقل داخل المدينة في نطاق الإطلاق الحالي مخصصة للطلبات التي تقع نقطتا الاستلام والتسليم فيها داخل الرياض. يسمح النموذج بإضافة العناوين والإحداثيات لتجهيز الطلب للمراجعة والمسارات المستقبلية.",
       description:
-        "تؤكد نقلك قابلية الوصول والموعد والموارد بعد مراجعة الطلب. تفعيل المدينة في نموذج الطلب يعني إمكانية تقديم الطلب، وليس ضماناً مسبقاً لكل عنوان أو حمولة.",
+        "تؤكد نقلك قابلية الوصول والموعد والموارد بعد مراجعة الطلب. ظهور المدن الأخرى في صفحات الوجهات يعني إمكانية طلب رحلة مؤهلة تبدأ من الرياض إليها، ولا يعني توفر نقل محلي يقع طرفاه داخل تلك المدن.",
       process: [
-        "اختر النقل المحلي وحدد المدينة المفعلة.",
+        "اختر النقل المحلي وحدد الرياض لموقعي الاستلام والتسليم.",
         "أدخل عنواني الاستلام والتسليم وأضف الإحداثيات إن توفرت.",
         "أرسل تفاصيل الحمولة ليؤكد الفريق النطاق والعرض.",
       ],
@@ -98,9 +98,9 @@ const pages: Record<AppLocale, Record<ServicePageSlug, Omit<ServiceSeoPage, "loc
       ],
       faqs: [
         {
-          question: "هل تفعيل المدينة يعني توفر الخدمة لكل حي؟",
+          question: "هل النقل المحلي متاح خارج الرياض؟",
           answer:
-            "لا. يمكن تقديم الطلب للمدينة المفعلة، لكن الفريق يراجع العنوان والحمولة والموعد قبل التأكيد.",
+            "نطاق الإطلاق المنشور للنقل المحلي يقتصر حالياً على الرحلات التي يقع طرفاها داخل الرياض. المدن الأخرى المنشورة هي وجهات لطلبات مؤهلة تبدأ من الرياض.",
         },
         {
           question: "هل الإحداثيات مطلوبة؟",
@@ -212,16 +212,16 @@ const pages: Record<AppLocale, Record<ServicePageSlug, Omit<ServiceSeoPage, "loc
     },
     "within-city-transport": {
       key: "local_transport",
-      title: "Within-City Transport Service | Naqlk",
+      title: "Within-Riyadh Transport Service | Naqlk",
       metaDescription:
-        "Submit a local transport request between eligible addresses in an active city, with map-ready coordinates and review before confirmation.",
-      heading: "Local transport between eligible points in one city",
+        "Submit a local transport request between eligible Riyadh addresses, with map-ready coordinates and request review before confirmation.",
+      heading: "Local transport between eligible points in Riyadh",
       introduction:
-        "Within-city transport supports requests whose pickup and delivery points are in an enabled city and current operating scope. The form captures written addresses and coordinates for review and future routing support.",
+        "Within-city transport in the current launch scope supports requests whose pickup and delivery points are both in Riyadh. The form captures written addresses and coordinates for review and future routing support.",
       description:
-        "Naqlk confirms access, scheduling, and resources after reviewing the request. An enabled city permits request submission; it does not promise service for every address or cargo type.",
+        "Naqlk confirms access, scheduling, and resources after reviewing the request. Other published city pages represent eligible destinations for journeys originating in Riyadh, not local transport with both endpoints in those cities.",
       process: [
-        "Choose local transport and select an enabled city.",
+        "Choose local transport and select Riyadh for both pickup and delivery.",
         "Enter pickup and delivery details, adding coordinates when available.",
         "Submit the cargo details for scope and quotation review.",
       ],
@@ -232,9 +232,9 @@ const pages: Record<AppLocale, Record<ServicePageSlug, Omit<ServiceSeoPage, "loc
       ],
       faqs: [
         {
-          question: "Does an enabled city mean every district is covered?",
+          question: "Is local transport available outside Riyadh?",
           answer:
-            "No. It means a request can be submitted. The address, cargo, schedule, and resources still require review.",
+            "The published local launch scope currently applies only when both endpoints are in Riyadh. Other published cities are destinations for eligible requests originating in Riyadh.",
         },
         {
           question: "Are coordinates required?",

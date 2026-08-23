@@ -56,6 +56,33 @@ export default async function ServiceSeoPageRoute({ params }: Props) {
     getIndexableCitySeoIndex(locale),
     getPublicBusinessConfiguration(),
   ]);
+  const riyadhCities = cities.filter((city) => city.slug === "riyadh");
+  const destinationCities = cities.filter((city) => city.slug !== "riyadh");
+  const isWithinCity = page.slug === "within-city-transport";
+  const isIntercity = page.slug === "intercity-transport";
+  const displayedCities = isWithinCity ? riyadhCities : cities;
+  const serviceAreaHeading = isWithinCity
+    ? locale === "ar"
+      ? "منطقة النقل المحلي المنشورة"
+      : "Published local service area"
+    : isIntercity
+      ? locale === "ar"
+        ? "الوجهات المنشورة من الرياض"
+        : "Published destinations from Riyadh"
+      : locale === "ar"
+        ? "الرياض والوجهات المنشورة منها"
+        : "Riyadh and its published destinations";
+  const serviceAreaNote = isWithinCity
+    ? locale === "ar"
+      ? "يطبق نطاق النقل المحلي الحالي عندما يقع طرفا الرحلة داخل الرياض فقط."
+      : "The current local scope applies only when both journey endpoints are in Riyadh."
+    : isIntercity
+      ? locale === "ar"
+        ? "تمثل المدن التالية وجهات لطلبات مؤهلة تبدأ من الرياض، ولا تعني خدمة محلية داخل كل وجهة."
+        : "These cities are destinations for eligible requests originating in Riyadh; they do not represent local service inside each destination."
+      : locale === "ar"
+        ? "تدعم الرياض الطلبات المحلية ونقطة الانطلاق. وتمثل المدن الأخرى وجهات مؤهلة لرحلات تبدأ من الرياض."
+        : "Riyadh supports local requests and serves as the origin. Other cities are eligible destinations for Riyadh-origin journeys.";
   const url = `${ACTIVE_PRODUCTION_ORIGIN}/${locale}/services/${page.slug}`;
   const breadcrumb = {
     "@context": "https://schema.org",
@@ -73,7 +100,20 @@ export default async function ServiceSeoPageRoute({ params }: Props) {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    areaServed: cities.map((city) => ({ "@type": "City", name: city.cityName })),
+    areaServed: isWithinCity
+      ? riyadhCities.map((city) => ({ "@type": "City", name: city.cityName }))
+      : [
+          ...(isIntercity
+            ? []
+            : riyadhCities.map((city) => ({ "@type": "City", name: city.cityName }))),
+          ...destinationCities.map((city) => ({
+            "@type": "Place",
+            name:
+              locale === "ar"
+                ? `مسار من الرياض إلى ${city.cityName}`
+                : `Route from Riyadh to ${city.cityName}`,
+          })),
+        ],
     description: page.metaDescription,
     name: page.heading,
     provider: {
@@ -112,17 +152,20 @@ export default async function ServiceSeoPageRoute({ params }: Props) {
           <p className="mt-5 text-lg leading-9 text-muted-foreground">{page.description}</p>
         </div>
         <aside className="rounded-2xl border bg-card p-6">
-          <h2 className="text-xl font-black">
-            {locale === "ar" ? "مناطق ذات محتوى منشور" : "Published service areas"}
-          </h2>
+          <h2 className="text-xl font-black">{serviceAreaHeading}</h2>
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">{serviceAreaNote}</p>
           <div className="mt-4 flex flex-wrap gap-2">
-            {cities.map((city) => (
+            {displayedCities.map((city) => (
               <Link
                 className="rounded-full bg-secondary px-4 py-2 text-sm font-bold text-primary"
                 href={`/${city.slug}` as never}
                 key={city.cityId}
               >
-                {city.cityName}
+                {!isWithinCity && !isIntercity && city.slug !== "riyadh"
+                  ? locale === "ar"
+                    ? `${city.cityName} — وجهة من الرياض`
+                    : `${city.cityName} — destination from Riyadh`
+                  : city.cityName}
               </Link>
             ))}
           </div>
@@ -131,7 +174,12 @@ export default async function ServiceSeoPageRoute({ params }: Props) {
       <ProcessGrid items={page.process} locale={locale} />
       <BenefitsGrid items={page.benefits} locale={locale} />
       <FaqSection faqs={page.faqs} locale={locale} />
-      <SeoCtas locale={locale} service={page.key} whatsappNumber={business.whatsappNumber} />
+      <SeoCtas
+        citySlug={isWithinCity ? "riyadh" : undefined}
+        locale={locale}
+        service={page.key}
+        whatsappNumber={business.whatsappNumber}
+      />
     </main>
   );
 }
