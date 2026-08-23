@@ -48,4 +48,22 @@ describe("Naqlk public visual upgrade", () => {
     expect(homepage).toContain("publicContent.reviews.length ?");
     expect(homepage).toContain('id="service-areas"');
   });
+
+  it("states the approved Riyadh-local and Riyadh-origin intercity scope", () => {
+    const arabic = JSON.parse(source("messages/ar.json"));
+    const english = JSON.parse(source("messages/en.json"));
+    const publicRequestCatalog = source(
+      "src/features/public-request/services/public-request.service.ts",
+    );
+
+    expect(arabic.Home.subtitle).toContain("داخل الرياض");
+    expect(arabic.Home.subtitle).toContain("من الرياض إلى المدن المتاحة");
+    expect(arabic.Home.subtitle).not.toContain("داخل المدن وبين مدن المملكة");
+    expect(english.Home.subtitle).toContain("within Riyadh");
+    expect(english.Home.subtitle).toContain("from Riyadh to supported Saudi cities");
+    expect(english.Home.subtitle).not.toContain("within and between Saudi cities");
+    expect(publicRequestCatalog).toContain("LAUNCH_SCOPE_SERVICE_DESCRIPTIONS");
+    expect(publicRequestCatalog).toContain("نقل الأثاث داخل الرياض");
+    expect(publicRequestCatalog).toContain("Furniture transport within Riyadh");
+  });
 });
