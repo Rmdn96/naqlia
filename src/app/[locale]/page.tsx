@@ -104,26 +104,32 @@ export default async function HomePage({ params }: LocalePageProps) {
               ? "فريق نقل يحمّل الأثاث في شاحنة داخل الرياض"
               : "A moving team loading furniture into a truck in Riyadh"
           }
-          className="object-cover object-[62%_center]"
+          className="object-cover object-[72%_center] sm:object-[68%_center] lg:object-[64%_center]"
           fill
           priority
           sizes="100vw"
           src="/images/naqlk-moving-hero.avif"
         />
         <div className="hero-overlay absolute inset-0" />
-        <div className="container relative flex min-h-[680px] items-center py-20 text-white lg:min-h-[760px]">
-          <div className="max-w-2xl">
+        <div
+          className="container relative grid min-h-[680px] items-center py-16 text-white md:py-20 lg:min-h-[760px] lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)]"
+          dir="ltr"
+        >
+          <div
+            className="max-w-xl lg:col-start-1 lg:w-full lg:max-w-[38rem] xl:max-w-[42rem]"
+            dir={locale === "ar" ? "rtl" : "ltr"}
+          >
             <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-black backdrop-blur">
               <span className="size-2 rounded-full bg-sky-400" />
               {t("eyebrow")}
             </p>
-            <h1 className="mt-7 text-balance text-4xl font-black leading-[1.18] tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="mt-7 text-balance text-4xl font-black leading-[1.18] tracking-tight sm:text-5xl md:text-6xl xl:text-7xl">
               {t("title")}
             </h1>
             <p className="text-white/82 mt-6 max-w-xl text-lg leading-8 sm:text-xl sm:leading-9">
               {t("subtitle")}
             </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 className={cn(
                   buttonVariants({ size: "lg" }),

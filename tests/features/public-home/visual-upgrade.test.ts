@@ -23,10 +23,17 @@ describe("Naqlk public visual upgrade", () => {
 
   it("uses real HTML for hero content and an optimized responsive image", () => {
     const homepage = source("src/app/[locale]/page.tsx");
+    const styles = source("src/styles/globals.css");
     expect(homepage).toContain("<h1");
     expect(homepage).toContain('src="/images/naqlk-moving-hero.avif"');
     expect(homepage).toContain("priority");
     expect(homepage).toContain('sizes="100vw"');
+    expect(homepage).toContain('dir="ltr"');
+    expect(homepage).toContain('dir={locale === "ar" ? "rtl" : "ltr"}');
+    expect(homepage).toContain("lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)]");
+    expect(homepage).toContain("lg:col-start-1");
+    expect(styles).toContain("@media (min-width: 768px)");
+    expect(styles).not.toContain('[dir="rtl"] .hero-overlay');
   });
 
   it("uses authoritative public projections without fabricated reviews or cities", () => {
