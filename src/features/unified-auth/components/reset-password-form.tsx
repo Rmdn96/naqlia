@@ -4,16 +4,19 @@ import { type FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { resolveAuthenticatedDestination } from "@/features/unified-auth/lib/client-routing";
+import {
+  PASSWORD_RECOVERY_RESET_INTENT_HEADER,
+  PASSWORD_RECOVERY_RESET_INTENT_VALUE,
+} from "@/config/auth";
 import { getUnifiedAuthCopy } from "@/features/unified-auth/lib/copy";
 import { passwordSchema } from "@/features/unified-auth/lib/validation";
 import type { AppLocale } from "@/i18n/routing";
-import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 export function ResetPasswordForm({ locale }: { locale: AppLocale }) {
   const t = getUnifiedAuthCopy(locale);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string>();
+  const [success, setSuccess] = useState(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -24,19 +27,28 @@ export function ResetPasswordForm({ locale }: { locale: AppLocale }) {
       return;
     }
     setPending(true);
-    const supabase = createBrowserSupabaseClient();
-    const { error } = await supabase.auth.updateUser({ password: String(password) });
-    if (error) {
+    setMessage(undefined);
+    const response = await fetch("/auth/recovery/reset", {
+      body: JSON.stringify({ confirmation, locale, password }),
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        [PASSWORD_RECOVERY_RESET_INTENT_HEADER]: PASSWORD_RECOVERY_RESET_INTENT_VALUE,
+      },
+      method: "POST",
+    });
+    const result = (await response.json().catch(() => null)) as {
+      ok?: boolean;
+      redirect?: string;
+    } | null;
+    if (!response.ok || !result?.ok || !result.redirect?.startsWith(`/${locale}/login`)) {
       setPending(false);
       setMessage(t.genericError);
       return;
     }
-    try {
-      window.location.assign(await resolveAuthenticatedDestination(supabase, locale));
-    } catch {
-      setPending(false);
-      setMessage(t.genericError);
-    }
+    setSuccess(true);
+    setMessage(t.resetSuccess);
+    window.location.replace(result.redirect);
   }
   return (
     <form className="space-y-4" noValidate onSubmit={submit}>
@@ -72,7 +84,11 @@ export function ResetPasswordForm({ locale }: { locale: AppLocale }) {
         {pending ? t.submitting : t.resetSubmit}
       </Button>
       {message ? (
-        <p aria-live="polite" className="text-sm text-destructive" role="alert">
+        <p
+          aria-live="polite"
+          className={success ? "text-sm text-emerald-700" : "text-sm text-destructive"}
+          role={success ? "status" : "alert"}
+        >
           {message}
         </p>
       ) : null}

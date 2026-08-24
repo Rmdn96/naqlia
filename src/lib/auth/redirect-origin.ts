@@ -108,3 +108,7 @@ export function createAuthCallbackUrl(
   if (recovery) callback.searchParams.set("recovery", "true");
   return callback.toString();
 }
+
+export function createPasswordRecoveryCallbackUrl(authOrigin: string, locale: AppLocale): string {
+  return createAuthCallbackUrl(authOrigin, locale, `/${locale}/reset-password`, true);
+}

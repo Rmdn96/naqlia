@@ -8,7 +8,7 @@ import { getUnifiedAuthCopy } from "@/features/unified-auth/lib/copy";
 import { emailSchema } from "@/features/unified-auth/lib/validation";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
-import { createAuthCallbackUrl } from "@/lib/auth/redirect-origin";
+import { createPasswordRecoveryCallbackUrl } from "@/lib/auth/redirect-origin";
 import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 export function ForgotPasswordForm({
@@ -30,7 +30,7 @@ export function ForgotPasswordForm({
     }
     setPending(true);
     await createBrowserSupabaseClient().auth.resetPasswordForEmail(email.data, {
-      redirectTo: createAuthCallbackUrl(authOrigin, locale, `/${locale}/reset-password`, true),
+      redirectTo: createPasswordRecoveryCallbackUrl(authOrigin, locale),
     });
     setPending(false);
     setMessage(t.forgotSuccess);
