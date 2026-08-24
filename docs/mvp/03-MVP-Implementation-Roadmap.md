@@ -1,4 +1,4 @@
-# Naqlia Four-Week MVP Implementation Roadmap
+# Naqlk Four-Week MVP Implementation Roadmap
 
 | Document field    | Value                                                      |
 | ----------------- | ---------------------------------------------------------- |
@@ -12,9 +12,11 @@
 
 ## 1. Objective
 
-Launch the smallest safe, maintainable Naqlia product that allows a real customer in the approved geography to discover a bilingual service, submit a guest or account request, receive a human-reviewed Quotation, approve it, receive an Order, receive transactional updates, and track completion—while internal staff operate the journey through fixed, least-privilege roles.
+Launch the smallest safe, maintainable Naqlk product that allows a real customer in the approved geography to discover a bilingual service, submit a guest or account request, receive a human-reviewed Quotation, approve it, receive an Order, receive transactional updates, and track completion—while internal staff operate the journey through fixed, least-privilege roles.
 
 The four-week target is achievable only through strict scope control, early vertical integration, daily acceptance, and no speculative enterprise infrastructure. This roadmap authorizes planning; it does not create SQL, migrations, Supabase resources, APIs, pages, components, or backend code.
+
+Implementation status note: the optional Customer Account, unified Staff Portal, fixed-role dashboards, event-derived notifications, and Business Settings v1 foundation are now implemented as documented in [Unified Authentication, Customer Account, and Staff Dashboard v1](../implementation/10-Unified-Account-And-Staff-Dashboard.md). This note does not expand the remaining roadmap scope.
 
 ## 2. Launch Scope Contract
 
@@ -50,7 +52,7 @@ The delivery clock begins only when the following are named, approved, and avail
 - Product owner and launch decision authority;
 - Engineering lead, frontend/backend ownership, QA ownership, and production on-call owner;
 - UI/UX flows and bilingual content for all launch states;
-- physical design derived from the 22-table scope, including migrations and rollback order;
+- physical design derived from the 22 domain-table scope plus the four approved Sprint 1B identity control tables, including migrations and rollback order;
 - Supabase environments, Auth provider credentials, redirect allowlists, email/SMS provider, and storage policy;
 - RLS/authorization matrix for guest, customer, five staff roles, and trusted server work;
 - field classification, privacy purpose, retention, anonymization, and incident contacts;

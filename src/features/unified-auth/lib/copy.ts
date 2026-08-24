@@ -1,0 +1,88 @@
+import type { AppLocale } from "@/i18n/routing";
+
+const copy = {
+  ar: {
+    accountNote: "لا تحتاج إلى حساب لإرسال طلب نقل. الحساب اختياري لمتابعة طلباتك بسهولة.",
+    backToLogin: "العودة إلى تسجيل الدخول",
+    confirmPassword: "تأكيد كلمة المرور",
+    createAccount: "إنشاء حساب جديد",
+    displayName: "الاسم الكامل",
+    email: "البريد الإلكتروني",
+    forgotDescription:
+      "أدخل بريدك وسنرسل تعليمات آمنة لإعادة تعيين كلمة المرور إن كان الحساب موجودًا.",
+    forgotPassword: "نسيت كلمة المرور؟",
+    forgotSubmit: "إرسال تعليمات الاستعادة",
+    forgotSuccess: "إذا كان الحساب موجودًا، ستصلك تعليمات الاستعادة عبر البريد.",
+    forgotTitle: "استعادة كلمة المرور",
+    genericError: "تعذر إكمال العملية الآن. حاول مرة أخرى.",
+    google: "المتابعة باستخدام Google",
+    intro: "دخول موحّد وآمن للعملاء وفريق نقلك. تحدد الصلاحيات وجهتك بعد التحقق.",
+    invalidCredentials: "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+    invalidEmail: "أدخل بريداً إلكترونياً صحيحاً.",
+    loginLink: "لديك حساب بالفعل؟ سجّل الدخول",
+    password: "كلمة المرور",
+    passwordHint: "12 حرفًا على الأقل، وتضم حرفًا ورقمًا ورمزًا.",
+    privacyAck: "أوافق على إشعار الخصوصية وشروط استخدام الحساب.",
+    resetDescription: "اختر كلمة مرور قوية جديدة لحسابك.",
+    resetSubmit: "حفظ كلمة المرور الجديدة",
+    resetSuccess: "تم تحديث كلمة المرور بنجاح.",
+    resetTitle: "تعيين كلمة مرور جديدة",
+    signIn: "تسجيل الدخول",
+    signUpDescription: "أنشئ حسابًا اختياريًا لمتابعة طلباتك. إرسال طلب كضيف سيظل متاحًا دائمًا.",
+    signUpSubmit: "إنشاء الحساب",
+    signUpSuccess: "تحقق من بريدك الإلكتروني لتفعيل الحساب قبل تسجيل الدخول.",
+    signUpTitle: "إنشاء حساب نقلك",
+    submitting: "جارٍ المتابعة...",
+    title: "الدخول إلى نقلك",
+    validationError: "راجع البيانات المدخلة وحاول مرة أخرى.",
+    verifyDescription: "أرسلنا رابط التحقق إلى بريدك. افتحه لإكمال تفعيل الحساب.",
+    verifySuccess: "تم التحقق من بريدك. يمكنك متابعة استخدام حسابك.",
+    verifyTitle: "تحقق من بريدك الإلكتروني",
+  },
+  en: {
+    accountNote:
+      "You do not need an account to request transport. An account is optional and makes follow-up easier.",
+    backToLogin: "Back to sign in",
+    confirmPassword: "Confirm password",
+    createAccount: "Create an account",
+    displayName: "Full name",
+    email: "Email address",
+    forgotDescription:
+      "Enter your email and we will send secure reset instructions if an account exists.",
+    forgotPassword: "Forgot password?",
+    forgotSubmit: "Send reset instructions",
+    forgotSuccess: "If an account exists, reset instructions will arrive by email.",
+    forgotTitle: "Reset your password",
+    genericError: "We could not complete this action. Please try again.",
+    google: "Continue with Google",
+    intro:
+      "One secure entry for Naqlk customers and staff. Authorization determines your destination after verification.",
+    invalidCredentials: "The email address or password is incorrect.",
+    invalidEmail: "Enter a valid email address.",
+    loginLink: "Already have an account? Sign in",
+    password: "Password",
+    passwordHint: "At least 12 characters, including a letter, number, and symbol.",
+    privacyAck: "I accept the privacy notice and account terms.",
+    resetDescription: "Choose a strong new password for your account.",
+    resetSubmit: "Save new password",
+    resetSuccess: "Your password has been updated.",
+    resetTitle: "Set a new password",
+    signIn: "Sign in",
+    signUpDescription:
+      "Create an optional account to follow your requests. Guest requests will always remain available.",
+    signUpSubmit: "Create account",
+    signUpSuccess: "Check your email to verify the account before signing in.",
+    signUpTitle: "Create your Naqlk account",
+    submitting: "Please wait…",
+    title: "Sign in to Naqlk",
+    validationError: "Review the entered details and try again.",
+    verifyDescription:
+      "We sent a verification link to your email. Open it to activate the account.",
+    verifySuccess: "Your email is verified. You can continue to your account.",
+    verifyTitle: "Verify your email",
+  },
+} as const;
+
+export function getUnifiedAuthCopy(locale: AppLocale) {
+  return copy[locale];
+}

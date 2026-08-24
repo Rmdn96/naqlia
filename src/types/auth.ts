@@ -1,0 +1,35 @@
+export type OAuthProvider = "apple" | "google";
+
+export type SupportedAuthMethod = "email" | "guest" | OAuthProvider;
+
+export type ProfileKind = "customer" | "staff";
+
+export type ProfileStatus = "active" | "closed" | "pending" | "suspended";
+
+export type StaffRole = "customer_service" | "finance" | "operations" | "sales" | "super_admin";
+
+export type IdentityPermission =
+  | "administration.audit.read"
+  | "administration.users.manage"
+  | "administration.users.read"
+  | "finance.dashboard.read"
+  | "identity.assignment.manage"
+  | "identity.permission.read"
+  | "identity.profile.manage"
+  | "identity.profile.read"
+  | "identity.role.read"
+  | "portal.dashboard.read"
+  | "portal.notifications.read"
+  | "portal.search.read"
+  | "settings.business.manage"
+  | "settings.business.read"
+  | "settings.seo.manage"
+  | "settings.seo.read";
+
+export type SalesWorkspacePermission = "sales.workspace.manage" | "sales.workspace.read";
+
+export type OperationsWorkspacePermission =
+  "operations.workspace.manage" | "operations.workspace.read";
+
+export type QualityWorkspacePermission =
+  "quality.alert.manage" | "quality.publication.manage" | "quality.workspace.read";

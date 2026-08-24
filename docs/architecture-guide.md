@@ -2,7 +2,7 @@
 
 ## Architectural style
 
-Naqlia uses a feature-based modular monolith. Product behavior is grouped by business capability rather than spread across global controller, model, and view layers. This keeps today's deployment simple while preserving boundaries that can later become packages or services if scale requires it.
+Naqlk uses a feature-based modular monolith. Product behavior is grouped by business capability rather than spread across global controller, model, and view layers. This keeps today's deployment simple while preserving boundaries that can later become packages or services if scale requires it.
 
 ## Dependency direction
 

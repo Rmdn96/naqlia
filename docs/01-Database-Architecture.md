@@ -1,17 +1,17 @@
-# Naqlia Database Architecture
+# Naqlk Database Architecture
 
 | Document field    | Value                                                                                                                                                                                                    |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Status            | Approved conceptual architecture; not implemented                                                                                                                                                        |
 | Version           | 1.0                                                                                                                                                                                                      |
-| Parent document   | [Naqlia Master Project Blueprint](00-Project-Blueprint.md)                                                                                                                                               |
+| Parent document   | [Naqlk Master Project Blueprint](00-Project-Blueprint.md)                                                                                                                                                |
 | Related documents | [Domain Model Suite](domain/01-Domain-Model.md), [Conceptual ERD](02-ERD.md), [Naming Conventions](03-Naming-Conventions.md), [RLS Strategy](04-RLS-Strategy.md), [Audit Strategy](05-Audit-Strategy.md) |
 | Owners            | Data Architecture, Engineering, Security, and Product                                                                                                                                                    |
 | Last updated      | 2026-08-03                                                                                                                                                                                               |
 
 ## 1. Purpose and Scope
 
-This document defines the complete conceptual database architecture for Naqlia. It establishes domain ownership, entity boundaries, relationship rules, tenancy, data lifecycle, consistency, and scalability decisions so a database engineer can later create an implementation plan without redefining the architecture.
+This document defines the complete conceptual database architecture for Naqlk. It establishes domain ownership, entity boundaries, relationship rules, tenancy, data lifecycle, consistency, and scalability decisions so a database engineer can later create an implementation plan without redefining the architecture.
 
 The approved [Domain Model Suite v1](domain/01-Domain-Model.md) is the definitive logical business model for PDS v1. It supplies the implementation entity inventory, fields, relationships, lifecycle, deletion policy, and events. The broader pre-PDS entities in this architecture and the Conceptual ERD remain future context only when the Domain Model Suite marks them `FUTURE` or omits them.
 
@@ -24,7 +24,7 @@ This is documentation only. It contains no SQL, physical database objects, migra
 The following decisions are normative.
 
 1. **PostgreSQL is the transactional source of truth.** Supabase provides the managed PostgreSQL platform, authentication boundary, storage metadata, and related services when implementation is authorized.
-2. **Naqlia starts as one logical database.** Domain schemas and ownership rules create modular boundaries inside one transactional database. Database-per-tenant and microservice databases are deferred until measured scale, isolation, or regulatory requirements justify them.
+2. **Naqlk starts as one logical database.** Domain schemas and ownership rules create modular boundaries inside one transactional database. Database-per-tenant and microservice databases are deferred until measured scale, isolation, or regulatory requirements justify them.
 3. **An organization is the tenant boundary.** Every tenant-owned entity stores an immutable `organization_id`. A user may be a member of multiple organizations.
 4. **Business units are optional scopes inside a tenant.** They support branches, divisions, or operational regions without becoming independent security tenants.
 5. **Supabase Auth identity is external to the application model.** An application profile maps uniquely to the primary key of the managed Auth user. Application domains never depend directly on mutable Auth metadata.
@@ -667,4 +667,4 @@ Any ambiguity discovered during physical design must be resolved in these archit
 - [Supabase database backups](https://supabase.com/docs/guides/platform/backups)
 - [PostgreSQL UUID functions](https://www.postgresql.org/docs/current/functions-uuid.html)
 
-These references explain platform behavior; Naqlia's stricter rules in this document remain authoritative for the project.
+These references explain platform behavior; Naqlk's stricter rules in this document remain authoritative for the project.

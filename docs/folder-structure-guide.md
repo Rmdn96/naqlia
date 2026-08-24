@@ -1,7 +1,7 @@
 # Folder Structure Guide
 
 ```text
-naqlia/
+naqlk/
 ├── .ai/                    # Constitution, governing principles, stable AI context, and reusable prompts
 ├── .github/                # CI, dependency updates, and collaboration templates
 ├── .husky/                 # Local Git hooks

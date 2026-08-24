@@ -1,16 +1,16 @@
-# Naqlia Product Principles
+# Naqlk Product Principles
 
 | Document field   | Value                                                                                           |
 | ---------------- | ----------------------------------------------------------------------------------------------- |
 | Status           | Mandatory product policy                                                                        |
 | Version          | 1.0.0                                                                                           |
-| Parent authority | [Naqlia Constitution](./constitution.md)                                                        |
+| Parent authority | [Naqlk Constitution](./constitution.md)                                                         |
 | Owner            | Product leadership                                                                              |
 | Applies to       | Discovery, requirements, prioritization, design, delivery, measurement, support, and retirement |
 
 ## 1. Product Standard
 
-Naqlia is a trusted Arabic-first logistics operating platform for Saudi Arabia. Product quality is measured by whether authorized users can complete important logistics work accurately, safely, and efficiently—not by the number of screens or features shipped.
+Naqlk is a trusted Arabic-first logistics operating platform for Saudi Arabia. Product quality is measured by whether authorized users can complete important logistics work accurately, safely, and efficiently—not by the number of screens or features shipped.
 
 Product decisions MUST preserve:
 
@@ -67,7 +67,7 @@ Features involving new regulated workflows, financial obligations, autonomous de
 
 ## 5. Configuration Over Customization
 
-Naqlia provides one governed product with supported configuration.
+Naqlk provides one governed product with supported configuration.
 
 Configuration is appropriate when:
 

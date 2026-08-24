@@ -1,10 +1,10 @@
-# Naqlia
+# Naqlk
 
-Naqlia is the foundation of an enterprise logistics SaaS platform for logistics companies in Saudi Arabia. Arabic (`ar`, RTL) is the default product language and English (`en`, LTR) is the secondary language.
+Naqlk (`نقلك`) is an Arabic-first logistics platform for Saudi Arabia: **نقلك... ننقل كل ما يهمك**. Arabic (`ar`, RTL) is the default product language and English (`en`, LTR) is the secondary language. During MVP development and pre-launch, the active production and canonical origin is [naqlk.vercel.app](https://naqlk.vercel.app). The planned commercial domain is [naqlk.com](https://naqlk.com) and is not yet registered.
 
 ## Foundation status
 
-This repository intentionally contains infrastructure and architectural boundaries only. It has no homepage, business feature, authentication flow, API route, or database schema. Until a product route is approved and implemented, the deployed root URL is expected to return the framework's not-found response.
+This repository contains the implemented MVP platform through unified Guest/Customer/Staff identity, customer quotation response, Operations/Tracking, Reviews & Quality, an optional Customer Account, and the permission-aware Staff Portal. Guest journeys remain available without authentication. Accounting, payments, GPS, Driver App, and advanced BI remain out of scope.
 
 ## Stack
 
@@ -34,7 +34,7 @@ npm run build
 
 ## Documentation
 
-- [Naqlia Constitution](.ai/constitution.md)
+- [Naqlk Constitution](.ai/constitution.md)
 - [Product Principles](.ai/product-principles.md)
 - [Engineering Principles](.ai/engineering-principles.md)
 - [Coding Principles](.ai/coding-principles.md)
@@ -43,6 +43,11 @@ npm run build
 - [UI Principles](.ai/ui-principles.md)
 - [SEO Principles](.ai/seo-principles.md)
 - [Master Project Blueprint](docs/00-Project-Blueprint.md)
+- Brand
+  - [Brand Guidelines](docs/branding/01-Brand-Guidelines.md)
+  - [Voice and Tone](docs/branding/02-Voice-And-Tone.md)
+  - [Visual Identity](docs/branding/03-Visual-Identity.md)
+  - [Asset Register](docs/branding/04-Asset-Register.md)
 - Product Documentation Suite v1
   - [Business Requirements Specification](docs/product/01-Business-Requirements-Specification.md)
   - [Functional Requirements](docs/product/02-Functional-Requirements.md)
@@ -67,6 +72,25 @@ npm run build
   - [MVP Entity Selection](docs/mvp/01-MVP-Entity-Selection.md)
   - [MVP Database Scope](docs/mvp/02-MVP-Database-Scope.md)
   - [Four-Week Implementation Roadmap](docs/mvp/03-MVP-Implementation-Roadmap.md)
+- Implementation
+  - [Supabase Foundation](docs/implementation/01-Supabase-Foundation.md)
+  - [Identity Foundation](docs/implementation/02-Identity-Foundation.md)
+  - [Core Business Database](docs/implementation/03-Core-Business-Database.md)
+  - [Public Request Flow](docs/implementation/04-Public-Request-Flow.md)
+  - [Sales Workspace](docs/implementation/05-Sales-Workspace.md)
+  - [Production Lead Reference Reconciliation](docs/implementation/06-Production-Lead-Reference-Reconciliation.md)
+  - [Customer Quotation Response Flow](docs/implementation/07-Customer-Quotation-Response-Flow.md)
+  - [Operations Management v1](docs/implementation/08-Operations-Management.md)
+  - [Reviews & Quality Management v1](docs/implementation/09-Reviews-Quality-Management.md)
+  - [Unified Authentication, Customer Account, and Staff Dashboard v1](docs/implementation/10-Unified-Account-And-Staff-Dashboard.md)
+  - [Authentication Correction and Public Visual Upgrade v1](docs/implementation/11-Authentication-And-Public-Visual-Upgrade.md)
+  - [SEO and Local SEO v1](docs/implementation/12-SEO-And-Local-SEO.md)
+  - [SEO Editorial Rollout v1](docs/implementation/13-SEO-Editorial-Rollout-v1.md)
+  - [Naqlk Brand Migration](docs/implementation/05-Naqlk-Brand-Migration.md)
+- Backlog
+  - [Business Settings Management](docs/backlog/01-Business-Settings-Management.md)
+  - [Leaked-Password Protection](docs/backlog/02-Leaked-Password-Protection.md)
+  - [Naqlk Custom Domain Production Cutover](docs/backlog/03-Naqlk-Custom-Domain-Production-Cutover.md)
 - [Database Architecture](docs/01-Database-Architecture.md)
 - [Conceptual ERD](docs/02-ERD.md)
 - [Database Naming Conventions](docs/03-Naming-Conventions.md)
@@ -81,4 +105,4 @@ npm run build
 
 ## Security
 
-Never commit credentials. Values prefixed with `NEXT_PUBLIC_` are exposed to the browser. The Supabase service-role key is server-only and must be stored in encrypted environment settings.
+Never commit credentials. Values prefixed with `NEXT_PUBLIC_` are exposed to the browser. A Supabase secret/service-role key is server-only, bypasses RLS, and must be limited to approved operator scripts and encrypted environment settings.

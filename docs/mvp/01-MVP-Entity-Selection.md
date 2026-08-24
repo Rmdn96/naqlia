@@ -1,4 +1,4 @@
-# Naqlia MVP Entity Selection
+# Naqlk MVP Entity Selection
 
 | Document field | Value                                                         |
 | -------------- | ------------------------------------------------------------- |
@@ -13,7 +13,7 @@
 
 ## 1. Purpose
 
-This document reduces the 121-entity enterprise domain model to the smallest production-capable model that can launch Naqlia safely in four weeks. It classifies every existing domain, logical entity, relationship, and business capability as `MVP`, `PHASE 2`, or `PHASE 3` and explains the effect of every deferral.
+This document reduces the 121-entity enterprise domain model to the smallest production-capable model that can launch Naqlk safely in four weeks. It classifies every existing domain, logical entity, relationship, and business capability as `MVP`, `PHASE 2`, or `PHASE 3` and explains the effect of every deferral.
 
 This plan changes implementation priority, not business meaning. The Constitution, approved business rules, Arabic/English parity, mandatory Sales review, authorization, lifecycle integrity, privacy, and audit remain binding. Where several logical entities are consolidated into one MVP table, their business facts remain distinguishable fields or immutable records.
 
@@ -39,7 +39,7 @@ Rules:
 - Store immutable customer-facing and commercial snapshots on the record that owns them.
 - Keep lifecycle history separate only where it is essential to customer service, operations, or dispute evidence.
 - Use Supabase Auth as the credential, provider, session, and account-verification authority; do not reproduce it in application tables.
-- Use one fixed, reviewed staff role per profile for MVP. Custom roles and many-to-many permission models are deferred.
+- Use one fixed, reviewed staff role per active staff Profile. Compact role, permission, grant, and assignment records are MVP security infrastructure; custom roles, multi-role staff, tenant scope, and Admin editing remain deferred.
 - Keep the hybrid Quotation human-authored. A pricing engine, estimate aggregate, and rule graph are not launch dependencies.
 - Model scheduling, execution, assignment snapshots, exceptions, completion, amendment, and cancellation on the Order aggregate for MVP.
 - Keep one current configuration row per governed key with version metadata; release orchestration is deferred.
@@ -50,8 +50,8 @@ Rules:
 
 | Domain                                      | Classification | MVP decision and deferred impact                                                                                                                                               |
 | ------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `DOM-TEN` Tenancy and Organization          | `PHASE 3`      | MVP operates one Naqlia company. Tenant onboarding, organization boundaries, connections, and sharing are excluded; no customer impact for the launch operating model.         |
-| `DOM-IAM` Identity and Access               | `MVP`          | Profiles and one fixed staff role support customer and workforce access. Custom RBAC, access campaigns, machine identities, and devices follow later.                          |
+| `DOM-TEN` Tenancy and Organization          | `PHASE 3`      | MVP operates one Naqlk company. Tenant onboarding, organization boundaries, connections, and sharing are excluded; no customer impact for the launch operating model.          |
+| `DOM-IAM` Identity and Access               | `MVP`          | Profiles plus fixed database RBAC support customer and workforce access. Tenant-custom roles, access campaigns, machine identities, and devices follow later.                  |
 | `DOM-CFG` Configuration Governance          | `MVP`          | A versioned `app_settings` record per key provides auditable bilingual configuration. Release bundles and schema-driven configuration governance move to Phase 2.              |
 | `DOM-CAT` Service Catalog and Eligibility   | `MVP`          | Offerings, add-ons, and coverage are explicit tables. Dynamic questionnaires and independently versioned restriction libraries move to Phase 2.                                |
 | `DOM-CUS` Customer and Consent              | `MVP`          | Guest/registered continuity, contact, address, language, transactional preference, and consent evidence are retained in a compact customer model.                              |
@@ -76,7 +76,7 @@ Rules:
 
 | ID / entity                           | Class     | MVP representation or exclusion reason                       | Business impact                                                                         |
 | ------------------------------------- | --------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| `ENT-TEN-001` Organization            | `PHASE 3` | Single Naqlia operator makes a tenant root unnecessary.      | No self-service company workspaces or tenant isolation until enterprise SaaS expansion. |
+| `ENT-TEN-001` Organization            | `PHASE 3` | Single Naqlk operator makes a tenant root unnecessary.       | No self-service company workspaces or tenant isolation until enterprise SaaS expansion. |
 | `ENT-TEN-002` Organization Setting    | `MVP`     | Consolidated into `app_settings`; no organization dimension. | Launch settings remain editable and audited for the single operator.                    |
 | `ENT-TEN-003` Business Unit           | `PHASE 2` | Riyadh launch does not need branch hierarchy.                | Work queues are company-wide; branch-level ownership/reporting waits.                   |
 | `ENT-TEN-004` Organization Connection | `PHASE 3` | Cross-company collaboration is outside the launch model.     | No partner-company sharing or federation.                                               |
@@ -84,20 +84,20 @@ Rules:
 
 ### 5.2 Identity and Access
 
-| ID / entity                                  | Class     | MVP representation or exclusion reason                                                   | Business impact                                                                                |
-| -------------------------------------------- | --------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `ENT-IAM-001` Profile                        | `MVP`     | Dedicated `profiles` table mapped to Supabase Auth.                                      | Supports customer accounts and named staff access.                                             |
-| `ENT-IAM-002` Organization Membership        | `PHASE 2` | Single company and one role per staff profile remove membership indirection.             | A person cannot belong to multiple operating units or companies.                               |
-| `ENT-IAM-003` Permission Definition          | `PHASE 2` | MVP permissions are a reviewed fixed role matrix enforced by application and RLS design. | Admins cannot create new capabilities at runtime.                                              |
-| `ENT-IAM-004` Role Definition                | `PHASE 2` | The five approved roles are fixed security invariants, not tenant data.                  | No custom roles; changes require a reviewed release.                                           |
-| `ENT-IAM-005` Role Permission                | `PHASE 2` | Depends on configurable roles and permission definitions.                                | Permission bundles cannot be edited from Admin.                                                |
-| `ENT-IAM-006` Membership Role                | `PHASE 2` | MVP stores one staff role directly on Profile.                                           | Multiple simultaneous staff roles are unavailable.                                             |
-| `ENT-IAM-007` Membership Business Unit Scope | `PHASE 2` | Business units are deferred.                                                             | No branch-scoped access.                                                                       |
-| `ENT-IAM-008` Service Principal              | `PHASE 3` | No public API, partner integration, or separate machine client in MVP.                   | Background work uses tightly controlled server identity rather than customer-managed machines. |
-| `ENT-IAM-009` Service Principal Grant        | `PHASE 3` | Service principals are excluded.                                                         | No configurable machine permissions.                                                           |
-| `ENT-IAM-010` Platform Access Grant          | `PHASE 3` | Cross-tenant support and break-glass tenancy are not needed for one operator.            | Privileged production support remains an infrastructure procedure.                             |
-| `ENT-IAM-011` Access Review                  | `PHASE 2` | Small launch team uses a documented manual review with audit evidence.                   | No in-product certification campaigns.                                                         |
-| `ENT-IAM-012` Device Registration            | `PHASE 3` | Native/offline mobile applications are excluded.                                         | No registered device, push token, or offline-sync identity.                                    |
+| ID / entity                                  | Class     | MVP representation or exclusion reason                                                                 | Business impact                                                                                |
+| -------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| `ENT-IAM-001` Profile                        | `MVP`     | Dedicated `profiles` table mapped to Supabase Auth.                                                    | Supports customer accounts and named staff access.                                             |
+| `ENT-IAM-002` Organization Membership        | `PHASE 2` | Single company and one role per staff profile remove membership indirection.                           | A person cannot belong to multiple operating units or companies.                               |
+| `ENT-IAM-003` Permission Definition          | `MVP`     | Compact `permissions` records define reviewed machine keys; Sprint 1B seeds identity permissions only. | Admins cannot create new capabilities at runtime.                                              |
+| `ENT-IAM-004` Role Definition                | `MVP`     | Compact `roles` records hold the five approved platform roles.                                         | No custom roles; changes require a reviewed release.                                           |
+| `ENT-IAM-005` Role Permission                | `MVP`     | `role_permissions` retains approved fixed grants and revocations.                                      | Permission bundles cannot be edited from Admin.                                                |
+| `ENT-IAM-006` Membership Role                | `MVP`     | Compact `profile_roles` adapts the enterprise membership concept directly to Profile.                  | Exactly one active role is allowed; multi-company membership remains deferred.                 |
+| `ENT-IAM-007` Membership Business Unit Scope | `PHASE 2` | Business units are deferred.                                                                           | No branch-scoped access.                                                                       |
+| `ENT-IAM-008` Service Principal              | `PHASE 3` | No public API, partner integration, or separate machine client in MVP.                                 | Background work uses tightly controlled server identity rather than customer-managed machines. |
+| `ENT-IAM-009` Service Principal Grant        | `PHASE 3` | Service principals are excluded.                                                                       | No configurable machine permissions.                                                           |
+| `ENT-IAM-010` Platform Access Grant          | `PHASE 3` | Cross-tenant support and break-glass tenancy are not needed for one operator.                          | Privileged production support remains an infrastructure procedure.                             |
+| `ENT-IAM-011` Access Review                  | `PHASE 2` | Small launch team uses a documented manual review with audit evidence.                                 | No in-product certification campaigns.                                                         |
+| `ENT-IAM-012` Device Registration            | `PHASE 3` | Native/offline mobile applications are excluded.                                                       | No registered device, push token, or offline-sync identity.                                    |
 
 ### 5.3 Configuration Governance
 
@@ -243,7 +243,7 @@ Rules:
 | `ENT-INT-001` Idempotency Record     | `MVP`     | Dedicated `idempotency_keys` table for request submission and Order conversion. | Duplicate retries are safe.                                                            |
 | `ENT-INT-002` Integration Connection | `PHASE 3` | No partner/provider integration product scope.                                  | No customer-managed external connections.                                              |
 | `ENT-INT-003` External Reference     | `PHASE 3` | Depends on integrations.                                                        | No generic provider identity mapping.                                                  |
-| `ENT-INT-004` Inbound Message        | `PHASE 3` | Public/partner inbound APIs and EDI are excluded.                               | External systems cannot command Naqlia directly.                                       |
+| `ENT-INT-004` Inbound Message        | `PHASE 3` | Public/partner inbound APIs and EDI are excluded.                               | External systems cannot command Naqlk directly.                                        |
 | `ENT-INT-005` Webhook Subscription   | `PHASE 3` | Public webhook product is excluded.                                             | Partners cannot subscribe to events.                                                   |
 | `ENT-INT-006` Webhook Delivery       | `PHASE 3` | Depends on subscriptions and event contracts.                                   | No partner delivery ledger.                                                            |
 
@@ -259,15 +259,15 @@ Rules:
 
 ### 5.17 Billing and Payment
 
-| ID / entity                       | Class     | Exclusion reason                                                        | Business impact and future phase                                                  |
-| --------------------------------- | --------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `ENT-FIN-001` Billing Account     | `PHASE 3` | Launch is quotation/order management, not accounts receivable.          | No customer credit or billing profile.                                            |
-| `ENT-FIN-002` Invoice             | `PHASE 3` | Invoicing and tax evidence require a separately approved finance scope. | Finance works from Quotation/Order commercial snapshots outside Naqlia invoicing. |
-| `ENT-FIN-003` Invoice Line        | `PHASE 3` | Depends on Invoice.                                                     | No posted charge ledger.                                                          |
-| `ENT-PAY-001` Payment Intent      | `PHASE 3` | Online payment gateway is excluded.                                     | Customers cannot pay online in Naqlia.                                            |
-| `ENT-PAY-002` Payment Transaction | `PHASE 3` | Depends on a payment provider.                                          | No authorization/capture/settlement history.                                      |
-| `ENT-PAY-003` Payment Allocation  | `PHASE 3` | Invoices and transactions are excluded.                                 | No automated reconciliation.                                                      |
-| `ENT-PAY-004` Refund              | `PHASE 3` | Payments are excluded and refund policy is unapproved.                  | Refunds remain outside the platform.                                              |
+| ID / entity                       | Class     | Exclusion reason                                                        | Business impact and future phase                                                 |
+| --------------------------------- | --------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `ENT-FIN-001` Billing Account     | `PHASE 3` | Launch is quotation/order management, not accounts receivable.          | No customer credit or billing profile.                                           |
+| `ENT-FIN-002` Invoice             | `PHASE 3` | Invoicing and tax evidence require a separately approved finance scope. | Finance works from Quotation/Order commercial snapshots outside Naqlk invoicing. |
+| `ENT-FIN-003` Invoice Line        | `PHASE 3` | Depends on Invoice.                                                     | No posted charge ledger.                                                         |
+| `ENT-PAY-001` Payment Intent      | `PHASE 3` | Online payment gateway is excluded.                                     | Customers cannot pay online in Naqlk.                                            |
+| `ENT-PAY-002` Payment Transaction | `PHASE 3` | Depends on a payment provider.                                          | No authorization/capture/settlement history.                                     |
+| `ENT-PAY-003` Payment Allocation  | `PHASE 3` | Invoices and transactions are excluded.                                 | No automated reconciliation.                                                     |
+| `ENT-PAY-004` Refund              | `PHASE 3` | Payments are excluded and refund policy is unapproved.                  | Refunds remain outside the platform.                                             |
 
 ### 5.18 Audit, Retention, Reporting, and Analytics
 
@@ -295,43 +295,44 @@ The following inventory classifies every relationship in Domain Model Suite v1. 
 
 ### 6.1 MVP Relationships
 
-| Relationship IDs                                         | MVP realization                                                                                                                                    |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `REL-IAM-001`                                            | Supabase Auth user maps to one Profile.                                                                                                            |
-| `REL-CUS-001`, `REL-CUS-004`                             | Profile carries one verified Customer link.                                                                                                        |
-| `REL-ORD-001`                                            | An accepted Quotation revision converts to at most one Order.                                                                                      |
-| `REL-ORD-002`, `REL-ORD-004`–`REL-ORD-010`               | Service snapshot, locations, cargo, add-ons, amendment, cancellation, and operational history are owned by Order.                                  |
-| `REL-OPS-001`–`REL-OPS-009`                              | One Order owns its single MVP execution, schedule, assignment snapshots, exception context, completion, status history, and evidence links.        |
-| `REL-AUD-001`, `REL-AUD-003`                             | Audit detail and durable target identity are consolidated into Audit Log.                                                                          |
-| `REL-TEN-001`, `REL-CFG-003`                             | Single-company settings resolve directly through `app_settings`.                                                                                   |
-| `REL-CAT-001`–`REL-CAT-005`, `REL-CAT-007`–`REL-CAT-009` | Offering, route, add-on, coverage, restriction, customer status, and reason relationships use the three catalog tables plus settings.              |
-| `REL-CUS-002`–`REL-CUS-007`                              | Primary contacts/preferences/consent are Customer or Lead fields; saved addresses remain children.                                                 |
-| `REL-LED-001`–`REL-LED-009`                              | Lead references Customer/Offering and owns request snapshots, assignment, status history, notes, and duplicate lineage.                            |
-| `REL-PRC-002`                                            | Configured approval threshold governs approval evidence on Quotation.                                                                              |
-| `REL-QUO-001`–`REL-QUO-003`, `REL-QUO-005`–`REL-QUO-012` | Quotation revision, items, adjustments, approvals, review, decision, history, and source snapshot are retained in the compact Quotation aggregate. |
-| `REL-ORD-003`                                            | Customer has many Orders.                                                                                                                          |
-| `REL-COM-001`, `REL-COM-003`–`REL-COM-005`               | Template-to-send, one recipient snapshot, bounded attempts, and customer destination use templates and notifications.                              |
-| `REL-SUP-001`, `REL-SUP-002`, `REL-SUP-005`              | Support Case references Customer and one business context; tracking telemetry uses audit.                                                          |
-| `REL-DOC-001`–`REL-DOC-003`                              | Each Attachment is one immutable object associated to one closed subject.                                                                          |
-| `REL-INT-001`                                            | Retryable command scope owns Idempotency Keys.                                                                                                     |
+| Relationship IDs                                         | MVP realization                                                                                                                                            |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `REL-IAM-001`                                            | Supabase Auth user maps to one Profile.                                                                                                                    |
+| Sprint 1B compact IAM amendment                          | Profile maps directly to one active fixed Role; Role maps to fixed Permissions through retained grant/assignment records, without Organization Membership. |
+| `REL-CUS-001`, `REL-CUS-004`                             | Profile carries one verified Customer link.                                                                                                                |
+| `REL-ORD-001`                                            | An accepted Quotation revision converts to at most one Order.                                                                                              |
+| `REL-ORD-002`, `REL-ORD-004`–`REL-ORD-010`               | Service snapshot, locations, cargo, add-ons, amendment, cancellation, and operational history are owned by Order.                                          |
+| `REL-OPS-001`–`REL-OPS-009`                              | One Order owns its single MVP execution, schedule, assignment snapshots, exception context, completion, status history, and evidence links.                |
+| `REL-AUD-001`, `REL-AUD-003`                             | Audit detail and durable target identity are consolidated into Audit Log.                                                                                  |
+| `REL-TEN-001`, `REL-CFG-003`                             | Single-company settings resolve directly through `app_settings`.                                                                                           |
+| `REL-CAT-001`–`REL-CAT-005`, `REL-CAT-007`–`REL-CAT-009` | Offering, route, add-on, coverage, restriction, customer status, and reason relationships use the three catalog tables plus settings.                      |
+| `REL-CUS-002`–`REL-CUS-007`                              | Primary contacts/preferences/consent are Customer or Lead fields; saved addresses remain children.                                                         |
+| `REL-LED-001`–`REL-LED-009`                              | Lead references Customer/Offering and owns request snapshots, assignment, status history, notes, and duplicate lineage.                                    |
+| `REL-PRC-002`                                            | Configured approval threshold governs approval evidence on Quotation.                                                                                      |
+| `REL-QUO-001`–`REL-QUO-003`, `REL-QUO-005`–`REL-QUO-012` | Quotation revision, items, adjustments, approvals, review, decision, history, and source snapshot are retained in the compact Quotation aggregate.         |
+| `REL-ORD-003`                                            | Customer has many Orders.                                                                                                                                  |
+| `REL-COM-001`, `REL-COM-003`–`REL-COM-005`               | Template-to-send, one recipient snapshot, bounded attempts, and customer destination use templates and notifications.                                      |
+| `REL-SUP-001`, `REL-SUP-002`, `REL-SUP-005`              | Support Case references Customer and one business context; tracking telemetry uses audit.                                                                  |
+| `REL-DOC-001`–`REL-DOC-003`                              | Each Attachment is one immutable object associated to one closed subject.                                                                                  |
+| `REL-INT-001`                                            | Retryable command scope owns Idempotency Keys.                                                                                                             |
 
 ### 6.2 Phase 2 Relationships
 
-| Relationship IDs                            | Exclusion reason and impact                                                                                                                                         |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `REL-TEN-002`, `REL-TEN-003`                | Business-unit hierarchy is deferred; no branch-scoped operations.                                                                                                   |
-| `REL-IAM-002`–`REL-IAM-007`, `REL-IAM-011`  | Membership, configurable RBAC, business-unit scope, and access-review graphs are deferred; MVP uses one fixed staff role.                                           |
-| `REL-CFG-001`, `REL-CFG-002`                | Definition/version/release graph is deferred; settings publish individually.                                                                                        |
-| `REL-CAT-006`                               | Dynamic offering qualification-field composition is deferred; intake schema is release-controlled.                                                                  |
-| `REL-CUS-008`, `REL-CUS-009`                | Feedback is deferred; no rating relationship at launch.                                                                                                             |
-| `REL-PRC-001`, `REL-PRC-003`–`REL-PRC-006`  | Pricing policy, estimate, component, and policy graph are deferred; Quotation is human-authored.                                                                    |
-| `REL-QUO-004`                               | No separate Price Estimate provenance at launch.                                                                                                                    |
-| `REL-RES-002`, `REL-RES-003`                | Driver/Profile linking and resource availability wait for fleet master data.                                                                                        |
-| `REL-COM-002`                               | Domain Event-triggered communication waits for event/outbox infrastructure; the service writes Notification directly.                                               |
-| `REL-SUP-003`, `REL-SUP-004`, `REL-SUP-006` | Dedicated Support Case history and reusable verification challenge/target models are deferred; material case changes use audit and approved direct checks are used. |
-| `REL-EVT-001`, `REL-EVT-002`                | Canonical event/outbox publication is deferred; no replay or generic consumers.                                                                                     |
-| `REL-AUD-002`                               | Legal-hold graph is deferred; a controlled external procedure protects records.                                                                                     |
-| `REL-REP-001`–`REL-REP-003`                 | Versioned report/run/export graph is deferred; only fixed bounded dashboards launch.                                                                                |
+| Relationship IDs                            | Exclusion reason and impact                                                                                                                                                                                                                     |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `REL-TEN-002`, `REL-TEN-003`                | Business-unit hierarchy is deferred; no branch-scoped operations.                                                                                                                                                                               |
+| `REL-IAM-002`–`REL-IAM-007`, `REL-IAM-011`  | The original organization-scoped membership, tenant-role, business-unit, and access-review graphs remain deferred. Sprint 1B uses a smaller Profile-level fixed-RBAC adaptation and does not implement these enterprise relationship semantics. |
+| `REL-CFG-001`, `REL-CFG-002`                | Definition/version/release graph is deferred; settings publish individually.                                                                                                                                                                    |
+| `REL-CAT-006`                               | Dynamic offering qualification-field composition is deferred; intake schema is release-controlled.                                                                                                                                              |
+| `REL-CUS-008`, `REL-CUS-009`                | Feedback is deferred; no rating relationship at launch.                                                                                                                                                                                         |
+| `REL-PRC-001`, `REL-PRC-003`–`REL-PRC-006`  | Pricing policy, estimate, component, and policy graph are deferred; Quotation is human-authored.                                                                                                                                                |
+| `REL-QUO-004`                               | No separate Price Estimate provenance at launch.                                                                                                                                                                                                |
+| `REL-RES-002`, `REL-RES-003`                | Driver/Profile linking and resource availability wait for fleet master data.                                                                                                                                                                    |
+| `REL-COM-002`                               | Domain Event-triggered communication waits for event/outbox infrastructure; the service writes Notification directly.                                                                                                                           |
+| `REL-SUP-003`, `REL-SUP-004`, `REL-SUP-006` | Dedicated Support Case history and reusable verification challenge/target models are deferred; material case changes use audit and approved direct checks are used.                                                                             |
+| `REL-EVT-001`, `REL-EVT-002`                | Canonical event/outbox publication is deferred; no replay or generic consumers.                                                                                                                                                                 |
+| `REL-AUD-002`                               | Legal-hold graph is deferred; a controlled external procedure protects records.                                                                                                                                                                 |
+| `REL-REP-001`–`REL-REP-003`                 | Versioned report/run/export graph is deferred; only fixed bounded dashboards launch.                                                                                                                                                            |
 
 ### 6.3 Phase 3 Relationships
 
@@ -389,7 +390,7 @@ All 135 `REL-*` identifiers from the approved Relationship Matrix are present ex
 | Report builder, exports, metric definitions                         | `PHASE 2` | Operators use fixed dashboards.                                                                          |
 | Event/outbox platform                                               | `PHASE 2` | Notification jobs are persisted directly; no generic integration stream.                                 |
 | Public APIs, webhooks, partner integrations                         | `PHASE 3` | Browser product and internal services only.                                                              |
-| Multi-company SaaS                                                  | `PHASE 3` | One Naqlia company; no tenant onboarding/white-labeling.                                                 |
+| Multi-company SaaS                                                  | `PHASE 3` | One Naqlk company; no tenant onboarding/white-labeling.                                                  |
 | Workflow engine                                                     | `PHASE 3` | Fixed aggregate transitions only.                                                                        |
 | Invoicing, payments, refunds, accounting                            | `PHASE 3` | Commercial records stop at Quotation/Order.                                                              |
 | Advanced analytics/warehouse/AI optimization                        | `PHASE 3` | Operational records and audit provide future source data.                                                |

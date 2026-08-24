@@ -1,4 +1,4 @@
-# Naqlia Order Lifecycle
+# Naqlk Order Lifecycle
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
@@ -52,7 +52,7 @@ Direct state editing, skipped transitions, silent rollback, and history rewritin
 
 | Stage                 | Entry condition                                               | Valid outcome                                                      | Owner            |
 | --------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------ | ---------------- |
-| Visitor               | A person enters a Naqlia customer channel                     | Browse services or start a request                                 | Customer         |
+| Visitor               | A person enters a Naqlk customer channel                      | Browse services or start a request                                 | Customer         |
 | Request draft         | Required journey context has begun but has not been submitted | Continue, abandon, or submit                                       | Customer         |
 | Submission validation | Customer attempts submission                                  | Reject with recoverable errors or create exactly one Lead          | Platform         |
 | Acknowledged          | Lead creation commits                                         | Show a non-sensitive reference and send configured acknowledgement | Platform / Sales |

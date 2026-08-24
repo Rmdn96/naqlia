@@ -1,4 +1,4 @@
-# Naqlia Non-Functional Requirements
+# Naqlk Non-Functional Requirements
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
@@ -102,7 +102,7 @@ Performance targets apply at the 75th percentile for user-experience metrics and
 
 ## 8. Accessibility
 
-Naqlia targets WCAG 2.2 AA for applicable user-facing and internal experiences.
+Naqlk targets WCAG 2.2 AA for applicable user-facing and internal experiences.
 
 | ID             | Requirement                                                                                                                         | Primary evidence                 |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |

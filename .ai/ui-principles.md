@@ -1,16 +1,16 @@
-# Naqlia UI Principles
+# Naqlk UI Principles
 
 | Document field   | Value                                                                                                                                  |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | Status           | Mandatory user-interface policy                                                                                                        |
 | Version          | 1.0.0                                                                                                                                  |
-| Parent authority | [Naqlia Constitution](./constitution.md)                                                                                               |
+| Parent authority | [Naqlk Constitution](./constitution.md)                                                                                                |
 | Owner            | Product Design and Engineering leadership                                                                                              |
 | Applies to       | Information architecture, visual design, content, components, responsiveness, localization, accessibility, interaction, and UI testing |
 
 ## 1. UI Standard
 
-Naqlia interfaces MUST make logistics work clear, safe, efficient, and trustworthy for Arabic-speaking users first, with complete English parity.
+Naqlk interfaces MUST make logistics work clear, safe, efficient, and trustworthy for Arabic-speaking users first, with complete English parity.
 
 The interface is not a visual wrapper around data. It communicates current truth, responsibility, available action, consequence, uncertainty, and recovery.
 

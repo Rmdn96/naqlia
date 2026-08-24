@@ -1,4 +1,4 @@
-# Naqlia Acceptance Criteria
+# Naqlk Acceptance Criteria
 
 | Document field | Value                                                                                            |
 | -------------- | ------------------------------------------------------------------------------------------------ |

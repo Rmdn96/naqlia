@@ -1,4 +1,4 @@
-# Naqlia Roles and Permissions
+# Naqlk Roles and Permissions
 
 | Document field | Value                                                                              |
 | -------------- | ---------------------------------------------------------------------------------- |
@@ -157,7 +157,7 @@ A single person MUST NOT satisfy two required independent approvals for the same
 
 Authorization MUST be evaluated at least across:
 
-- Naqlia operating workspace/tenant boundary;
+- Naqlk operating workspace/tenant boundary;
 - assigned team or record where assignment applies;
 - related customer ownership or verified guest context;
 - business object and current lifecycle state;
