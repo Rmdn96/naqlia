@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Boxes,
-  CheckCircle2,
   ClipboardList,
   Clock3,
   Headphones,
@@ -87,6 +86,11 @@ export default async function HomePage({ params }: LocalePageProps) {
     { description: t("why4Description"), icon: ShieldCheck, title: t("why4Title") },
   ];
   const serviceIcons = [Sofa, Boxes, Truck, MapPinned];
+  const heroTrust = [
+    { icon: ShieldCheck, label: t("guestNote") },
+    { icon: Headphones, label: t("reviewNote") },
+    { icon: MessageCircleMore, label: t("arabicNote") },
+  ];
 
   return (
     <main id="main-content">
@@ -101,33 +105,49 @@ export default async function HomePage({ params }: LocalePageProps) {
         <Image
           alt={
             locale === "ar"
-              ? "فريق نقل يحمّل الأثاث في شاحنة داخل الرياض"
-              : "A moving team loading furniture into a truck in Riyadh"
+              ? "فريق نقل يحمّل الأثاث في شاحنة نقلك داخل الرياض"
+              : "A moving team loading furniture into a branded Naqlk truck in Riyadh"
           }
-          className="object-cover object-[62%_center]"
+          className="object-cover object-[60%_center] sm:object-[62%_center] lg:object-left"
           fill
           priority
           sizes="100vw"
-          src="/images/naqlk-moving-hero.avif"
+          src="/images/naqlk-moving-hero-branded.avif"
         />
         <div className="hero-overlay absolute inset-0" />
-        <div className="container relative flex min-h-[680px] items-center py-20 text-white lg:min-h-[760px]">
-          <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-black backdrop-blur">
+        <div
+          className="relative grid min-h-[680px] w-full items-center px-4 py-16 text-white sm:px-6 md:py-20 lg:min-h-[760px] lg:grid-cols-[minmax(0,42fr)_minmax(0,58fr)] lg:px-[6vw]"
+          dir="ltr"
+        >
+          <div
+            className={cn(
+              "bg-transparent lg:col-start-1 lg:w-full",
+              locale === "ar" ? "max-w-[31rem]" : "max-w-[32.5rem]",
+            )}
+            dir={locale === "ar" ? "rtl" : "ltr"}
+          >
+            <p className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-[#0b2b5b]/25 px-4 py-2 text-sm font-black backdrop-blur-sm">
               <span className="size-2 rounded-full bg-sky-400" />
               {t("eyebrow")}
             </p>
-            <h1 className="mt-7 text-balance text-4xl font-black leading-[1.18] tracking-tight sm:text-6xl lg:text-7xl">
+            <h1
+              className={cn(
+                "mt-6 text-balance text-4xl font-black leading-[1.08] tracking-tight drop-shadow-[0_2px_12px_rgba(5,23,52,0.45)] sm:text-5xl",
+                locale === "ar"
+                  ? "md:text-[3.25rem] xl:text-[3.75rem]"
+                  : "md:text-[3rem] xl:text-[3.25rem]",
+              )}
+            >
               {t("title")}
             </h1>
-            <p className="text-white/82 mt-6 max-w-xl text-lg leading-8 sm:text-xl sm:leading-9">
+            <p className="mt-5 max-w-[33rem] text-base leading-8 text-white/90 drop-shadow-[0_1px_8px_rgba(5,23,52,0.5)] sm:text-lg sm:leading-8">
               {t("subtitle")}
             </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Link
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "group bg-blue-600 hover:bg-blue-500",
+                  "group min-h-12 bg-blue-600 px-4 text-sm shadow-lg shadow-blue-950/20 hover:bg-blue-500",
                 )}
                 href="/request"
               >
@@ -137,14 +157,8 @@ export default async function HomePage({ params }: LocalePageProps) {
                   className="size-5 transition-transform group-hover:-translate-x-1 rtl:group-hover:translate-x-1"
                 />
               </Link>
-              <Link
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-6 font-bold text-white backdrop-blur hover:bg-white/20"
-                href="/track"
-              >
-                {t("secondaryCta")}
-              </Link>
               <a
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-6 font-bold text-white backdrop-blur hover:bg-white/20"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/70 bg-white/90 px-4 text-sm font-bold text-[#0b2b5b] shadow-sm backdrop-blur-sm transition hover:bg-white"
                 href={getWhatsAppHref(t("whatsappMessage"), business.whatsappNumber)}
                 rel="noreferrer"
                 target="_blank"
@@ -152,12 +166,20 @@ export default async function HomePage({ params }: LocalePageProps) {
                 <MessageCircleMore aria-hidden="true" className="size-5 text-emerald-400" />
                 {t("whatsappCta")}
               </a>
+              <Link
+                className="inline-flex min-h-12 items-center justify-center rounded-md px-3 text-sm font-bold text-white/90 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                href="/track"
+              >
+                {t("secondaryCta")}
+              </Link>
             </div>
-            <ul className="mt-10 grid max-w-2xl gap-3 text-sm font-bold sm:grid-cols-3">
-              {[t("guestNote"), t("reviewNote"), t("arabicNote")].map((item) => (
-                <li className="flex items-center gap-2 text-white/85" key={item}>
-                  <CheckCircle2 aria-hidden="true" className="size-4 text-sky-400" />
-                  {item}
+            <ul className="mt-8 grid max-w-[35rem] gap-3 text-sm font-bold sm:grid-cols-3">
+              {heroTrust.map(({ icon: Icon, label }) => (
+                <li className="flex items-center gap-2.5 text-white/90" key={label}>
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full border border-white/25 bg-white/10">
+                    <Icon aria-hidden="true" className="size-4 text-sky-300" strokeWidth={1.8} />
+                  </span>
+                  <span className="leading-5">{label}</span>
                 </li>
               ))}
             </ul>
