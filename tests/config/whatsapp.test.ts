@@ -4,7 +4,12 @@ import { resolve } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { BRAND } from "@/config/brand";
-import { getWhatsAppHref } from "@/config/site";
+import {
+  getWhatsAppContactHref,
+  getWhatsAppHref,
+  WHATSAPP_CONTACT_MESSAGE,
+  WHATSAPP_CONTACTS,
+} from "@/config/site";
 
 const officialNumber = "966547349947";
 
@@ -18,6 +23,25 @@ describe("official Naqlk WhatsApp configuration", () => {
 
     expect(url.origin + url.pathname).toBe(`https://wa.me/${officialNumber}`);
     expect(url.searchParams.get("text")).toBe("Hello Naqlk");
+  });
+
+  it("centralizes both public contact numbers and builds the approved message links", () => {
+    expect(WHATSAPP_CONTACTS.map((contact) => contact.localNumber)).toEqual([
+      "0547349947",
+      "0565845386",
+    ]);
+    expect(WHATSAPP_CONTACTS.map((contact) => contact.internationalNumber)).toEqual([
+      "966547349947",
+      "966565845386",
+    ]);
+
+    const message = WHATSAPP_CONTACT_MESSAGE;
+    expect(new URL(getWhatsAppContactHref(WHATSAPP_CONTACTS[0], message)).pathname).toBe(
+      "/966547349947",
+    );
+    expect(
+      new URL(getWhatsAppContactHref(WHATSAPP_CONTACTS[1], message)).searchParams.get("text"),
+    ).toBe(message);
   });
 
   it("uses the centralized official fallback when deployment input is missing or invalid", () => {
