@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { WhatsAppContactChooser } from "@/components/shared/whatsapp-contact-chooser";
 import { WHATSAPP_CONTACT_MESSAGE, WHATSAPP_CONTACTS } from "@/config/site";
@@ -39,6 +39,67 @@ describe("WhatsApp contact chooser", () => {
     fireEvent.click(trigger);
     fireEvent.keyDown(document, { key: "Escape" });
 
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it("renders outside the blurred header's fixed-position containing block", () => {
+    render(
+      <header style={{ backdropFilter: "blur(8px)" }}>
+        <WhatsAppContactChooser {...props} />
+      </header>,
+    );
+    fireEvent.click(screen.getByRole("button", { name: props.openLabel }));
+
+    const dialog = screen.getByRole("dialog", { name: props.title });
+    expect(dialog.parentElement).toBe(document.body);
+    expect(dialog.closest("header")).toBeNull();
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: props.closeLabel }));
+  });
+
+  it("does not propagate Escape to the mobile navigation's window listener", () => {
+    const closeNavigation = vi.fn();
+    window.addEventListener("keydown", closeNavigation);
+    try {
+      render(<WhatsAppContactChooser {...props} />);
+      const trigger = screen.getByRole("button", { name: props.openLabel });
+      fireEvent.click(trigger);
+      fireEvent.keyDown(screen.getByRole("button", { name: props.closeLabel }), { key: "Escape" });
+
+      expect(closeNavigation).not.toHaveBeenCalled();
+      expect(screen.queryByRole("dialog")).toBeNull();
+      expect(document.activeElement).toBe(trigger);
+    } finally {
+      window.removeEventListener("keydown", closeNavigation);
+    }
+  });
+
+  it("keeps Tab focus inside the portaled chooser", () => {
+    render(<WhatsAppContactChooser {...props} />);
+    fireEvent.click(screen.getByRole("button", { name: props.openLabel }));
+    const close = screen.getByRole("button", { name: props.closeLabel });
+    const last = screen.getAllByRole("link", { name: props.openLabel })[1];
+
+    fireEvent.keyDown(close, { key: "Tab", shiftKey: true });
+    expect(document.activeElement).toBe(last);
+    fireEvent.keyDown(last, { key: "Tab" });
+    expect(document.activeElement).toBe(close);
+  });
+
+  it("closes only on the backdrop or close button and restores scrolling", () => {
+    render(<WhatsAppContactChooser {...props} />);
+    const trigger = screen.getByRole("button", { name: props.openLabel });
+    fireEvent.click(trigger);
+    expect(document.body.style.overflow).toBe("hidden");
+    fireEvent.pointerDown(screen.getByText(props.title));
+    expect(screen.getByRole("dialog")).toBeTruthy();
+    fireEvent.pointerDown(screen.getByRole("dialog"));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.body.style.overflow).toBe("");
+    expect(document.activeElement).toBe(trigger);
+
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole("button", { name: props.closeLabel }));
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(document.activeElement).toBe(trigger);
   });
