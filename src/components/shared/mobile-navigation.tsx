@@ -4,6 +4,8 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
+import { WhatsAppContactChooser } from "@/components/shared/whatsapp-contact-chooser";
+import type { WhatsAppContact } from "@/config/site";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/utils/cn";
 
@@ -22,16 +24,28 @@ type Item = {
   label: string;
 };
 
+type WhatsAppChooser = {
+  closeLabel: string;
+  contacts: readonly WhatsAppContact[];
+  direction: "ltr" | "rtl";
+  guidance: string;
+  message: string;
+  openLabel: string;
+  title: string;
+};
+
 export function MobileNavigation({
   closeLabel,
   items,
   openLabel,
   requestLabel,
+  whatsappChooser,
 }: {
   closeLabel: string;
   items: Item[];
   openLabel: string;
   requestLabel: string;
+  whatsappChooser: WhatsAppChooser;
 }) {
   const [open, setOpen] = useState(false);
   const firstLink = useRef<HTMLAnchorElement>(null);
@@ -85,6 +99,11 @@ export function MobileNavigation({
             >
               {requestLabel}
             </Link>
+            <WhatsAppContactChooser
+              {...whatsappChooser}
+              showTriggerLabel
+              triggerClassName="mt-2 w-full justify-center bg-secondary"
+            />
           </nav>
         </div>
       ) : null}
