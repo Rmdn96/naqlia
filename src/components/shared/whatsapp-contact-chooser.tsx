@@ -1,10 +1,16 @@
 "use client";
 
 import { MessageCircleMore, X } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { getWhatsAppContactHref, type WhatsAppContact } from "@/config/site";
+import {
+  getWhatsAppContactHref,
+  WHATSAPP_CONTACTS,
+  WHATSAPP_CONTACT_MESSAGE,
+  type WhatsAppContact,
+} from "@/config/site";
 import { cn } from "@/utils/cn";
 
 type Props = {
@@ -17,7 +23,34 @@ type Props = {
   showTriggerLabel?: boolean;
   title: string;
   triggerClassName?: string;
+  triggerLabel?: string;
 };
+
+// General-contact entry points reuse the same chooser and approved contact configuration.
+export function WhatsAppContactAction({
+  label,
+  className,
+}: {
+  label?: string;
+  className?: string;
+}) {
+  const t = useTranslations("Common");
+  const locale = useLocale();
+  return (
+    <WhatsAppContactChooser
+      closeLabel={t("whatsappClose")}
+      contacts={WHATSAPP_CONTACTS}
+      direction={locale === "ar" ? "rtl" : "ltr"}
+      guidance={t("whatsappChooserGuidance")}
+      message={WHATSAPP_CONTACT_MESSAGE}
+      openLabel={t("whatsapp")}
+      showTriggerLabel
+      title={t("whatsappChooserTitle")}
+      triggerClassName={className}
+      triggerLabel={label}
+    />
+  );
+}
 
 export function WhatsAppContactChooser({
   closeLabel,
@@ -29,6 +62,7 @@ export function WhatsAppContactChooser({
   showTriggerLabel = false,
   title,
   triggerClassName,
+  triggerLabel = openLabel,
 }: Props) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -83,7 +117,7 @@ export function WhatsAppContactChooser({
       <button
         aria-expanded={open}
         aria-haspopup="dialog"
-        aria-label={openLabel}
+        aria-label={triggerLabel}
         className={cn(
           "inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-border bg-card text-foreground transition hover:border-primary hover:text-primary",
           triggerClassName,
@@ -93,7 +127,7 @@ export function WhatsAppContactChooser({
         type="button"
       >
         <MessageCircleMore aria-hidden="true" className="size-5 text-emerald-600" />
-        {showTriggerLabel ? <span>{openLabel}</span> : null}
+        {showTriggerLabel ? <span>{triggerLabel}</span> : null}
       </button>
       {open
         ? createPortal(

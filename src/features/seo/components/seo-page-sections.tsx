@@ -1,8 +1,8 @@
-import { CheckCircle2, ClipboardCheck, MapPinned, MessageCircleMore } from "lucide-react";
+import { CheckCircle2, ClipboardCheck, MapPinned } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getWhatsAppHref } from "@/config/site";
+import { WhatsAppContactAction } from "@/components/shared/whatsapp-contact-chooser";
 import type { SeoFaq } from "@/features/seo/types/seo";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -91,19 +91,15 @@ export function FaqSection({ faqs, locale }: { faqs: SeoFaq[]; locale: AppLocale
 }
 
 export function SeoCtas({
-  city,
   citySlug,
   cityRole = "local",
   locale,
   service,
-  whatsappNumber,
 }: {
-  city?: string;
   citySlug?: string;
   cityRole?: "destination" | "local";
   locale: AppLocale;
   service?: string;
-  whatsappNumber?: string | null;
 }) {
   const query = new URLSearchParams();
   if (citySlug && cityRole === "destination") {
@@ -114,10 +110,6 @@ export function SeoCtas({
   }
   if (service) query.set("service", service);
   const requestHref = `/request${query.size ? `?${query.toString()}` : ""}`;
-  const message =
-    locale === "ar"
-      ? `مرحباً نقلك، أود الاستفسار عن خدمة نقل${city ? ` ${cityRole === "destination" ? "إلى" : "في"} ${city}` : ""}.`
-      : `Hello Naqlk, I would like to ask about a transport service${city ? ` ${cityRole === "destination" ? "to" : "in"} ${city}` : ""}.`;
   return (
     <section className="container pb-20 pt-8">
       <div className="rounded-[2rem] bg-[#0b2b5b] p-7 text-white sm:p-10">
@@ -137,18 +129,12 @@ export function SeoCtas({
             <MapPinned aria-hidden="true" className="size-5" />
             {locale === "ar" ? "اطلب خدمة نقل" : "Request transport"}
           </Link>
-          <a
+          <WhatsAppContactAction
             className={cn(
               buttonVariants({ size: "lg", variant: "outline" }),
               "border-white/35 bg-transparent text-white hover:bg-white/10",
             )}
-            href={getWhatsAppHref(message, whatsappNumber)}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <MessageCircleMore aria-hidden="true" className="size-5" />
-            {locale === "ar" ? "تواصل عبر واتساب" : "Contact on WhatsApp"}
-          </a>
+          />
           <Link
             className={cn(
               buttonVariants({ size: "lg", variant: "ghost" }),
