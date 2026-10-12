@@ -22,6 +22,34 @@ import type {
 
 const ATTACHMENTS_BUCKET = "attachments";
 
+function logCatalogFailure(operation: string, error: unknown): void {
+  const candidate = error && typeof error === "object" ? (error as Record<string, unknown>) : {};
+  const name = error instanceof Error ? error.name : "UnknownError";
+  const code = typeof candidate.code === "string" ? candidate.code : "unknown";
+  const status =
+    typeof candidate.status === "number" || typeof candidate.status === "string"
+      ? String(candidate.status)
+      : "unknown";
+  const stack =
+    error instanceof Error
+      ? (error.stack
+          ?.split("\n")
+          .filter(
+            (line) =>
+              line.includes("/src/features/public-request/") ||
+              line.includes("/src/lib/supabase/") ||
+              line.includes("@supabase/"),
+          )
+          .slice(0, 4)
+          .join(" | ") ?? "")
+      : "";
+
+  console.error(
+    `[public-request] operation=${operation} status=error name=${name} code=${code} status_code=${status}`,
+  );
+  if (stack) console.error(`[public-request] operation=${operation} stack=${stack}`);
+}
+
 const LAUNCH_SCOPE_SERVICE_DESCRIPTIONS: Record<AppLocale, Record<string, string>> = {
   ar: {
     furniture_moving:
@@ -71,32 +99,57 @@ async function findExistingSubmission(submissionId: string) {
 }
 
 export async function getPublicRequestCatalog(locale: AppLocale): Promise<PublicRequestCatalog> {
-  const supabase = await createServerSupabaseClient();
-  const [citiesResult, servicesResult, optionsResult] = await Promise.all([
-    supabase
-      .from("cities")
-      .select("id, name_ar, name_en, region_ar, region_en, slug")
-      .eq("status", "active")
-      .is("deleted_at", null)
-      .order("display_order")
-      .order(locale === "ar" ? "name_ar" : "name_en"),
-    supabase
-      .from("services")
-      .select("id, service_key, name_ar, name_en, description_ar, description_en, transport_scope")
-      .eq("status", "active")
-      .is("deleted_at", null)
-      .order("display_order"),
-    supabase
-      .from("service_options")
-      .select("id, service_id, name_ar, name_en")
-      .eq("status", "active")
-      .is("deleted_at", null)
-      .order("display_order"),
-  ]);
+  let supabase;
+  try {
+    console.info(`[public-request] operation=catalog-client-init status=start locale=${locale}`);
+    supabase = await createServerSupabaseClient();
+    console.info(`[public-request] operation=catalog-client-init status=success locale=${locale}`);
+  } catch (error) {
+    logCatalogFailure("catalog-client-init", error);
+    throw error;
+  }
+
+  let citiesResult;
+  let servicesResult;
+  let optionsResult;
+  try {
+    console.info(`[public-request] operation=catalog-queries status=start locale=${locale}`);
+    [citiesResult, servicesResult, optionsResult] = await Promise.all([
+      supabase
+        .from("cities")
+        .select("id, name_ar, name_en, region_ar, region_en, slug")
+        .eq("status", "active")
+        .is("deleted_at", null)
+        .order("display_order")
+        .order(locale === "ar" ? "name_ar" : "name_en"),
+      supabase
+        .from("services")
+        .select(
+          "id, service_key, name_ar, name_en, description_ar, description_en, transport_scope",
+        )
+        .eq("status", "active")
+        .is("deleted_at", null)
+        .order("display_order"),
+      supabase
+        .from("service_options")
+        .select("id, service_id, name_ar, name_en")
+        .eq("status", "active")
+        .is("deleted_at", null)
+        .order("display_order"),
+    ]);
+  } catch (error) {
+    logCatalogFailure("catalog-queries", error);
+    throw error;
+  }
 
   if (citiesResult.error || servicesResult.error || optionsResult.error) {
+    if (citiesResult.error) logCatalogFailure("catalog-cities", citiesResult.error);
+    if (servicesResult.error) logCatalogFailure("catalog-services", servicesResult.error);
+    if (optionsResult.error) logCatalogFailure("catalog-options", optionsResult.error);
     throw new Error("PUBLIC_REQUEST_CATALOG_UNAVAILABLE");
   }
+
+  console.info(`[public-request] operation=catalog-queries status=success locale=${locale}`);
 
   return {
     cities: citiesResult.data.map((city) => ({

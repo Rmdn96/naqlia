@@ -1,10 +1,9 @@
 import "server-only";
 
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 import type { AppLocale } from "@/i18n/routing";
 import type { Json } from "@/types/database.types";
-import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type {
   AdminCitySeoItem,
@@ -16,6 +15,46 @@ import type {
 } from "@/features/seo/types/seo";
 
 type RawObject = Record<string, unknown>;
+
+function safeErrorDetails(error: unknown): {
+  code: string;
+  name: string;
+  stack: string;
+  status: string;
+} {
+  const candidate = error && typeof error === "object" ? (error as Record<string, unknown>) : {};
+  const stack =
+    error instanceof Error
+      ? (error.stack
+          ?.split("\n")
+          .filter(
+            (line) =>
+              line.includes("/src/features/seo/") ||
+              line.includes("/src/lib/supabase/") ||
+              line.includes("@supabase/"),
+          )
+          .slice(0, 4)
+          .join(" | ") ?? "")
+      : "";
+
+  return {
+    code: typeof candidate.code === "string" ? candidate.code : "unknown",
+    name: error instanceof Error ? error.name : "UnknownError",
+    stack,
+    status:
+      typeof candidate.status === "number" || typeof candidate.status === "string"
+        ? String(candidate.status)
+        : "unknown",
+  };
+}
+
+function logSeoFailure(operation: string, error: unknown): void {
+  const details = safeErrorDetails(error);
+  console.error(
+    `[seo] operation=${operation} status=error name=${details.name} code=${details.code} status_code=${details.status}`,
+  );
+  if (details.stack) console.error(`[seo] operation=${operation} stack=${details.stack}`);
+}
 
 function object(value: unknown): RawObject | null {
   return value && typeof value === "object" && !Array.isArray(value) ? (value as RawObject) : null;
@@ -48,11 +87,30 @@ function routeList(value: unknown): SeoRoute[] {
 }
 
 async function fetchPublicCityPage(locale: AppLocale, slug: string): Promise<CitySeoPage | null> {
-  const supabase = createAdminSupabaseClient();
-  const { data, error } = await supabase.rpc("get_public_city_seo_content", {
-    p_locale: locale,
-    p_slug: slug,
-  });
+  let supabase;
+  try {
+    console.info(`[seo] operation=public-city-client-init status=start locale=${locale}`);
+    supabase = await createServerSupabaseClient();
+    console.info(`[seo] operation=public-city-client-init status=success locale=${locale}`);
+  } catch (error) {
+    logSeoFailure("public-city-client-init", error);
+    throw error;
+  }
+
+  let data: unknown;
+  let error: unknown;
+  try {
+    console.info(`[seo] operation=public-city-rpc status=start locale=${locale}`);
+    ({ data, error } = await supabase.rpc("get_public_city_seo_content", {
+      p_locale: locale,
+      p_slug: slug,
+    }));
+  } catch (caught) {
+    logSeoFailure("public-city-rpc", caught);
+    throw caught;
+  }
+
+  if (error) logSeoFailure("public-city-rpc", error);
   const row = object(data);
   if (error || !row) return null;
   const required = {
@@ -94,17 +152,36 @@ async function fetchPublicCityPage(locale: AppLocale, slug: string): Promise<Cit
   };
 }
 
-export const getPublicCitySeoPage = unstable_cache(fetchPublicCityPage, ["city-seo-page-v2"], {
-  revalidate: 3600,
-  tags: ["city-seo"],
-});
+export const getPublicCitySeoPage = cache(fetchPublicCityPage);
 
 async function fetchCityIndex(locale?: AppLocale): Promise<CitySeoIndexItem[]> {
-  const supabase = createAdminSupabaseClient();
-  const { data, error } = await supabase.rpc("get_indexable_city_seo_index", {
-    p_locale: locale ?? null,
-  });
+  let supabase;
+  try {
+    console.info(`[seo] operation=index-client-init status=start locale=${locale ?? "all"}`);
+    supabase = await createServerSupabaseClient();
+    console.info(`[seo] operation=index-client-init status=success locale=${locale ?? "all"}`);
+  } catch (error) {
+    logSeoFailure("index-client-init", error);
+    throw error;
+  }
+
+  let data: unknown;
+  let error: unknown;
+  try {
+    console.info(`[seo] operation=index-rpc status=start locale=${locale ?? "all"}`);
+    ({ data, error } = await supabase.rpc("get_indexable_city_seo_index", {
+      p_locale: locale ?? null,
+    }));
+  } catch (caught) {
+    logSeoFailure("index-rpc", caught);
+    throw caught;
+  }
+
+  if (error) logSeoFailure("index-rpc", error);
   if (error || !Array.isArray(data)) return [];
+  console.info(
+    `[seo] operation=index-rpc status=success locale=${locale ?? "all"} rows=${data.length}`,
+  );
   return data.flatMap((item) => {
     const row = object(item);
     const cityId = string(row?.city_id);
@@ -124,10 +201,7 @@ async function fetchCityIndex(locale?: AppLocale): Promise<CitySeoIndexItem[]> {
   });
 }
 
-export const getIndexableCitySeoIndex = unstable_cache(fetchCityIndex, ["city-seo-index-v2"], {
-  revalidate: 3600,
-  tags: ["city-seo"],
-});
+export const getIndexableCitySeoIndex = cache(fetchCityIndex);
 
 function parseAdminItem(value: unknown): AdminCitySeoItem | null {
   const row = object(value);
