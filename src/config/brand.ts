@@ -5,7 +5,7 @@ type LocalizedBrandValue = Readonly<Record<BrandLocale, string>>;
 export type BrandConfiguration = Readonly<{
   abbreviation: "NQ";
   domains: Readonly<{
-    activeProductionOrigin: "https://naqlk.vercel.app";
+    activeProductionOrigin: "https://naqlk.com";
     futureCustomDomain: "https://naqlk.com";
     futureWwwDomain: "https://www.naqlk.com";
   }>;
@@ -35,7 +35,7 @@ export type BrandConfiguration = Readonly<{
 export const BRAND: BrandConfiguration = {
   abbreviation: "NQ",
   domains: {
-    activeProductionOrigin: "https://naqlk.vercel.app",
+    activeProductionOrigin: "https://naqlk.com",
     futureCustomDomain: "https://naqlk.com",
     futureWwwDomain: "https://www.naqlk.com",
   },

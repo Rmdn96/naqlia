@@ -21,7 +21,7 @@ describe("Naqlk brand authority", () => {
     expect(getBrandTagline("en")).toBe("Your move. Everything that matters.");
     expect(BRAND.abbreviation).toBe("NQ");
     expect(BRAND.domains).toEqual({
-      activeProductionOrigin: "https://naqlk.vercel.app",
+      activeProductionOrigin: "https://naqlk.com",
       futureCustomDomain: "https://naqlk.com",
       futureWwwDomain: "https://www.naqlk.com",
     });
@@ -37,7 +37,7 @@ describe("Naqlk brand authority", () => {
     vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://preview.example.vercel.app");
     vi.stubEnv("VERCEL_URL", "preview.example.vercel.app");
 
-    expect(getMetadataBase().toString()).toBe("https://naqlk.vercel.app/");
+    expect(getMetadataBase().toString()).toBe("https://naqlk.com/");
 
     vi.unstubAllEnvs();
   });
@@ -55,7 +55,7 @@ describe("Naqlk brand authority", () => {
       alternateName: "Naqlk",
       name: "نقلك",
       slogan: "نقلك... ننقل كل ما يهمك",
-      url: "https://naqlk.vercel.app",
+      url: "https://naqlk.com",
     });
   });
 
