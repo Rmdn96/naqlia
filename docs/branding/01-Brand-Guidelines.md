@@ -13,7 +13,7 @@ This document defines the approved public identity for Naqlk. Runtime code MUST 
 | Abbreviation             | NQ                                  |
 | Arabic tagline           | نقلك... ننقل كل ما يهمك             |
 | English tagline          | Your move. Everything that matters. |
-| Active production origin | `https://naqlk.vercel.app`          |
+| Active production origin | `https://naqlk.com`                 |
 | Future commercial domain | `https://naqlk.com`                 |
 | Future WWW domain        | `https://www.naqlk.com`             |
 
@@ -30,9 +30,8 @@ The Arabic name is the default public expression. English surfaces use `Naqlk`; 
 
 ## 4. Domain rules
 
-- `https://naqlk.vercel.app` is the active production and canonical origin during MVP development and pre-launch.
-- `https://naqlk.com` is the approved future commercial domain but is not registered or live.
-- After the approved custom-domain cutover, `https://www.naqlk.com` must redirect permanently to the equivalent path on `https://naqlk.com`.
+- `https://naqlk.com` is the active production and canonical origin.
+- `https://www.naqlk.com` must redirect permanently to the equivalent path on `https://naqlk.com`.
 - Preview deployments may serve the application but must emit the stable active production origin—not their preview hostname—in canonical, sitemap, Open Graph, and structured-data URLs.
 - Authentication callbacks use the active request/application origin and an allowlisted callback path; canonical metadata must not be reused as a runtime callback origin.
 - The active production origin changes only through the documented cutover checklist; previews and unregistered future domains never become canonical implicitly.

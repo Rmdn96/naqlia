@@ -59,7 +59,7 @@ Pages MUST be written for users first. Keyword repetition, doorway pages, hidden
 
 ## 5. URL and Locale Architecture
 
-- The approved active production origin is the sole source for canonical, sitemap, robots, social, and structured-data URLs. During MVP development and pre-launch this is `https://naqlk.vercel.app`; `https://naqlk.com` remains the future commercial domain until its formal cutover is complete.
+- The approved active production origin is the sole source for canonical, sitemap, robots, social, and structured-data URLs: `https://naqlk.com`. Preview domains never become public SEO origins.
 - Preview deployments MUST emit the stable active production origin and MUST NOT promote their deployment hostname into canonical metadata.
 - Public URLs are stable, lowercase, readable, and locale-addressable under the approved routing strategy.
 - Arabic and English equivalents have explicit bidirectional alternate relationships.

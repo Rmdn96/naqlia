@@ -4,7 +4,7 @@
 
 This rollout completes city-level Arabic and English editorial content on the SEO Content Registry introduced by SEO + Local SEO v1. It does not add routes, tables, roles, or a second content system. Riyadh remains unchanged; the rollout covers the other 21 active Service Area cities and their 42 locale records.
 
-The active canonical origin remains `https://naqlk.vercel.app`. Preview deployments are acceptance environments only and never become canonical, sitemap, Open Graph, or structured-data origins.
+The active canonical origin is `https://naqlk.com`. Preview deployments are acceptance environments only and never become canonical, sitemap, Open Graph, or structured-data origins.
 
 ## Editorial batches
 
@@ -76,7 +76,7 @@ Once the migration is applied and cache tags/revalidation have elapsed:
 - all 22 active cities have Arabic and English Published/Indexable pages;
 - sitemap output contains 44 city URLs plus the existing legitimate public and global-service URLs;
 - Arabic and English City pages remain reciprocal through `hreflang` and `x-default` behavior;
-- canonical URLs remain on `https://naqlk.vercel.app` even on Preview;
+- canonical URLs remain on `https://naqlk.com` even on Preview;
 - visible FAQ content is the source of FAQ structured data;
 - the shared City Page links to the four global Service Pages and safely passes the configured City identifier into the request flow;
 - inactive, Draft, incomplete, or non-indexable records continue to be excluded by the existing architecture.
@@ -92,7 +92,7 @@ The rollout adds only 42 localized rows and their bounded FAQ children. It adds 
 ## Production follow-up
 
 - Verify Google Search Console ownership for the active production origin.
-- Submit `https://naqlk.vercel.app/sitemap.xml` after release approval.
+- Submit `https://naqlk.com/sitemap.xml` after release approval.
 - Configure analytics only after an approved measurement plan and credentials exist.
 - Complete verified Google Business Profile information operationally.
 - Keep release blocker **#24 Configure production Custom SMTP** open; this rollout neither configures nor changes email delivery.

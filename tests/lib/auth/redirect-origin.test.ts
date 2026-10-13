@@ -8,7 +8,7 @@ import {
   type AuthRedirectEnvironment,
 } from "@/lib/auth/redirect-origin";
 
-const production = "https://naqlk.vercel.app";
+const production = "https://naqlk.com";
 const branchPreview = "https://naqlk-git-feature-auth-visual-upgrade-mohamed-ramadan.vercel.app";
 const deploymentPreview = "https://naqlk-example-mohamed-ramadan.vercel.app";
 
@@ -53,8 +53,8 @@ describe("authentication redirect origin", () => {
     "https://attacker.example",
     "https://naqlk-example-mohamed-ramadan.vercel.app.attacker.example",
     "javascript:alert(1)",
-    "https://user:password@naqlk.vercel.app",
-    "https://naqlk.vercel.app/unsafe",
+    "https://user:password@naqlk.com",
+    "https://naqlk.com/unsafe",
   ])("rejects a crafted origin and falls back to production: %s", (origin) => {
     expect(resolveAuthRedirectOrigin(origin, previewEnvironment())).toBe(production);
   });

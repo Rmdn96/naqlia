@@ -25,6 +25,7 @@ import {
   getBrandName,
   getLocaleAlternates,
   getOrganizationStructuredData,
+  getWebsiteStructuredData,
 } from "@/config/brand";
 import { getWhatsAppHref } from "@/config/site";
 import { getPublicHomeContent } from "@/features/public-home/services/public-home.service";
@@ -96,7 +97,10 @@ export default async function HomePage({ params }: LocalePageProps) {
     <main id="main-content">
       <script
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getOrganizationStructuredData(locale)).replace(/</g, "\\u003c"),
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [getOrganizationStructuredData(locale), getWebsiteStructuredData(locale)],
+          }).replace(/</g, "\\u003c"),
         }}
         type="application/ld+json"
       />

@@ -47,7 +47,7 @@ import { GET as callback } from "@/app/auth/callback/route";
 import { POST as resetPassword } from "@/app/auth/recovery/reset/route";
 
 const previewOrigin = "https://naqlk-git-fix-password-recovery-redirect.vercel.app";
-const productionOrigin = "https://naqlk.vercel.app";
+const productionOrigin = "https://naqlk.com";
 
 function recoveryCallback(locale: "ar" | "en", origin = previewOrigin) {
   return new NextRequest(

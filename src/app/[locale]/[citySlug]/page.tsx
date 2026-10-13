@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!page) return { robots: { follow: false, index: false } };
   const languages = Object.fromEntries(
     Object.entries(page.alternates).flatMap(([alternateLocale, slug]) =>
-      slug ? [[alternateLocale, `/${alternateLocale}/${slug}`]] : [],
+      slug ? [[alternateLocale === "ar" ? "ar-SA" : "en-SA", `/${alternateLocale}/${slug}`]] : [],
     ),
   );
   if (page.alternates.ar) languages["x-default"] = `/ar/${page.alternates.ar}`;

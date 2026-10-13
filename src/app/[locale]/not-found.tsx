@@ -1,9 +1,14 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getLocale } from "next-intl/server";
+import type { Metadata } from "next";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/utils/cn";
+
+export const metadata: Metadata = {
+  robots: { follow: false, index: false, noarchive: true, nocache: true },
+};
 
 export default async function NotFound() {
   const locale = await getLocale();

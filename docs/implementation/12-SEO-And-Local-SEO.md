@@ -2,7 +2,7 @@
 
 ## Purpose
 
-SEO v1 adds truthful, bilingual service discovery without creating doorway pages. The canonical production origin remains `https://naqlk.vercel.app`; Vercel Preview hostnames are never used for canonical, sitemap, Open Graph, or structured-data URLs.
+SEO v1 adds truthful, bilingual service discovery without creating doorway pages. The canonical production origin is `https://naqlk.com`; Vercel Preview hostnames are never used for canonical, sitemap, Open Graph, or structured-data URLs.
 
 The controlled completion of the remaining City content is documented separately in [SEO Editorial Rollout v1](13-SEO-Editorial-Rollout-v1.md). That rollout preserves this registry, lifecycle, authorization, and routing architecture.
 
@@ -56,10 +56,10 @@ Public projections use composite lookup indexes and cache tags. SEO pages remain
 Before broader SEO launch:
 
 1. Complete genuinely distinct Arabic and English editorial content City by City.
-2. Verify Google Search Console ownership and submit `https://naqlk.vercel.app/sitemap.xml`.
+2. Verify Google Search Console ownership and submit `https://naqlk.com/sitemap.xml`.
 3. Configure an approved analytics property and consent model before adding GA4/conversion IDs.
 4. Configure Google Business Profile using verified business identity, service-area/address policy, official phone, website, categories, hours, photos, and the real review link.
-5. During the future `naqlk.com` cutover, change the centralized active origin and Supabase settings, then revalidate canonical, sitemap, robots, redirects, and Search Console.
+5. Keep the centralized active origin and Supabase settings aligned with `https://naqlk.com`, then revalidate canonical, sitemap, robots, redirects, and Search Console after deployment.
 6. Preserve release blocker **#24 Configure production Custom SMTP**; SEO work does not close or weaken it.
 
 No tracking ID, Google credential, business hours, address, review, rating, price, or unsupported coverage claim is invented by this implementation.

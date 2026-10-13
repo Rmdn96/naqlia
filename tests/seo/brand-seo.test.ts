@@ -68,24 +68,42 @@ describe("Naqlk SEO identity", () => {
   it("includes a reciprocal locale pair for every published city at editorial scale", async () => {
     const urls = new Set((await sitemap()).map(({ url }) => url));
     for (const slug of citySlugs) {
-      expect(urls.has(`https://naqlk.vercel.app/ar/${slug}`)).toBe(true);
-      expect(urls.has(`https://naqlk.vercel.app/en/${slug}`)).toBe(true);
+      expect(urls.has(`https://naqlk.com/ar/${slug}`)).toBe(true);
+      expect(urls.has(`https://naqlk.com/en/${slug}`)).toBe(true);
     }
   });
 
   it("publishes the canonical sitemap and host through robots", () => {
     expect(robots()).toMatchObject({
-      host: "https://naqlk.vercel.app",
-      sitemap: "https://naqlk.vercel.app/sitemap.xml",
+      host: "https://naqlk.com",
+      sitemap: "https://naqlk.com/sitemap.xml",
     });
   });
 
-  it("does not promote the future or preview domain into active SEO output", async () => {
-    expect(BRAND.domains.activeProductionOrigin).toBe("https://naqlk.vercel.app");
-    expect(BRAND.domains.futureCustomDomain).toBe("https://naqlk.com");
+  it("does not promote the preview or www domain into active SEO output", async () => {
+    expect(BRAND.domains.activeProductionOrigin).toBe("https://naqlk.com");
     expect(
-      (await sitemap()).some(({ url }) => url.startsWith(BRAND.domains.futureCustomDomain)),
+      (await sitemap()).some(
+        ({ url }) => url.includes("naqlk.vercel.app") || url.includes("www.naqlk.com"),
+      ),
     ).toBe(false);
+  });
+
+  it("never emits the retired Vercel origin in public SEO output", async () => {
+    const output = JSON.stringify({ entries: await sitemap(), robots: robots() });
+
+    expect(output).not.toContain("naqlk.vercel.app");
+    expect(output).toContain("https://naqlk.com");
+  });
+
+  it("uses Saudi language-region hreflang keys for localized routes", async () => {
+    const { getLocaleAlternates } = await import("@/config/brand");
+
+    expect(getLocaleAlternates("ar", "/request").languages).toEqual({
+      "ar-SA": "/ar/request",
+      "en-SA": "/en/request",
+      "x-default": "/ar/request",
+    });
   });
 
   it("uses Naqlk in both WhatsApp templates", () => {

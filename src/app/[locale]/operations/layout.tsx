@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { StaffPortalShell } from "@/features/staff-portal/components/staff-portal-shell";
 import { getPortalContext } from "@/features/staff-portal/services/staff-portal.service";
 import { routing, type AppLocale } from "@/i18n/routing";
+
+export const metadata: Metadata = {
+  robots: { follow: false, index: false, noarchive: true, nocache: true },
+};
 
 export default async function Layout({
   children,
