@@ -54,7 +54,7 @@ describe("Unified Account and Staff Portal application contract", () => {
   });
 
   it("protects transactional and staff pages from indexing, caching, and referrer leakage", () => {
-    const middleware = source("src/middleware.ts");
+    const middleware = source("src/proxy.ts");
     expect(middleware).toContain('"private, no-store, max-age=0"');
     expect(middleware).toContain('"no-referrer"');
     expect(middleware).toContain('"noindex, nofollow, noarchive"');

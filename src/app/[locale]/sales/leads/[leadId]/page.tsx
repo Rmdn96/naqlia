@@ -19,12 +19,12 @@ export default async function LeadDetailsPage({ params }: LeadDetailsPageProps) 
   const locale = localeParam as AppLocale;
   setRequestLocale(locale);
 
+  let detail: Awaited<ReturnType<typeof getSalesLeadDetail>>;
   try {
     await markSalesLeadViewed(leadId);
-    const detail = await getSalesLeadDetail(leadId);
-
-    return <LeadDetails detail={detail} locale={locale} />;
+    detail = await getSalesLeadDetail(leadId);
   } catch {
     notFound();
   }
+  return <LeadDetails detail={detail} locale={locale} />;
 }

@@ -67,7 +67,7 @@ export async function saveCitySeoContentAction(locale: AppLocale, formData: Form
   } catch {
     redirect(`/${locale}/settings/seo?result=conflict` as never);
   }
-  revalidateTag("city-seo");
+  revalidateTag("city-seo", "max");
   revalidatePath("/sitemap.xml");
   redirect(`/${locale}/settings/seo?city=${parsed.data.content}&result=saved` as never);
 }
@@ -95,7 +95,7 @@ export async function setCitySeoStateAction(locale: AppLocale, formData: FormDat
   } catch {
     redirect(`/${locale}/settings/seo?city=${parsed.data.content}&result=not_ready` as never);
   }
-  revalidateTag("city-seo");
+  revalidateTag("city-seo", "max");
   revalidatePath("/sitemap.xml");
   redirect(`/${locale}/settings/seo?city=${parsed.data.content}&result=state_updated` as never);
 }

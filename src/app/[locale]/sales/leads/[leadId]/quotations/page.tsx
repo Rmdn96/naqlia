@@ -16,15 +16,15 @@ export default async function QuotationHistoryPage({ params }: QuotationHistoryP
   const locale = localeParam as AppLocale;
   setRequestLocale(locale);
 
+  let detail: Awaited<ReturnType<typeof getSalesLeadDetail>>;
   try {
-    const detail = await getSalesLeadDetail(leadId);
-
-    return (
-      <section className="container py-7 sm:py-10">
-        <QuotationHistory leadId={leadId} locale={locale} quotations={detail.quotations} />
-      </section>
-    );
+    detail = await getSalesLeadDetail(leadId);
   } catch {
     notFound();
   }
+  return (
+    <section className="container py-7 sm:py-10">
+      <QuotationHistory leadId={leadId} locale={locale} quotations={detail.quotations} />
+    </section>
+  );
 }

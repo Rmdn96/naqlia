@@ -80,7 +80,7 @@ describe("customer password authentication", () => {
   });
 
   it("keeps auth pages private and tokens out of application source", () => {
-    const middleware = source("src/middleware.ts");
+    const middleware = source("src/proxy.ts");
     expect(middleware).toContain("forgot-password");
     expect(middleware).toContain("reset-password");
     expect(middleware).toContain('"no-referrer"');

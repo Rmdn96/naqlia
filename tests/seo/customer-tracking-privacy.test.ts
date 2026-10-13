@@ -7,7 +7,7 @@ describe("private customer tracking", () => {
     resolve(process.cwd(), "src/app/[locale]/track/[token]/page.tsx"),
     "utf8",
   );
-  const middleware = readFileSync(resolve(process.cwd(), "src/middleware.ts"), "utf8");
+  const middleware = readFileSync(resolve(process.cwd(), "src/proxy.ts"), "utf8");
   const nextConfig = readFileSync(resolve(process.cwd(), "next.config.ts"), "utf8");
   const sitemap = readFileSync(resolve(process.cwd(), "src/app/sitemap.ts"), "utf8");
   it("is noindex, dynamic, and absent from sitemap", () => {

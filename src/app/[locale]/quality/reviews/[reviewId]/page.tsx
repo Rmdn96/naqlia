@@ -13,14 +13,16 @@ export default async function Page({
   params: Promise<{ locale: AppLocale; reviewId: string }>;
 }) {
   const { locale, reviewId } = await params;
+  let detail: Awaited<ReturnType<typeof getQualityReview>>;
+  let capabilities: Awaited<ReturnType<typeof getQualityCapabilities>>;
   try {
-    const [detail, capabilities] = await Promise.all([
+    [detail, capabilities] = await Promise.all([
       getQualityReview(reviewId),
       getQualityCapabilities(),
     ]);
     if (!detail) return notFound();
-    return <QualityReviewDetailView capabilities={capabilities} detail={detail} locale={locale} />;
   } catch {
     return notFound();
   }
+  return <QualityReviewDetailView capabilities={capabilities} detail={detail} locale={locale} />;
 }

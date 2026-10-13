@@ -26,6 +26,7 @@ export function useRequestDraft(locale: AppLocale) {
         const parsed = publicRequestDraftStorageSchema.safeParse(JSON.parse(stored));
 
         if (parsed.success) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage hydration is external state synchronization.
           setDraft({ ...parsed.data, locale });
         }
       }
@@ -45,6 +46,7 @@ export function useRequestDraft(locale: AppLocale) {
       clearTimeout(saveTimer.current);
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- expose the save lifecycle to the UI before the debounced write.
     setSaveStatus("saving");
     saveTimer.current = setTimeout(() => {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));

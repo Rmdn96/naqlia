@@ -55,7 +55,7 @@ describe("server-authoritative logout", () => {
   it("keeps Customer and Staff protected routes server-authoritative and private", () => {
     const account = source("src/app/[locale]/account/page.tsx");
     const dashboard = source("src/app/[locale]/dashboard/layout.tsx");
-    const middleware = source("src/middleware.ts");
+    const middleware = source("src/proxy.ts");
     expect(account).toContain('export const dynamic = "force-dynamic"');
     expect(account).toContain("if (!account) redirect");
     expect(dashboard).toContain("if (!context) redirect");

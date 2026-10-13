@@ -6,7 +6,7 @@ import { refreshSupabaseSession } from "@/lib/supabase/middleware";
 
 const handleInternationalization = createMiddleware(routing);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = handleInternationalization(request);
 
   if (response.status >= 300 && response.status < 400) {

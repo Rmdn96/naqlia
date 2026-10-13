@@ -28,34 +28,37 @@ export default async function QuotationBuilderPage({
   const quotationId =
     typeof rawSearchParams.quotation === "string" ? rawSearchParams.quotation : undefined;
 
+  let detail: Awaited<ReturnType<typeof getSalesLeadDetail>>;
+  let business: Awaited<ReturnType<typeof getPublicBusinessConfiguration>>;
+  let selectedQuotation:
+    Awaited<ReturnType<typeof getSalesLeadDetail>>["quotations"][number] | null = null;
   try {
-    const [detail, business] = await Promise.all([
+    [detail, business] = await Promise.all([
       getSalesLeadDetail(leadId),
       getPublicBusinessConfiguration(),
     ]);
-    const selectedQuotation = quotationId
-      ? detail.quotations.find(
+    selectedQuotation = quotationId
+      ? (detail.quotations.find(
           (quotation) => quotation.id === salesQuotationIdSchema.parse(quotationId),
-        )
+        ) ?? null)
       : null;
 
     if (quotationId && !selectedQuotation) {
       notFound();
     }
-
-    return (
-      <section className="container py-7 sm:py-10">
-        <QuotationBuilder
-          defaultValidityDays={business.quotationValidityDays}
-          defaultVatRate={getDefaultQuotationVatRate()}
-          initialQuotation={selectedQuotation ?? null}
-          customerLocale={detail.lead.preferred_locale}
-          leadId={leadId}
-          locale={locale}
-        />
-      </section>
-    );
   } catch {
     notFound();
   }
+  return (
+    <section className="container py-7 sm:py-10">
+      <QuotationBuilder
+        defaultValidityDays={business.quotationValidityDays}
+        defaultVatRate={getDefaultQuotationVatRate()}
+        initialQuotation={selectedQuotation ?? null}
+        customerLocale={detail.lead.preferred_locale}
+        leadId={leadId}
+        locale={locale}
+      />
+    </section>
+  );
 }
