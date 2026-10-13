@@ -23,7 +23,7 @@ describe("SEO and Local SEO runtime", () => {
   it("keeps fixed canonical origin and localized alternates", () => {
     const city = read("src/app/[locale]/[citySlug]/page.tsx");
     const service = read("src/app/[locale]/services/[serviceSlug]/page.tsx");
-    expect(BRAND.domains.activeProductionOrigin).toBe("https://naqlk.vercel.app");
+    expect(BRAND.domains.activeProductionOrigin).toBe("https://naqlk.com");
     expect(city).toContain("ACTIVE_PRODUCTION_ORIGIN");
     expect(city).toContain('languages["x-default"]');
     expect(service).toContain("getLocaleAlternates");
