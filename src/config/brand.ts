@@ -5,7 +5,7 @@ type LocalizedBrandValue = Readonly<Record<BrandLocale, string>>;
 export type BrandConfiguration = Readonly<{
   abbreviation: "NQ";
   domains: Readonly<{
-    activeProductionOrigin: "https://naqlk.vercel.app";
+    activeProductionOrigin: "https://naqlk.com";
     futureCustomDomain: "https://naqlk.com";
     futureWwwDomain: "https://www.naqlk.com";
   }>;
@@ -35,7 +35,7 @@ export type BrandConfiguration = Readonly<{
 export const BRAND: BrandConfiguration = {
   abbreviation: "NQ",
   domains: {
-    activeProductionOrigin: "https://naqlk.vercel.app",
+    activeProductionOrigin: "https://naqlk.com",
     futureCustomDomain: "https://naqlk.com",
     futureWwwDomain: "https://www.naqlk.com",
   },
@@ -91,12 +91,22 @@ export function getOrganizationStructuredData(locale: BrandLocale) {
   } as const;
 }
 
+export function getWebsiteStructuredData(locale: BrandLocale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    inLanguage: BRAND.metadata.locale[locale],
+    name: getBrandName(locale),
+    url: BRAND.domains.activeProductionOrigin,
+  } as const;
+}
+
 export function getLocaleAlternates(locale: BrandLocale, path = "") {
   return {
     canonical: `/${locale}${path}`,
     languages: {
-      ar: `/ar${path}`,
-      en: `/en${path}`,
+      "ar-SA": `/ar${path}`,
+      "en-SA": `/en${path}`,
       "x-default": `/ar${path}`,
     },
   } as const;
