@@ -6,9 +6,9 @@ import { useEffect, useRef, useState, useTransition } from "react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { ContactNumberPicker } from "@/components/shared/contact-number-picker";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { getWhatsAppHref } from "@/config/site";
 import { respondToQuotationAction } from "@/features/customer-quotation/actions/customer-quotation.actions";
 import type {
   CustomerQuotationPayload,
@@ -22,12 +22,11 @@ type Props = {
   data: CustomerQuotationPayload;
   locale: AppLocale;
   token: string;
-  whatsappNumber: string;
 };
 
 type RejectionCode = "changed_requirements" | "no_longer_needed" | "other" | "price" | "timing";
 
-export function CustomerQuotationView({ data, locale, token, whatsappNumber }: Props) {
+export function CustomerQuotationView({ data, locale, token }: Props) {
   const t = useTranslations("CustomerQuotation");
   const [state, setState] = useState<CustomerQuotationState>(data.state);
   const [orderNumber, setOrderNumber] = useState(data.order_number);
@@ -245,15 +244,14 @@ export function CustomerQuotationView({ data, locale, token, whatsappNumber }: P
                 </div>
               ) : null}
 
-              <a
+              <ContactNumberPicker
+                ariaLabel={t("whatsapp")}
                 className={cn(buttonVariants({ size: "lg", variant: "secondary" }), "mt-3 w-full")}
-                href={getWhatsAppHref(whatsappMessage, whatsappNumber)}
-                rel="noreferrer"
-                target="_blank"
+                message={whatsappMessage}
               >
                 <MessageCircle aria-hidden="true" className="size-5" />
                 {t("whatsapp")}
-              </a>
+              </ContactNumberPicker>
             </Card>
           </aside>
         </div>

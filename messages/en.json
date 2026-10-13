@@ -27,6 +27,14 @@
     "footerText": "An Arabic-first transport and logistics request platform for Saudi Arabia.",
     "copyright": "All rights reserved by Naqlk."
   },
+  "ContactPicker": {
+    "title": "Choose a contact number",
+    "description": "Select a number to continue.",
+    "whatsapp": "WhatsApp",
+    "call": "Call",
+    "close": "Close",
+    "unavailable": "No contact numbers are currently available."
+  },
   "Home": {
     "metaTitle": "Naqlk | Request transport in Riyadh and across Saudi cities",
     "metaDescription": "Submit a furniture moving or cargo request in minutes. Naqlk reviews every request before preparing the right quotation.",

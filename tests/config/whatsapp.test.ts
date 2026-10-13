@@ -1,45 +1,41 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
-import { BRAND } from "@/config/brand";
-import { getWhatsAppHref } from "@/config/site";
+import {
+  CONTACT_NUMBERS,
+  getContactTelephoneHref,
+  getContactWhatsAppHref,
+  normalizeSaudiPhone,
+} from "@/config/contact";
 
-const officialNumber = "966547349947";
-
-describe("official Naqlk WhatsApp configuration", () => {
-  afterEach(() => vi.unstubAllEnvs());
-
-  it("uses the configured international number without formatting characters", () => {
-    vi.stubEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", officialNumber);
-
-    const url = new URL(getWhatsAppHref("Hello Naqlk"));
-
-    expect(url.origin + url.pathname).toBe(`https://wa.me/${officialNumber}`);
-    expect(url.searchParams.get("text")).toBe("Hello Naqlk");
+describe("centralized Naqlk contact numbers", () => {
+  it("keeps the configured contacts data-driven", () => {
+    expect(CONTACT_NUMBERS).toEqual([
+      { id: "contact-1", phone: "0547349947" },
+      { id: "contact-2", phone: "0565845386" },
+    ]);
   });
 
-  it("uses the centralized official fallback when deployment input is missing or invalid", () => {
-    expect(BRAND.support.whatsapp).toBe(officialNumber);
-    expect(new URL(getWhatsAppHref("نقلك")).pathname).toBe(`/${officialNumber}`);
-
-    vi.stubEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", "invalid");
-    expect(new URL(getWhatsAppHref("Naqlk")).pathname).toBe(`/${officialNumber}`);
+  it.each([
+    ["0547349947", "966547349947"],
+    ["0565845386", "966565845386"],
+    ["+966 54 734 9947", "966547349947"],
+  ])("normalizes %s to %s", (phone, normalized) => {
+    expect(normalizeSaudiPhone(phone)).toBe(normalized);
   });
 
-  it("routes every customer-facing WhatsApp CTA through the shared helper", () => {
-    const sources = [
-      "src/app/[locale]/page.tsx",
-      "src/app/[locale]/request/success/page.tsx",
-      "src/features/customer-quotation/components/customer-quotation-view.tsx",
-    ].map((file) => readFileSync(resolve(process.cwd(), file), "utf8"));
+  it("builds encoded WhatsApp and telephone links", () => {
+    const whatsapp = new URL(getContactWhatsAppHref("0547349947", "Hello Naqlk & welcome")!);
+    expect(whatsapp.origin + whatsapp.pathname).toBe("https://wa.me/966547349947");
+    expect(whatsapp.searchParams.get("text")).toBe("Hello Naqlk & welcome");
+    expect(getContactTelephoneHref("0565845386")).toBe("tel:+966565845386");
+  });
 
-    for (const source of sources) {
-      expect(source).toContain("getWhatsAppHref");
-      expect(source).not.toMatch(/wa\.me\//);
-      expect(source).not.toContain(officialNumber);
-    }
+  it("returns no broken link for an empty phone value", () => {
+    expect(getContactWhatsAppHref("", "Hello")).toBeNull();
+    expect(getContactTelephoneHref("")).toBeNull();
   });
 
   it("keeps localized messages branded and excludes capabilities and internal identifiers", () => {

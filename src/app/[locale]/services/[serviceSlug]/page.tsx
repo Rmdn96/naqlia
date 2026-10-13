@@ -16,7 +16,6 @@ import { getServiceSeoPage, SERVICE_PAGE_SLUGS } from "@/features/seo/content/se
 import { getIndexableCitySeoIndex } from "@/features/seo/services/seo.service";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
-import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 
 type Props = { params: Promise<{ locale: AppLocale; serviceSlug: string }> };
 
@@ -52,10 +51,7 @@ export default async function ServiceSeoPageRoute({ params }: Props) {
   const page = getServiceSeoPage(locale, serviceSlug);
   if (!page) notFound();
   setRequestLocale(locale);
-  const [cities, business] = await Promise.all([
-    getIndexableCitySeoIndex(locale),
-    getPublicBusinessConfiguration(),
-  ]);
+  const cities = await getIndexableCitySeoIndex(locale);
   const riyadhCities = cities.filter((city) => city.slug === "riyadh");
   const destinationCities = cities.filter((city) => city.slug !== "riyadh");
   const isWithinCity = page.slug === "within-city-transport";
@@ -174,12 +170,7 @@ export default async function ServiceSeoPageRoute({ params }: Props) {
       <ProcessGrid items={page.process} locale={locale} />
       <BenefitsGrid items={page.benefits} locale={locale} />
       <FaqSection faqs={page.faqs} locale={locale} />
-      <SeoCtas
-        citySlug={isWithinCity ? "riyadh" : undefined}
-        locale={locale}
-        service={page.key}
-        whatsappNumber={business.whatsappNumber}
-      />
+      <SeoCtas citySlug={isWithinCity ? "riyadh" : undefined} locale={locale} service={page.key} />
     </main>
   );
 }

@@ -5,8 +5,7 @@ import { unstable_noStore as noStore } from "next/cache";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getWhatsAppHref } from "@/config/site";
-import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
+import { ContactNumberPicker } from "@/components/shared/contact-number-picker";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/utils/cn";
@@ -28,11 +27,7 @@ export async function generateMetadata({ params }: SuccessPageProps): Promise<Me
 
 export default async function SuccessPage({ params, searchParams }: SuccessPageProps) {
   noStore();
-  const [{ locale }, { reference }, business] = await Promise.all([
-    params,
-    searchParams,
-    getPublicBusinessConfiguration(),
-  ]);
+  const [{ locale }, { reference }] = await Promise.all([params, searchParams]);
   setRequestLocale(locale);
   const t = await getTranslations("Success");
   const validReference = reference && /^NQ-[0-9]{6}-[0-9]{6}$/.test(reference) ? reference : null;
@@ -63,30 +58,22 @@ export default async function SuccessPage({ params, searchParams }: SuccessPageP
                 </bdi>
                 <p className="mt-3 text-sm text-muted-foreground">{t("referenceHint")}</p>
                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                  <a
+                  <ContactNumberPicker
+                    ariaLabel={t("whatsapp")}
                     className={buttonVariants({ size: "lg" })}
-                    href={getWhatsAppHref(
-                      t("whatsappMessage", { reference: validReference }),
-                      business.whatsappNumber,
-                    )}
-                    rel="noreferrer"
-                    target="_blank"
+                    message={t("whatsappMessage", { reference: validReference })}
                   >
                     <MessageCircle aria-hidden="true" className="size-5" />
                     {t("whatsapp")}
-                  </a>
-                  <a
+                  </ContactNumberPicker>
+                  <ContactNumberPicker
+                    ariaLabel={t("track")}
                     className={buttonVariants({ size: "lg", variant: "outline" })}
-                    href={getWhatsAppHref(
-                      t("trackingMessage", { reference: validReference }),
-                      business.whatsappNumber,
-                    )}
-                    rel="noreferrer"
-                    target="_blank"
+                    message={t("trackingMessage", { reference: validReference })}
                   >
                     <SearchCheck aria-hidden="true" className="size-5" />
                     {t("track")}
-                  </a>
+                  </ContactNumberPicker>
                 </div>
               </>
             ) : (

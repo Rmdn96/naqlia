@@ -1,4 +1,4 @@
-import { getWhatsAppHref } from "@/config/site";
+import { ContactNumberPicker } from "@/components/shared/contact-number-picker";
 import {
   confirmReceiptAction,
   requestCancellationAction,
@@ -118,18 +118,17 @@ export function TrackingView({
           );
         })}
       </section>
-      <a
+      <ContactNumberPicker
+        ariaLabel={ar ? "تواصل مع نقلك" : "Contact Naqlk"}
         className="mt-7 inline-flex min-h-12 items-center rounded-md bg-emerald-600 px-5 font-bold text-white"
-        href={getWhatsAppHref(
+        message={
           ar
             ? `مرحباً نقلك، أحتاج مساعدة بخصوص الطلب ${data.lead.reference_number}`
-            : `Hello Naqlk, I need help with request ${data.lead.reference_number}`,
-          business.whatsappNumber,
-        )}
-        rel="noreferrer"
+            : `Hello Naqlk, I need help with request ${data.lead.reference_number}`
+        }
       >
         {ar ? "تواصل مع نقلك" : "Contact Naqlk"}
-      </a>
+      </ContactNumberPicker>
       {data.job.status === "awaiting_customer_confirmation" && (
         <form action={confirmReceiptAction.bind(null, token, locale)} className="mt-5">
           <button className="min-h-12 rounded-md bg-primary px-5 font-bold text-primary-foreground">

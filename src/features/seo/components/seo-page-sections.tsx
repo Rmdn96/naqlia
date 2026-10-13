@@ -2,7 +2,7 @@ import { CheckCircle2, ClipboardCheck, MapPinned, MessageCircleMore } from "luci
 
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getWhatsAppHref } from "@/config/site";
+import { ContactNumberPicker } from "@/components/shared/contact-number-picker";
 import type { SeoFaq } from "@/features/seo/types/seo";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
@@ -96,14 +96,12 @@ export function SeoCtas({
   cityRole = "local",
   locale,
   service,
-  whatsappNumber,
 }: {
   city?: string;
   citySlug?: string;
   cityRole?: "destination" | "local";
   locale: AppLocale;
   service?: string;
-  whatsappNumber?: string | null;
 }) {
   const query = new URLSearchParams();
   if (citySlug && cityRole === "destination") {
@@ -137,18 +135,17 @@ export function SeoCtas({
             <MapPinned aria-hidden="true" className="size-5" />
             {locale === "ar" ? "اطلب خدمة نقل" : "Request transport"}
           </Link>
-          <a
+          <ContactNumberPicker
+            ariaLabel={locale === "ar" ? "تواصل عبر واتساب" : "Contact on WhatsApp"}
             className={cn(
               buttonVariants({ size: "lg", variant: "outline" }),
               "border-white/35 bg-transparent text-white hover:bg-white/10",
             )}
-            href={getWhatsAppHref(message, whatsappNumber)}
-            rel="noreferrer"
-            target="_blank"
+            message={message}
           >
             <MessageCircleMore aria-hidden="true" className="size-5" />
             {locale === "ar" ? "تواصل عبر واتساب" : "Contact on WhatsApp"}
-          </a>
+          </ContactNumberPicker>
           <Link
             className={cn(
               buttonVariants({ size: "lg", variant: "ghost" }),

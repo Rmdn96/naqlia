@@ -20,6 +20,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { ContactNumberPicker } from "@/components/shared/contact-number-picker";
 import {
   BRAND,
   getBrandName,
@@ -27,14 +28,12 @@ import {
   getOrganizationStructuredData,
   getWebsiteStructuredData,
 } from "@/config/brand";
-import { getWhatsAppHref } from "@/config/site";
 import { getPublicHomeContent } from "@/features/public-home/services/public-home.service";
 import { getPublicRequestCatalog } from "@/features/public-request/services/public-request.service";
 import { getServicePageSlugForKey } from "@/features/seo/content/service-pages";
 import { getIndexableCitySeoIndex } from "@/features/seo/services/seo.service";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
-import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 import { cn } from "@/utils/cn";
 
 export const dynamic = "force-dynamic";
@@ -66,10 +65,9 @@ export async function generateMetadata({ params }: LocalePageProps): Promise<Met
 export default async function HomePage({ params }: LocalePageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, catalog, business, publicContent, seoCities] = await Promise.all([
+  const [t, catalog, publicContent, seoCities] = await Promise.all([
     getTranslations("Home"),
     getPublicRequestCatalog(locale),
-    getPublicBusinessConfiguration(),
     getPublicHomeContent(locale),
     getIndexableCitySeoIndex(locale),
   ]);
@@ -161,15 +159,14 @@ export default async function HomePage({ params }: LocalePageProps) {
                   className="size-5 transition-transform group-hover:-translate-x-1 rtl:group-hover:translate-x-1"
                 />
               </Link>
-              <a
+              <ContactNumberPicker
+                ariaLabel={t("whatsappCta")}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/70 bg-white/90 px-4 text-sm font-bold text-[#0b2b5b] shadow-sm backdrop-blur-sm transition hover:bg-white"
-                href={getWhatsAppHref(t("whatsappMessage"), business.whatsappNumber)}
-                rel="noreferrer"
-                target="_blank"
+                message={t("whatsappMessage")}
               >
                 <MessageCircleMore aria-hidden="true" className="size-5 text-emerald-400" />
                 {t("whatsappCta")}
-              </a>
+              </ContactNumberPicker>
               <Link
                 className="inline-flex min-h-12 items-center justify-center rounded-md px-3 text-sm font-bold text-white/90 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 href="/track"
@@ -345,18 +342,17 @@ export default async function HomePage({ params }: LocalePageProps) {
             {t("primaryCta")}
             <Arrow aria-hidden="true" className="size-5" />
           </Link>
-          <a
+          <ContactNumberPicker
+            ariaLabel={t("whatsappCta")}
             className={cn(
               buttonVariants({ size: "lg", variant: "outline" }),
               "relative mt-3 shrink-0 border-white/35 bg-transparent text-white hover:bg-white/10 lg:mt-0",
             )}
-            href={getWhatsAppHref(t("whatsappMessage"), business.whatsappNumber)}
-            rel="noreferrer"
-            target="_blank"
+            message={t("whatsappMessage")}
           >
             <MessageCircleMore aria-hidden="true" className="size-5" />
             {t("whatsappCta")}
-          </a>
+          </ContactNumberPicker>
           <Clock3
             aria-hidden="true"
             className="absolute -bottom-14 -start-10 size-44 text-white/5"

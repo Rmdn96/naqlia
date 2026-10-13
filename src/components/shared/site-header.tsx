@@ -7,18 +7,16 @@ import { AccountMenu } from "@/components/shared/account-menu";
 import { LocaleSwitch } from "@/components/shared/locale-switch";
 import { MobileNavigation } from "@/components/shared/mobile-navigation";
 import { buttonVariants } from "@/components/ui/button";
+import { ContactNumberPicker } from "@/components/shared/contact-number-picker";
 import { Link } from "@/i18n/navigation";
-import { getWhatsAppHref } from "@/config/site";
 import type { AppLocale } from "@/i18n/routing";
-import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 import { resolveIdentityContext } from "@/lib/auth/identity-context";
 import { cn } from "@/utils/cn";
 
 export async function SiteHeader() {
-  const [t, locale, business, identity] = await Promise.all([
+  const [t, locale, identity] = await Promise.all([
     getTranslations("Common"),
     getLocale() as Promise<AppLocale>,
-    getPublicBusinessConfiguration(),
     resolveIdentityContext(),
   ]);
   const accountHref = identity?.is_staff ? "/dashboard" : identity ? "/account" : "/login";
@@ -76,23 +74,20 @@ export async function SiteHeader() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          <a
-            aria-label={t("whatsapp")}
+          <ContactNumberPicker
+            ariaLabel={t("whatsapp")}
             className={cn(
               buttonVariants({ size: "icon", variant: "outline" }),
               "hidden xl:inline-flex",
             )}
-            href={getWhatsAppHref(
+            message={
               locale === "ar"
                 ? "مرحباً نقلك، أود الاستفسار عن خدمات النقل."
-                : "Hello Naqlk, I would like to ask about your transport services.",
-              business.whatsappNumber,
-            )}
-            rel="noreferrer"
-            target="_blank"
+                : "Hello Naqlk, I would like to ask about your transport services."
+            }
           >
             <MessageCircleMore aria-hidden="true" className="size-5 text-emerald-600" />
-          </a>
+          </ContactNumberPicker>
           <LocaleSwitch />
           {identity ? (
             <AccountMenu

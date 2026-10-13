@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 
 import { Brand } from "@/components/shared/brand";
+import { ContactNumberPicker } from "@/components/shared/contact-number-picker";
 import { getLocale } from "next-intl/server";
 import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 import type { AppLocale } from "@/i18n/routing";
@@ -52,7 +53,18 @@ export async function SiteFooter() {
         </div>
         <div className="space-y-3 text-sm text-primary-foreground/75">
           <strong className="block text-primary-foreground">{t("contact")}</strong>
-          {business.phone ? <p dir="ltr">{business.phone}</p> : null}
+          <ContactNumberPicker
+            allowCall
+            ariaLabel={t("whatsapp")}
+            className="inline-flex rounded-md bg-primary-foreground/10 px-3 py-2 text-primary-foreground transition hover:bg-primary-foreground/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            message={
+              locale === "ar"
+                ? "مرحباً نقلك، أود الاستفسار عن خدمات النقل."
+                : "Hello Naqlk, I would like to ask about your transport services."
+            }
+          >
+            {t("whatsapp")}
+          </ContactNumberPicker>
           {business.email ? (
             <a className="block hover:underline" href={`mailto:${business.email}`}>
               {business.email}

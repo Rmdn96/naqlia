@@ -17,7 +17,6 @@ import { getServiceSeoPage, SERVICE_PAGE_SLUGS } from "@/features/seo/content/se
 import { getPublicCitySeoPage } from "@/features/seo/services/seo.service";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
-import { getPublicBusinessConfiguration } from "@/lib/business-settings/public-settings";
 
 type Props = { params: Promise<{ citySlug: string; locale: AppLocale }> };
 
@@ -57,7 +56,6 @@ export default async function CitySeoPageRoute({ params }: Props) {
   const page = await getPublicCitySeoPage(locale, citySlug);
   if (!page) notFound();
   setRequestLocale(locale);
-  const business = await getPublicBusinessConfiguration();
   const isRiyadh = page.slug === "riyadh";
   const services = SERVICE_PAGE_SLUGS.filter((slug) => isRiyadh || slug !== "within-city-transport")
     .map((slug) => getServiceSeoPage(locale, slug))
@@ -195,7 +193,6 @@ export default async function CitySeoPageRoute({ params }: Props) {
         citySlug={page.slug}
         cityRole={isRiyadh ? "local" : "destination"}
         locale={locale}
-        whatsappNumber={business.whatsappNumber}
       />
     </main>
   );
