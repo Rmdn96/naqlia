@@ -5,6 +5,7 @@ import {
   normalizeSaudiMobile,
   publicRequestPayloadSchema,
   publicUploadDescriptorsSchema,
+  sanitizeSaudiMobileInput,
 } from "@/features/public-request/lib/validation";
 
 const validPayload = {
@@ -47,6 +48,11 @@ describe("public request validation", () => {
     expect(normalizeSaudiMobile(input)).toBe(expected);
   });
 
+  it("normalizes Arabic-Indic digits and sanitizes browser input", () => {
+    expect(normalizeSaudiMobile("٠٥٥ ١٢٣ ٤٥٦٧")).toBe("+966551234567");
+    expect(sanitizeSaudiMobileInput("٠٥٥abc ١٢٣-٤٥٦٧")).toBe("055 123-4567");
+  });
+
   it("normalizes trusted payload values", () => {
     const parsed = publicRequestPayloadSchema.parse(validPayload);
 
@@ -64,6 +70,21 @@ describe("public request validation", () => {
         },
       }).success,
     ).toBe(false);
+  });
+
+  it("rejects alphabetic or otherwise invalid phone values on the server", () => {
+    expect(
+      publicRequestPayloadSchema.safeParse({
+        ...validPayload,
+        contact: { ...validPayload.contact, mobile: "055abc1234567" },
+      }).success,
+    ).toBe(false);
+    expect(
+      publicRequestPayloadSchema.safeParse({
+        ...validPayload,
+        contact: { ...validPayload.contact, mobile: "٠٥٥ ١٢٣ ٤٥٦٧" },
+      }).success,
+    ).toBe(true);
   });
 
   it("bounds upload count, type, and size", () => {

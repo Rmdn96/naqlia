@@ -5,6 +5,7 @@ import {
   toPublicRequestPayload,
   validateWizardStep,
 } from "@/features/public-request/lib/wizard";
+import { sanitizeSaudiMobileInput } from "@/features/public-request/lib/validation";
 import type { PublicRequestCatalog } from "@/features/public-request/types/public-request";
 
 const catalog: PublicRequestCatalog = {
@@ -37,6 +38,20 @@ describe("public request wizard rules", () => {
     expect(validateWizardStep(3, draft, catalog)).toEqual({
       cargoDescription: "cargoDescription",
     });
+  });
+
+  it("rejects alphabetic wizard input after client sanitization", () => {
+    const draft = {
+      ...createEmptyRequestDraft("en"),
+      contact: {
+        email: "",
+        fullName: "A Customer",
+        mobile: sanitizeSaudiMobileInput("055abc123456"),
+        notes: "",
+      },
+    };
+
+    expect(validateWizardStep(4, draft, catalog).mobile).toBe("mobile");
   });
 
   it("produces the normalized submission contract", () => {

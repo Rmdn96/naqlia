@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { FieldError } from "@/features/public-request/components/field-error";
+import { sanitizeSaudiMobileInput } from "@/features/public-request/lib/validation";
 import type { PublicRequestDraft } from "@/features/public-request/types/public-request";
 
 type ContactStepProps = {
@@ -47,10 +48,13 @@ export function ContactStep({ contact, errors, onChange }: ContactStepProps) {
           className="mt-2 text-start"
           dir="ltr"
           id="mobile"
-          inputMode="tel"
+          inputMode="numeric"
           maxLength={20}
-          onChange={(event) => onChange({ ...contact, mobile: event.target.value })}
+          onChange={(event) =>
+            onChange({ ...contact, mobile: sanitizeSaudiMobileInput(event.target.value) })
+          }
           placeholder={t("mobilePlaceholder")}
+          type="tel"
           value={contact.mobile}
         />
         <FieldError id="mobile-error" message={errors.mobile} />

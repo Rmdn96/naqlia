@@ -10,7 +10,7 @@ import {
 const uuidSchema = z.string().uuid();
 
 export function normalizeSaudiMobile(value: string): string {
-  const compact = value.replace(/[\s()-]/g, "");
+  const compact = normalizeSaudiDigits(value).replace(/[\s()-]/g, "");
 
   if (/^05\d{8}$/.test(compact)) {
     return `+966${compact.slice(1)}`;
@@ -25,6 +25,18 @@ export function normalizeSaudiMobile(value: string): string {
   }
 
   return compact;
+}
+
+export function normalizeSaudiDigits(value: string): string {
+  return value.replace(/[٠-٩۰-۹]/g, (digit) => {
+    const code = digit.charCodeAt(0);
+    const offset = code >= 0x06f0 ? 0x06f0 : 0x0660;
+    return String(code - offset);
+  });
+}
+
+export function sanitizeSaudiMobileInput(value: string): string {
+  return normalizeSaudiDigits(value).replace(/[^\d+()\s-]/g, "");
 }
 
 const optionalEmailSchema = z.preprocess(
