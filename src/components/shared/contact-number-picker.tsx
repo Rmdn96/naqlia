@@ -40,6 +40,7 @@ export function ContactNumberPicker({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef(false);
 
   useEffect(() => {
     const closeOtherPicker = (event: Event) => {
@@ -51,9 +52,14 @@ export function ContactNumberPicker({
 
   useEffect(() => {
     if (!open) {
-      triggerRef.current?.focus();
+      if (wasOpenRef.current) {
+        triggerRef.current?.focus({ preventScroll: true });
+        wasOpenRef.current = false;
+      }
       return;
     }
+
+    wasOpenRef.current = true;
 
     const updatePosition = () => {
       const trigger = triggerRef.current;

@@ -17,6 +17,11 @@ export function LocaleSwitch() {
       className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border bg-card px-3 text-sm font-bold transition hover:bg-muted"
       href={pathname}
       locale={targetLocale}
+      onClick={() => {
+        document.documentElement.style.scrollBehavior = "auto";
+        if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+      }}
+      scroll={false}
     >
       <Languages aria-hidden="true" className="size-4" />
       <span>{t("switchLocale")}</span>

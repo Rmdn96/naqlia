@@ -56,6 +56,11 @@ describe("ContactNumberPicker", () => {
     expect(screen.getByRole("dialog").parentElement?.className).toContain("100vw");
   });
 
+  it("does not move focus to a picker trigger during initial hydration", () => {
+    renderTwoPickers();
+    expect(document.activeElement).toBe(document.body);
+  });
+
   it("renders additions and removals from the config automatically", () => {
     CONTACT_NUMBERS.push({ id: "contact-3", phone: "0570000000" });
     renderPicker();
